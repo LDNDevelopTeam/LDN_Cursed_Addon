@@ -2,7 +2,7 @@
     "format_version": 2,
     "header": {
         "description": "LDNServerによる呪いのアドオン。 実験的機能をすべて有効にして使ってください。 §l§aWiki:§rhttps://github.com/LDNServer/LDN_Cursed_Addon/wiki",
-        "name": "§c§l呪いのアドオン§r§b Presented by LDNServer§a v1.1.9",
+        "name": "§c§l呪いのアドオン§r§b Presented by LDNServer§a v1.1.10",
         "uuid": "4115a0c0-60cf-4a69-a4e3-af05b58b9b53",
         "version": [
             1,

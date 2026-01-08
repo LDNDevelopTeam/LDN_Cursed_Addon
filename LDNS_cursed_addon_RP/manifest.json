@@ -2,7 +2,7 @@
     "format_version": 2,
     "header": {
         "description": "LDNServerによる呪いのアドオンのリソースパック。 実験的機能をすべて有効にして使ってください。",
-        "name": "§c§l呪いのアドオン§r(リソースパック)§b Presented by LDNServer§a v1.1.9",
+        "name": "§c§l呪いのアドオン§r(リソースパック)§b Presented by LDNServer§a v1.1.10",
         "uuid": "7247237e-e820-4b73-9e5c-f25fdbc8669f",
         "version": [
             1,
