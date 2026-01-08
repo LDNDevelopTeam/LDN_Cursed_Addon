@@ -7,11 +7,9 @@
       "is_summonable": true,
       "is_experimental": false
     },
-
     "component_groups": {
       "minecraft:horse_baby": {
-        "minecraft:is_baby": {
-        },
+        "minecraft:is_baby": {},
         "minecraft:scale_by_age": {
           "start_scale": 0.5,
           "end_scale": 1.0
@@ -58,7 +56,6 @@
           "speed_multiplier": 1.0
         }
       },
-
       "minecraft:horse_adult": {
         "minecraft:experience_reward": {
           "on_bred": "Math.Random(1,7)",
@@ -76,7 +73,6 @@
           "speed_multiplier": 1.0
         }
       },
-
       "minecraft:horse_wild": {
         "minecraft:rideable": {
           "seat_count": 1,
@@ -86,9 +82,12 @@
           ],
           "interact_text": "action.interact.mount",
           "seats": {
-            "position": [ 0.0, 1.1, -0.2 ]
+            "position": [
+              0.0,
+              1.1,
+              -0.2
+            ]
           }
-
         },
         "minecraft:behavior.mount_pathing": {
           "priority": 2,
@@ -150,10 +149,8 @@
           }
         }
       },
-
       "minecraft:horse_tamed": {
-        "minecraft:is_tamed": {
-        },
+        "minecraft:is_tamed": {},
         "minecraft:rideable": {
           "seat_count": 1,
           "crouching_skip_interact": true,
@@ -162,9 +159,12 @@
           ],
           "interact_text": "action.interact.ride.horse",
           "seats": {
-            "position": [ 0.0, 1.1, -0.2 ]
+            "position": [
+              0.0,
+              1.1,
+              -0.2
+            ]
           }
-
         },
         "minecraft:interact": {
           "interactions": [
@@ -175,22 +175,70 @@
                   "all_of": [
                     {
                       "none_of": [
-                        { "test": "has_equipment", "subject": "self", "domain": "inventory", "value": "leather_horse_armor" },
-                        { "test": "has_equipment", "subject": "self", "domain": "inventory", "value": "iron_horse_armor" },
-                        { "test": "has_equipment", "subject": "self", "domain": "inventory", "value": "golden_horse_armor" },
-                        { "test": "has_equipment", "subject": "self", "domain": "inventory", "value": "diamond_horse_armor" }
+                        {
+                          "test": "has_equipment",
+                          "subject": "self",
+                          "domain": "inventory",
+                          "value": "leather_horse_armor"
+                        },
+                        {
+                          "test": "has_equipment",
+                          "subject": "self",
+                          "domain": "inventory",
+                          "value": "iron_horse_armor"
+                        },
+                        {
+                          "test": "has_equipment",
+                          "subject": "self",
+                          "domain": "inventory",
+                          "value": "golden_horse_armor"
+                        },
+                        {
+                          "test": "has_equipment",
+                          "subject": "self",
+                          "domain": "inventory",
+                          "value": "diamond_horse_armor"
+                        }
                       ]
                     },
                     {
                       "any_of": [
-                        { "test": "has_equipment", "subject": "player", "domain": "hand", "value": "leather_horse_armor" },
-                        { "test": "has_equipment", "subject": "player", "domain": "hand", "value": "iron_horse_armor" },
-                        { "test": "has_equipment", "subject": "player", "domain": "hand", "value": "golden_horse_armor" },
-                        { "test": "has_equipment", "subject": "player", "domain": "hand", "value": "diamond_horse_armor" }
+                        {
+                          "test": "has_equipment",
+                          "subject": "player",
+                          "domain": "hand",
+                          "value": "leather_horse_armor"
+                        },
+                        {
+                          "test": "has_equipment",
+                          "subject": "player",
+                          "domain": "hand",
+                          "value": "iron_horse_armor"
+                        },
+                        {
+                          "test": "has_equipment",
+                          "subject": "player",
+                          "domain": "hand",
+                          "value": "golden_horse_armor"
+                        },
+                        {
+                          "test": "has_equipment",
+                          "subject": "player",
+                          "domain": "hand",
+                          "value": "diamond_horse_armor"
+                        }
                       ]
                     },
-                    { "test": "is_family", "subject": "other", "value": "player" },
-                    { "test": "is_sneak_held", "subject": "other", "value": false }
+                    {
+                      "test": "is_family",
+                      "subject": "other",
+                      "value": "player"
+                    },
+                    {
+                      "test": "is_sneak_held",
+                      "subject": "other",
+                      "value": false
+                    }
                   ]
                 },
                 "target": "self"
@@ -203,10 +251,29 @@
               "on_interact": {
                 "filters": {
                   "all_of": [
-                    { "test": "has_equipment", "subject": "self", "domain": "inventory", "operator": "not", "value": "saddle" },
-                    { "test": "has_equipment", "subject": "other", "domain": "hand", "value": "saddle" },
-                    { "test": "is_family", "subject": "other", "value": "player" },
-                    { "test": "is_sneak_held", "subject": "other", "value": false }
+                    {
+                      "test": "has_equipment",
+                      "subject": "self",
+                      "domain": "inventory",
+                      "operator": "not",
+                      "value": "saddle"
+                    },
+                    {
+                      "test": "has_equipment",
+                      "subject": "other",
+                      "domain": "hand",
+                      "value": "saddle"
+                    },
+                    {
+                      "test": "is_family",
+                      "subject": "other",
+                      "value": "player"
+                    },
+                    {
+                      "test": "is_sneak_held",
+                      "subject": "other",
+                      "value": false
+                    }
                   ]
                 },
                 "target": "self"
@@ -256,21 +323,22 @@
             "variant": 0.111 // ~1/9
           },
           "mutation_strategy": "random",
-          "random_variant_mutation_interval": [0, 7],
-          "random_extra_variant_mutation_interval": [0, 5]
+          "random_variant_mutation_interval": [
+            0,
+            7
+          ],
+          "random_extra_variant_mutation_interval": [
+            0,
+            5
+          ]
         }
       },
       "minecraft:horse_saddled": {
-        "minecraft:is_saddled": {
-        },
-        "minecraft:input_ground_controlled": {
-        },
-        "minecraft:can_power_jump": {
-        },
-        "minecraft:behavior.player_ride_tamed": {
-        }
+        "minecraft:is_saddled": {},
+        "minecraft:input_ground_controlled": {},
+        "minecraft:can_power_jump": {},
+        "minecraft:behavior.player_ride_tamed": {}
       },
-
       "minecraft:base_white": {
         "minecraft:variant": {
           "value": 0
@@ -331,7 +399,7 @@
           "value": 4
         }
       },
-      "ldns:horse_attack":{
+      "ldns:horse_attack": {
         "minecraft:attack": {
           "damage": 5
         },
@@ -347,23 +415,24 @@
               "max_dist": 16
             }
           ],
-          "must_see": false
+          "must_see": false,
+          "attack_interval": 10
         },
         "minecraft:behavior.melee_attack": {
           "priority": 1
         }
       }
     },
-
     "components": {
-      "minecraft:is_hidden_when_invisible": {
-      },
+      "minecraft:is_hidden_when_invisible": {},
       "minecraft:equippable": {
         "slots": [
           {
             "slot": 0,
             "item": "saddle",
-            "accepted_items": [ "saddle" ],
+            "accepted_items": [
+              "saddle"
+            ],
             "on_equip": {
               "event": "minecraft:horse_saddled"
             },
@@ -384,7 +453,10 @@
         ]
       },
       "minecraft:type_family": {
-        "family": [ "horse", "mob" ]
+        "family": [
+          "horse",
+          "mob"
+        ]
       },
       "minecraft:breathable": {
         "total_supply": 15,
@@ -425,12 +497,9 @@
         "avoid_water": true,
         "avoid_damage_blocks": true
       },
-      "minecraft:movement.basic": {
-      },
-      "minecraft:jump.static": {
-      },
-      "minecraft:nameable": {
-      },
+      "minecraft:movement.basic": {},
+      "minecraft:jump.static": {},
+      "minecraft:nameable": {},
       "minecraft:horse.jump_strength": {
         "value": {
           "range_min": 0.4,
@@ -442,8 +511,7 @@
         "hard_distance": 6.0,
         "max_distance": 10.0
       },
-      "minecraft:balloonable": {
-      },
+      "minecraft:balloonable": {},
       "minecraft:healable": {
         "items": [
           {
@@ -507,16 +575,13 @@
       "minecraft:behavior.random_look_around": {
         "priority": 8
       },
-      "minecraft:physics": {
-      },
+      "minecraft:physics": {},
       "minecraft:pushable": {
         "is_pushable": true,
         "is_pushable_by_piston": true
       },
-      "minecraft:conditional_bandwidth_optimization": {
-      }
+      "minecraft:conditional_bandwidth_optimization": {}
     },
-
     "events": {
       "minecraft:entity_spawned": {
         "sequence": [
@@ -547,7 +612,7 @@
                     "ldns:horse_attack"
                   ]
                 },
-                "remove":{
+                "remove": {
                   "component_groups": [
                     "minecraft:horse_wild"
                   ]
@@ -569,43 +634,57 @@
               {
                 "weight": 1,
                 "add": {
-                  "component_groups": [ "minecraft:base_white" ]
+                  "component_groups": [
+                    "minecraft:base_white"
+                  ]
                 }
               },
               {
                 "weight": 1,
                 "add": {
-                  "component_groups": [ "minecraft:base_creamy" ]
+                  "component_groups": [
+                    "minecraft:base_creamy"
+                  ]
                 }
               },
               {
                 "weight": 1,
                 "add": {
-                  "component_groups": [ "minecraft:base_chestnut" ]
+                  "component_groups": [
+                    "minecraft:base_chestnut"
+                  ]
                 }
               },
               {
                 "weight": 1,
                 "add": {
-                  "component_groups": [ "minecraft:base_brown" ]
+                  "component_groups": [
+                    "minecraft:base_brown"
+                  ]
                 }
               },
               {
                 "weight": 1,
                 "add": {
-                  "component_groups": [ "minecraft:base_black" ]
+                  "component_groups": [
+                    "minecraft:base_black"
+                  ]
                 }
               },
               {
                 "weight": 1,
                 "add": {
-                  "component_groups": [ "minecraft:base_gray" ]
+                  "component_groups": [
+                    "minecraft:base_gray"
+                  ]
                 }
               },
               {
                 "weight": 1,
                 "add": {
-                  "component_groups": [ "minecraft:base_darkbrown" ]
+                  "component_groups": [
+                    "minecraft:base_darkbrown"
+                  ]
                 }
               }
             ]
@@ -615,38 +694,47 @@
               {
                 "weight": 1,
                 "add": {
-                  "component_groups": [ "minecraft:markings_none" ]
+                  "component_groups": [
+                    "minecraft:markings_none"
+                  ]
                 }
               },
               {
                 "weight": 1,
                 "add": {
-                  "component_groups": [ "minecraft:markings_white_details" ]
+                  "component_groups": [
+                    "minecraft:markings_white_details"
+                  ]
                 }
               },
               {
                 "weight": 1,
                 "add": {
-                  "component_groups": [ "minecraft:markings_white_fields" ]
+                  "component_groups": [
+                    "minecraft:markings_white_fields"
+                  ]
                 }
               },
               {
                 "weight": 1,
                 "add": {
-                  "component_groups": [ "minecraft:markings_white_dots" ]
+                  "component_groups": [
+                    "minecraft:markings_white_dots"
+                  ]
                 }
               },
               {
                 "weight": 1,
                 "add": {
-                  "component_groups": [ "minecraft:markings_black_dots" ]
+                  "component_groups": [
+                    "minecraft:markings_black_dots"
+                  ]
                 }
               }
             ]
           }
         ]
       },
-
       "minecraft:entity_born": {
         "add": {
           "component_groups": [
@@ -654,7 +742,6 @@
           ]
         }
       },
-
       "minecraft:spawn_adult": {
         "add": {
           "component_groups": [
@@ -663,7 +750,6 @@
           ]
         }
       },
-
       "minecraft:on_tame": {
         "remove": {
           "component_groups": [
@@ -676,7 +762,6 @@
           ]
         }
       },
-
       "minecraft:ageable_grow_up": {
         "remove": {
           "component_groups": [
@@ -690,7 +775,6 @@
           ]
         }
       },
-
       "minecraft:horse_saddled": {
         "add": {
           "component_groups": [
@@ -705,40 +789,53 @@
           ]
         }
       },
-
       "minecraft:make_white": {
         "add": {
-          "component_groups": [ "minecraft:base_white" ]
+          "component_groups": [
+            "minecraft:base_white"
+          ]
         }
       },
       "minecraft:make_creamy": {
         "add": {
-          "component_groups": [ "minecraft:base_creamy" ]
+          "component_groups": [
+            "minecraft:base_creamy"
+          ]
         }
       },
       "minecraft:make_chestnut": {
         "add": {
-          "component_groups": [ "minecraft:base_chestnut" ]
+          "component_groups": [
+            "minecraft:base_chestnut"
+          ]
         }
       },
       "minecraft:make_brown": {
         "add": {
-          "component_groups": [ "minecraft:base_brown" ]
+          "component_groups": [
+            "minecraft:base_brown"
+          ]
         }
       },
       "minecraft:make_black": {
         "add": {
-          "component_groups": [ "minecraft:base_black" ]
+          "component_groups": [
+            "minecraft:base_black"
+          ]
         }
       },
       "minecraft:make_gray": {
         "add": {
-          "component_groups": [ "minecraft:base_gray" ]
+          "component_groups": [
+            "minecraft:base_gray"
+          ]
         }
       },
       "minecraft:make_darkbrown": {
         "add": {
-          "component_groups": [ "minecraft:base_darkbrown" ]
+          "component_groups": [
+            "minecraft:base_darkbrown"
+          ]
         }
       }
     }

@@ -70,7 +70,8 @@
                   "max_dist": 16
               }
           ],
-          "must_see": true
+          "must_see": true,
+          "attack_interval": 10
       },
       "minecraft:follow_range": {
           "value": 16,

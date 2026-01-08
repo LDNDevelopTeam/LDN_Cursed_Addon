@@ -42,10 +42,10 @@
                 "value": 0.44
             },
             "minecraft:navigation.walk": {
-              "can_path_over_water": true,
-              "can_pass_doors": true,
-              "can_open_doors": true,
-              "avoid_water": false
+                "can_path_over_water": true,
+                "can_pass_doors": true,
+                "can_open_doors": true,
+                "avoid_water": false
             },
             "minecraft:behavior.open_door": {
                 "priority": 6,
@@ -72,7 +72,8 @@
                         "max_dist": 32
                     }
                 ],
-                "must_see": false
+                "must_see": false,
+          "attack_interval": 10
             }
         }
     }

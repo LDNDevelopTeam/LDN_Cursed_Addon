@@ -269,7 +269,8 @@
                         },
                         "max_dist": 35
                     }
-                ]
+                ],
+          "attack_interval": 10
             },
             "minecraft:physics": {},
             "minecraft:pushable": {

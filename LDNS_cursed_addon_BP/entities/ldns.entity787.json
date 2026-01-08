@@ -8,17 +8,17 @@
             "is_experimental": false
         },
         "component_groups": {
-            "ldns:entity787_despawn":{
+            "ldns:entity787_despawn": {
                 "minecraft:instant_despawn": {
                     "remove_child_entities": false
                 }
             },
-            "ldns:entity787_2":{
+            "ldns:entity787_2": {
                 "minecraft:variant": {
                     "value": 1
                 }
             },
-            "ldns:entity787_1":{
+            "ldns:entity787_1": {
                 "minecraft:variant": {
                     "value": 0
                 }
@@ -100,7 +100,8 @@
                         "max_dist": 40
                     }
                 ],
-                "must_see": true
+                "must_see": true,
+          "attack_interval": 10
             },
             "minecraft:behavior.melee_box_attack": {
                 "priority": 4,
@@ -170,21 +171,21 @@
             }
         },
         "events": {
-            "ldns:entity787_despawn_event":{
+            "ldns:entity787_despawn_event": {
                 "add": {
                     "component_groups": [
                         "ldns:entity787_despawn"
                     ]
                 }
             },
-            "ldns:entity787_2_event":{
+            "ldns:entity787_2_event": {
                 "add": {
                     "component_groups": [
                         "ldns:entity787_2"
                     ]
                 }
             },
-            "ldns:entity787_1_event":{
+            "ldns:entity787_1_event": {
                 "add": {
                     "component_groups": [
                         "ldns:entity787_1"

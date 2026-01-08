@@ -62,7 +62,8 @@
                     }
                 ],
                 "must_see": false,
-                "set_persistent": true
+                "set_persistent": true,
+          "attack_interval": 10
             },
             "minecraft:behavior.melee_box_attack": {
                 "melee_fov": 270,

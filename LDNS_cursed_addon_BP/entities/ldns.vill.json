@@ -123,7 +123,8 @@
             "max_dist": 64
           }
         ],
-        "must_see": true
+        "must_see": true,
+          "attack_interval": 10
       },
       "minecraft:behavior.melee_attack": {
         "priority": 1

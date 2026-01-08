@@ -549,7 +549,8 @@
             },
             "max_dist": 16
           }
-        ]
+        ],
+          "attack_interval": 10
       },
       "minecraft:behavior.flee_sun": {
         "priority": 2,

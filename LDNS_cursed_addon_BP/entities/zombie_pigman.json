@@ -87,7 +87,8 @@
                             },
                             "max_dist": 35
                         }
-                    ]
+                    ],
+                    "attack_interval": 10
                 }
             },
             "minecraft:pig_zombie_angry": {
@@ -194,10 +195,10 @@
                         "priority": 3
                     },
                     {
-                      "item": "minecraft:golden_axe",
-                      "want_amount": 1,
-                      "surplus_amount": 1,
-                      "priority": 3
+                        "item": "minecraft:golden_axe",
+                        "want_amount": 1,
+                        "surplus_amount": 1,
+                        "priority": 3
                     },
                     {
                         "item": "minecraft:wooden_sword",
@@ -506,11 +507,11 @@
                                 "ldns:zombie_pigman_noface"
                             ]
                         },
-                        "remove":{
-                          "component_groups": [
-                              "minecraft:pig_zombie_calm",
-                              "minecraft:pig_zombie_angry"
-                          ]
+                        "remove": {
+                            "component_groups": [
+                                "minecraft:pig_zombie_calm",
+                                "minecraft:pig_zombie_angry"
+                            ]
                         }
                     }
                 ]

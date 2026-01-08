@@ -82,7 +82,8 @@
                   "max_dist": 46
                 }
               ],
-              "must_see": false
+              "must_see": false,
+          "attack_interval": 10
             },
             "minecraft:loot": {
                 "table": "loot_tables/entities/nonebrain.json"

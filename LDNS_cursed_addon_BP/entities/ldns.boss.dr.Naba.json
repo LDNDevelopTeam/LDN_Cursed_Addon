@@ -175,7 +175,8 @@
                         },
                         "max_dist": 64
                     }
-                ]
+                ],
+                "attack_interval": 10
             },
             "minecraft:behavior.hurt_by_target": {
                 "priority": 3,

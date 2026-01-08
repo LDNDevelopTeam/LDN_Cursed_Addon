@@ -72,7 +72,8 @@
                         "max_dist": 32
                     }
                 ],
-                "must_see": false
+                "must_see": false,
+          "attack_interval": 10
             }
         }
     }

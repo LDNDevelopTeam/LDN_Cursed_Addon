@@ -4,19 +4,41 @@
         "description": "LDNServerによる呪いのアドオン。 実験的機能をすべて有効にして使ってください。 §l§aWiki:§rhttps://github.com/LDNServer/LDN_Cursed_Addon/wiki",
         "name": "§c§l呪いのアドオン§r§b Presented by LDNServer§a v1.1.9",
         "uuid": "4115a0c0-60cf-4a69-a4e3-af05b58b9b53",
-        "version": [ 1, 1, 10 ],
-        "min_engine_version": [ 1, 21, 90 ]
+        "version": [
+            1,
+            1,
+            10
+        ],
+        "min_engine_version": [
+            1,
+            21,
+            90
+        ]
     },
-    "metadata":{
-        "authors":["Kagaribi172(code,texture)", "Yon4800(fact,code,assistant)", "oyakodon_yuugen(fact)", "tutinoko9900(code)", "sakurago(texture)", "kamiyasuri(texture)", "dr_naba(leader)"],
-        "url":"https://github.com/LDNServer/LDN_Cursed_Addon/wiki"
+    "metadata": {
+        "authors": [
+            "Kagaribi172(code,texture)",
+            "Yon4800(fact,code,assistant)",
+            "oyakodon_yuugen(fact)",
+            "tutinoko9900(code)",
+            "sakurago(texture)",
+            "kamiyasuri(texture)",
+            "てぃ(Texture)",
+            "Test_Alpha(Texture)",
+            "dr_naba(leader)"
+        ],
+        "url": "https://github.com/LDNServer/LDN_Cursed_Addon/wiki"
     },
     "modules": [
         {
             "description": "やっほー",
             "type": "data",
             "uuid": "5ea7bcbe-1a9f-4031-9b4b-1fe48c491dfb",
-            "version": [1, 1, 10]
+            "version": [
+                1,
+                1,
+                10
+            ]
         },
         {
             "description": "hi!",
@@ -24,13 +46,21 @@
             "language": "javascript",
             "entry": "scripts/main.js",
             "uuid": "f6fa04b5-b3c1-45b0-902e-d83383828a1d",
-            "version": [1, 1, 10]
+            "version": [
+                1,
+                1,
+                10
+            ]
         }
     ],
     "dependencies": [
         {
             "uuid": "7247237e-e820-4b73-9e5c-f25fdbc8669f",
-            "version": [1, 1, 10]
+            "version": [
+                1,
+                1,
+                10
+            ]
         },
         {
             "module_name": "@minecraft/server",
