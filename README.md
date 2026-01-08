@@ -1,14 +1,14 @@
 # LDN_Cursed_Addon
-LDNServerで作られた、呪いのバージョン「Minecraft LDN」 | Made with LDNServer, a cursed version 「Minecraft LDN」
+LDTで作られた、呪いのバージョン「Minecraft LDN」 | Made with LDT, a cursed version 「Minecraft LDN」
 
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/LDNServer/LDN_Cursed_Addon/total?style=for-the-badge)<br>
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/LDNDevelopTeam/LDN_Cursed_Addon/total?style=for-the-badge)<br>
 
 ## リンク
 ・[配布ページ](https://minecraft-mcworld.com/17029/)
-<br>・[モブ](https://github.com/LDNServer/LDN_Cursed_Addon/wiki/%E3%83%A2%E3%83%96)
-<br>・[アイテム](https://github.com/LDNServer/LDN_Cursed_Addon/wiki/%E3%82%A2%E3%82%A4%E3%83%86%E3%83%A0)
-<br>・[建物](https://github.com/LDNServer/LDN_Cursed_Addon/wiki/%E5%BB%BA%E7%89%A9)
-<br>・[要素](https://github.com/LDNServer/LDN_Cursed_Addon/wiki/%E8%A6%81%E7%B4%A0)
+<br>・[モブ](https://github.com/LDNDevelopTeam/LDN_Cursed_Addon/wiki/%E3%83%A2%E3%83%96)
+<br>・[アイテム](https://github.com/LDNDevelopTeam/LDN_Cursed_Addon/wiki/%E3%82%A2%E3%82%A4%E3%83%86%E3%83%A0)
+<br>・[建物](https://github.com/LDNDevelopTeam/LDN_Cursed_Addon/wiki/%E5%BB%BA%E7%89%A9)
+<br>・[要素](https://github.com/LDNDevelopTeam/LDN_Cursed_Addon/wiki/%E8%A6%81%E7%B4%A0)
 
 ### このアドオンを使うにあたって
 * このアドオンの導入は自己責任でお願いします。このアドオンを導入した場合に生じた損害について、製作者側は一切の責任を負いかねますのであらかじめご了承ください。
