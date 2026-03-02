@@ -34,7 +34,7 @@
                         }
                     ],
                     "on_entry": [
-                        "/execute as @s[hasitem={item=ldns:pendant_of_goscubus,quantity=0}] run fill ~1 ~1 ~1 ~-1 ~-1 ~-1 air 0 replace bed"
+                        "/execute as @s[hasitem={item=ldns:pendant_of_goscubus,quantity=0}] run fill ~1 ~1 ~1 ~-1 ~-1 ~-1 air replace bed"
                     ]
                 },
                 "ldns.is_sleeping_command_ex": {
@@ -47,7 +47,7 @@
                         }
                     ],
                     "on_entry": [
-                        "/execute as @s[hasitem={item=ldns:pendant_of_goscubus,quantity=0}] run fill ~2 ~2 ~2 ~-2 ~-2 ~-2 air 0 replace bed"
+                        "/execute as @s[hasitem={item=ldns:pendant_of_goscubus,quantity=0}] run fill ~2 ~2 ~2 ~-2 ~-2 ~-2 air replace bed"
                     ]
                 }
             }

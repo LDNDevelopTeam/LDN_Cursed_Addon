@@ -29,7 +29,7 @@
                         }
                     ],
                     "on_entry": [
-                        "/execute as @s at @s positioned ~40 ~ ~ run fill ~-10 ~-10  ~-10 ~10 ~10 ~10 ldns:replace_torch_block 0 replace torch",
+                        "/execute as @s at @s positioned ~40 ~ ~ run fill ~-10 ~-10  ~-10 ~10 ~10 ~10 ldns:replace_torch_block replace torch",
                         "/tellraw @s[tag=debug_log] {\"rawtext\":[{\"text\":\"【ADD-ON】Debug - States (controller.animation.ldns.random_break_torch) : ldns.x_plus\"}]}"
                     ]
                 },
@@ -40,7 +40,7 @@
                         }
                     ],
                     "on_entry": [
-                        "/execute as @s at @s positioned ~-40 ~ ~ run fill ~-10 ~-10  ~-10 ~10 ~10 ~10 ldns:replace_torch_block 0 replace torch",
+                        "/execute as @s at @s positioned ~-40 ~ ~ run fill ~-10 ~-10  ~-10 ~10 ~10 ~10 ldns:replace_torch_block replace torch",
                         "/tellraw @s[tag=debug_log] {\"rawtext\":[{\"text\":\"【ADD-ON】Debug - States (controller.animation.ldns.random_break_torch) : ldns.x_minus\"}]}"
                     ]
                 },
@@ -51,7 +51,7 @@
                         }
                     ],
                     "on_entry": [
-                        "/execute as @s at @s positioned ~ ~ ~40 run fill ~-10 ~-10  ~-10 ~10 ~10 ~10 ldns:replace_torch_block 0 replace torch",
+                        "/execute as @s at @s positioned ~ ~ ~40 run fill ~-10 ~-10  ~-10 ~10 ~10 ~10 ldns:replace_torch_block replace torch",
                         "/tellraw @s[tag=debug_log] {\"rawtext\":[{\"text\":\"【ADD-ON】Debug - States (controller.animation.random_break_torch) : ldns.z_plus\"}]}"
                     ]
                 },
@@ -62,7 +62,7 @@
                         }
                     ],
                     "on_entry": [
-                        "/execute as @s at @s positioned ~ ~ ~-40 run fill ~-10 ~-10  ~-10 ~10 ~10 ~10 ldns:replace_torch_block 0 replace torch",
+                        "/execute as @s at @s positioned ~ ~ ~-40 run fill ~-10 ~-10  ~-10 ~10 ~10 ~10 ldns:replace_torch_block replace torch",
                         "/tellraw @s[tag=debug_log] {\"rawtext\":[{\"text\":\"【ADD-ON】Debug - States (controller.animation.random_break_torch) : ldns.z_minus\"}]}"
                     ]
                 }

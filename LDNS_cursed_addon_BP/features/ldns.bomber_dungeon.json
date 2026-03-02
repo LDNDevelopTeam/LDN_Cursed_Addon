@@ -11,7 +11,7 @@
 			"unburied": {},
 			"block_intersection": {
 				"block_allowlist": [
-					"minecraft:air" , "minecraft:tallgrass" , "minecraft:log", "minecraft:leaves","minecraft:stone","minecraft:grass","minecraft:snow","minecraft:snow_layer","minecraft:dirt","minecraft:podzol"
+					"minecraft:air" , "minecraft:tall_grass" , "minecraft:log", "minecraft:leaves","minecraft:stone","minecraft:grass","minecraft:snow","minecraft:snow_layer","minecraft:dirt","minecraft:podzol"
 				]
 			}
 		}

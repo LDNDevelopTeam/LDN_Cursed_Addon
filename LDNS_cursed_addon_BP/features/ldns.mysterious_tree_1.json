@@ -13,7 +13,7 @@
 			"block_intersection": {
 				"block_allowlist": [
 					"minecraft:air",
-					"minecraft:tallgrass",
+				"minecraft:tall_grass",
 					"minecraft:log",
 					"minecraft:leaves",
 					"minecraft:stone",
