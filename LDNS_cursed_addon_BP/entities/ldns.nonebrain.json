@@ -57,20 +57,21 @@
                 "priority": 9
             },
             "minecraft:physics": {},
-            "minecraft:entity_sensor": {
-                "sensor_range": 26.0,
-                "event_filters": {
-                    "test": "is_family",
-                    "subject": "other",
-                    "value": "player"
-                },
-                "on_detect": {
-                    "event": "ldns:nonebrain_despawn_event",
-                    "target": "self"
-                }
-            },
             "minecraft:attack": {
                 "damage": 99
+            },
+            "minecraft:environment_sensor": {
+                "triggers": [
+                    {
+                        "filters": {
+                            "test": "is_nearby_player",
+                            "subject": "self",
+                            "operator": "==",
+                            "value": true
+                        },
+                        "event": "ldns:nonebrain_despawn_event"
+                    }
+                ]
             },
             "minecraft:behavior.nearest_attackable_target": {
                 "priority": 1,
