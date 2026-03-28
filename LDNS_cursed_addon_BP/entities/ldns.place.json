@@ -65,7 +65,7 @@
                 "priority": 1
             },
             "minecraft:behavior.nearest_attackable_target": {
-                "priority": 1,
+                "priority": 0,
                 "entity_types": [
                     {
                         "filters": {
@@ -77,7 +77,7 @@
                     }
                 ],
                 "must_see": false,
-          "attack_interval": 10
+                "attack_interval": 10
             },
             "minecraft:timer": {
                 "time": 150,
