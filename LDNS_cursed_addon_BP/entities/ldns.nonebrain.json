@@ -19,9 +19,8 @@
                     "transformation_sound": "ldns.beep"
                 }
             },
-            "ldns:nonebrain_default":{
-            },
-            "ldns:nonebrain_giant":{
+            "ldns:nonebrain_default": {},
+            "ldns:nonebrain_giant": {
                 "minecraft:scale": {
                     "value": 16.0
                 }
@@ -58,32 +57,35 @@
                 "priority": 9
             },
             "minecraft:physics": {},
-            "minecraft:target_nearby_sensor": {
-                "must_see": false,
-                "inside_range": 15.0,
-                "outside_range": 1.0,
-                "on_inside_range": {
+            "minecraft:entity_sensor": {
+                "sensor_range": 26.0,
+                "event_filters": {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "player"
+                },
+                "on_detect": {
                     "event": "ldns:nonebrain_despawn_event",
                     "target": "self"
                 }
             },
             "minecraft:attack": {
-              "damage": 99
+                "damage": 99
             },
             "minecraft:behavior.nearest_attackable_target": {
-              "priority": 1,
-              "entity_types": [
-                {
-                  "filters": {
-                    "test": "is_family",
-                    "subject": "other",
-                    "value": "player"
-                  },
-                  "max_dist": 46
-                }
-              ],
-              "must_see": false,
-          "attack_interval": 10
+                "priority": 1,
+                "entity_types": [
+                    {
+                        "filters": {
+                            "test": "is_family",
+                            "subject": "other",
+                            "value": "player"
+                        },
+                        "max_dist": 46
+                    }
+                ],
+                "must_see": false,
+                "attack_interval": 10
             },
             "minecraft:loot": {
                 "table": "loot_tables/entities/nonebrain.json"
@@ -124,7 +126,7 @@
                     ]
                 }
             },
-            "minecraft:entity_spawned":{
+            "minecraft:entity_spawned": {
                 "randomize": [
                     {
                         "add": {
