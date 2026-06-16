@@ -37,10 +37,13 @@ world.afterEvents.entityHurt.subscribe(async (e) => {
                 e.damageSource.damagingEntity.runCommand("give @s minecraft:emerald 8");
                 e.damageSource.damagingEntity.sendMessage("§0D§1o§2n§3'§4t §5r§6u§7n §8a§9w§aa§by§c.");
                 await system.waitTicks(20 * 3);
-                if (e.damageSource.damagingEntity.getDynamicProperty("LposX") == undefined || e.damageSource.damagingEntity.getDynamicProperty("LposY") == undefined || e.damageSource.damagingEntity.getDynamicProperty("LposZ")) {
+                const lposX = e.damageSource.damagingEntity.getDynamicProperty("LposX");
+                const lposY = e.damageSource.damagingEntity.getDynamicProperty("LposY");
+                const lposZ = e.damageSource.damagingEntity.getDynamicProperty("LposZ");
+                if (typeof lposX !== 'number' || typeof lposY !== 'number' || typeof lposZ !== 'number') {
                     e.damageSource.damagingEntity.teleport({ x: 0, y: getTopmostBlockLocation(e.damageSource.damagingEntity.dimension, 0, 0), z: 0 });
                 } else {
-                    e.damageSource.damagingEntity.teleport({ x: e.damageSource.damagingEntity.getDynamicProperty("LposX"), y: e.damageSource.damagingEntity.getDynamicProperty("LposY"), z: e.damageSource.damagingEntity.getDynamicProperty("LposZ") });
+                    e.damageSource.damagingEntity.teleport({ x: lposX, y: lposY, z: lposZ });
                 }
                 container.setItem(i, null);
                 if (e.damageSource.damagingEntity.getDynamicProperty("longfixTag") == true) {
@@ -63,21 +66,53 @@ world.afterEvents.entityHurt.subscribe(async (e) => {
  */
 async function place_event(entity, player) {
     if (!(player instanceof Player)) { return };
-    let RX = 0;
-    let RZ = 0;
-    player.teleport({ x: RX, y: getTopmostBlockLocation(player.dimension, RX, RZ) + 2, z: RZ });
+    
     if (player.getDynamicProperty("longfixTag") == true) {
         player.setDynamicProperty("longfixTag", false);
     }
     if (player.getDynamicProperty("longfixTag2") == true) {
         player.setDynamicProperty("longfixTag2", false);
     }
-    let kickcommand = player.runCommand("kick " + player.name + " §cI won't let you escape");
-    if (kickcommand.successCount == 0) {
-        player.kill();
+
+    // Clean up the bedrock room
+    const posX = player.getDynamicProperty("roomX");
+    const posZ = player.getDynamicProperty("roomZ");
+    if (typeof posX === 'number' && typeof posZ === 'number') {
+        const length = 48;
+        const width = 7;
+        const height = 10;
+        const posY = 300;
+        for (let i = 0; i < length; i++) {
+            for (let j = 0; j < width; j++) {
+                for (let k = 0; k < height; k++) {
+                    player.dimension.setBlockType({ x: i + posX - 23, y: k + posY, z: j + posZ }, "minecraft:air");
+                }
+            }
+        }
     }
+
     entity.remove();
     player.playSound("ldns.publicvoid");
     player.playSound("ldns.binary444");
     player.playSound("ldns.herovoid");
+
+    const lposX = player.getDynamicProperty("LposX");
+    const lposY = player.getDynamicProperty("LposY");
+    const lposZ = player.getDynamicProperty("LposZ");
+
+    let kickcommand = player.runCommand("kick " + player.name + " §cI won't let you escape");
+    if (kickcommand.successCount == 0) {
+        // Host handling
+        player.onScreenDisplay.setTitle("Error1");
+        
+        if (typeof lposX === 'number' && typeof lposY === 'number' && typeof lposZ === 'number') {
+            player.teleport({ x: lposX, y: lposY, z: lposZ }, { dimension: player.dimension });
+        }
+        
+        player.addEffect("slowness", 80, { amplifier: 255, showParticles: false });
+        player.addEffect("blindness", 80, { showParticles: false });
+        
+        await system.waitTicks(80);
+        player.kill();
+    }
 }

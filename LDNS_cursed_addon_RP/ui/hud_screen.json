@@ -1262,7 +1262,19 @@
                   "100%sm + 6px"
                 ],
                 "texture": "textures/ui/hud_tip_text_background",
-                "alpha": "@hud.anim_title_background_alpha_in"
+                "alpha": "@hud.anim_title_background_alpha_in",
+                "bindings": [
+                  {
+                    "binding_name": "#hud_title_text_string",
+                    "binding_name_override": "#text",
+                    "binding_type": "global"
+                  },
+                  {
+                    "binding_type": "view",
+                    "source_property_name": "(not (#text = 'PPYYS' or #text = '繧ｨ繝ｩ繝ｼ' or #text = 'nabas1' or #text = 'nabas2' or #text = 'nabas3' or #text = 'Error1' or #text = 'Error2' or #text = 'Cursed1' or #text = 'Cursed2' or #text = 'Error1Noisy' or #text = 'Error2Noisy' or #text = 'Cursed1Noisy' or #text = 'Cursed2Noisy' or #text = 'egn2' or #text = 'egn3' or #text = 'egn6' or #text = 'egn9' or #text = 'ew1' or #text = 'ew2' or #text = 'ppse' or #text = 'yyse' or #text = 'nonebrain' or #text = 'textcursed' or #text = 'hello1' or #text = 'hello2' or #text = 'hello3' or #text = 'hello4'))",
+                    "target_property_name": "#visible"
+                  }
+                ]
               }
             },
             {

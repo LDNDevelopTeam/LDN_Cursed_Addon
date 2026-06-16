@@ -11,14 +11,17 @@ world.afterEvents.dataDrivenEntityTrigger.subscribe(async (events) => {
         if (events.entity.typeId === "ldns:nonebrain") {
             if (events.eventId === "ldns:nonebrain_despawn_event") {
                 let noneint = world.getDynamicProperty("noneint");
-                if (noneint === undefined) {
+                if (typeof noneint !== 'number') {
+                    noneint = 1;
                     world.setDynamicProperty("noneint", 1);
                 }
                 else if (events.entity.hasComponent("minecraft:scale")) {
-                    world.setDynamicProperty("noneint", noneint + 10);
+                    noneint += 10;
+                    world.setDynamicProperty("noneint", noneint);
                 }
                 else {
-                    world.setDynamicProperty("noneint", noneint + 1);
+                    noneint += 1;
+                    world.setDynamicProperty("noneint", noneint);
                 }
                 // ノンブラインがデスポーンした数が一定数を超えたとき
                 if (noneint >= 750) {

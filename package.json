@@ -4,7 +4,7 @@
   "description": "LDNServerで作られた、呪いのバージョン「Minecraft LDN」 | Made with LDNServer, a cursed version 「Minecraft LDN」",
   "license": "Apache-2.0",
   "dependencies": {
-    "@minecraft/server": "2.1.0",
-    "@minecraft/server-ui": "2.0.0"
+    "@minecraft/server": "2.8.0",
+    "@minecraft/server-ui": "2.1.0"
   }
 }
