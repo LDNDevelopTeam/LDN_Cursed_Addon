@@ -1,0 +1,15 @@
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.watcher.sit": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"animations": [
+						"sit"
+					]
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,169 @@
+{
+  "format_version": "1.21.90",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "ldns:the_watcher",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "is_experimental": false,
+      "properties": {
+        "ldns:is_sitting": {
+          "type": "bool",
+          "client_sync": true,
+          "default": false
+        }
+      }
+    },
+    "component_groups": {
+      "ldns:the_watcher_wild": {
+        "minecraft:type_family": {
+          "family": [
+            "monster",
+            "mob",
+            "watcher"
+          ]
+        },
+        "minecraft:behavior.random_stroll": {
+          "priority": 3,
+          "speed_multiplier": 0.8
+        },
+        "minecraft:behavior.look_at_player": {
+          "priority": 1,
+          "look_distance": 24.0,
+          "probability": 1.0
+        }
+      },
+      "ldns:the_watcher_tamed": {
+        "minecraft:type_family": {
+          "family": [
+            "mob",
+            "watcher"
+          ]
+        },
+        "minecraft:is_tamed": {},
+        "minecraft:behavior.follow_owner": {
+          "priority": 1,
+          "speed_multiplier": 1.25,
+          "start_distance": 5.0,
+          "stop_distance": 2.0
+        },
+        "minecraft:behavior.random_stroll": {
+          "priority": 4,
+          "speed_multiplier": 1.0
+        },
+        "minecraft:behavior.look_at_player": {
+          "priority": 2,
+          "look_distance": 8.0,
+          "probability": 0.1
+        }
+      },
+      "ldns:the_watcher_sitting": {
+        "minecraft:type_family": {
+          "family": [
+            "mob",
+            "watcher"
+          ]
+        },
+        "minecraft:is_tamed": {},
+        "minecraft:behavior.look_at_player": {
+          "priority": 1,
+          "look_distance": 8.0,
+          "probability": 0.1
+        }
+      }
+    },
+    "components": {
+      "minecraft:tameable": {
+        "tame_items": [
+          "ldns:heavy_stone"
+        ],
+        "tame_event": {
+          "event": "ldns:on_tame_event",
+          "target": "self"
+        }
+      },
+      "minecraft:collision_box": {
+        "width": 0.6,
+        "height": 2.8
+      },
+      "minecraft:health": {
+        "value": 120,
+        "max": 120
+      },
+      "minecraft:physics": {},
+      "minecraft:movement": {
+        "value": 0.28
+      },
+      "minecraft:navigation.walk": {
+        "avoid_damage_blocks": true,
+        "can_pass_doors": true,
+        "can_jump": true
+      },
+      "minecraft:movement.basic": {},
+      "minecraft:jump.static": {},
+      "minecraft:can_climb": {}
+    },
+    "events": {
+      "minecraft:entity_spawned": {
+        "set_property": {
+          "ldns:is_sitting": false
+        },
+        "add": {
+          "component_groups": [
+            "ldns:the_watcher_wild"
+          ]
+        }
+      },
+      "ldns:on_tame_event": {
+        "set_property": {
+          "ldns:is_sitting": false
+        },
+        "add": {
+          "component_groups": [
+            "ldns:the_watcher_tamed"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "ldns:the_watcher_wild"
+          ]
+        },
+        "queue_command": {
+          "command": [
+            "tag @s add ldns:tamed"
+          ]
+        }
+      },
+      "ldns:on_sit_event": {
+        "set_property": {
+          "ldns:is_sitting": true
+        },
+        "add": {
+          "component_groups": [
+            "ldns:the_watcher_sitting"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "ldns:the_watcher_tamed"
+          ]
+        }
+      },
+      "ldns:on_stand_event": {
+        "set_property": {
+          "ldns:is_sitting": false
+        },
+        "add": {
+          "component_groups": [
+            "ldns:the_watcher_tamed"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "ldns:the_watcher_sitting"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import { Entity, Player, world } from "@minecraft/server";
-import { random } from '../util';
+import { random, hasItem } from '../util';
 import { MinecraftEffectTypes } from '../lib/mojang-effect';
 
 world.afterEvents.entityHurt.subscribe((e) => {
@@ -15,7 +15,7 @@ world.afterEvents.entityHurt.subscribe((e) => {
 function entity787hurt(hurtEntity, damageSource) {
     if (!(damageSource instanceof Player)) return;
     // ペンダントを持っているときのカウント
-    const items = damageSource.runCommand('testfor @s[hasitem={item=ldns:pendant_of_twilight}]').successCount;
+    const items = hasItem(damageSource, 'ldns:pendant_of_twilight');
     const rand = random(0, 160);
     // 夕焼けのペンダントを持っていないときに発動
     if (items <= 0) {

@@ -56,7 +56,7 @@ system.beforeEvents.startup.subscribe((event) => {
         onTick(e) {
             const { block, dimension } = e;
             // 松明を壊すコマンド
-            dimension.runCommand(`fill ${block.x} ${block.y} ${block.z} ${block.x} ${block.y} ${block.z} air 0 destroy`);
+            dimension.runCommand(`fill ${block.x} ${block.y} ${block.z} ${block.x} ${block.y} ${block.z} air destroy`);
         }
     });
     // ボマーのダンジョンのブロック

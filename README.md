@@ -55,6 +55,7 @@ https://docs.microsoft.com/ja-jp/minecraft/creator/documents/addonpackinstallati
 * https://freesound.org
 * https://commons.nicovideo.jp/users/29712216
 * https://barrarchiverio.cl/p/error/
+* https://elevenlabs.io (音声素材生成)
 * 一部のコードはOpenAI ChatGPTやGoogle Gemini AI、Microsoft Copilotを利用し参考にして作成しています。
 
 ## 作成者クレジット
@@ -70,6 +71,7 @@ Test_Alpha(Texture)<br>
 
 ====SUB_CREDIT====<br>
 かずぎつね(Texture)<br>
+Keisuke Aiso(LinkFactory) (NONO 元ネタ製作者(MOMO) / X: https://x.com/aiso_link)<br>
 
 ====Special thanks====<br>
 LDN Server - LDNS<br>

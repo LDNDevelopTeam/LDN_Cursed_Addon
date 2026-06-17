@@ -327,6 +327,30 @@
                1.20
             ],
             "volume": 1.0
+         },
+         "ldns:the_watcher": {
+            "events": {
+               "ambient": "mob.ldns.watcher.ambient",
+               "hurt": "mob.ldns.watcher.hurt",
+               "death": "mob.ldns.watcher.death"
+            },
+            "pitch": [
+               0.9,
+               1.1
+            ],
+            "volume": 0.8
+         },
+         "ldns:nono": {
+            "events": {
+               "ambient": "mob.ldns.nono.ambient",
+               "hurt": "mob.ldns.nono.hurt",
+               "death": "mob.ldns.nono.death"
+            },
+            "pitch": [
+               0.95,
+               1.05
+            ],
+            "volume": 0.7
          }
       }
    }

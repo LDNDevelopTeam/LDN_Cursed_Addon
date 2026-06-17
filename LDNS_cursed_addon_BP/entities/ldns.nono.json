@@ -1,0 +1,179 @@
+{
+  "format_version": "1.21.90",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "ldns:nono",
+      "is_spawnable": true,
+      "is_summonable": true,
+      "is_experimental": false,
+      "properties": {
+        "ldns:is_sitting": {
+          "type": "bool",
+          "client_sync": true,
+          "default": false
+        }
+      }
+    },
+    "component_groups": {
+      "ldns:nono_wild": {
+        "minecraft:type_family": {
+          "family": [
+            "monster",
+            "mob",
+            "nono"
+          ]
+        },
+        "minecraft:behavior.random_stroll": {
+          "priority": 3,
+          "speed_multiplier": 0.8
+        },
+        "minecraft:behavior.look_at_player": {
+          "priority": 1,
+          "look_distance": 12.0,
+          "probability": 0.5
+        }
+      },
+      "ldns:nono_tamed": {
+        "minecraft:type_family": {
+          "family": [
+            "mob",
+            "nono"
+          ]
+        },
+        "minecraft:is_tamed": {},
+        "minecraft:inventory": {
+          "inventory_size": 9,
+          "container_type": "inventory",
+          "private": false
+        },
+        "minecraft:behavior.follow_owner": {
+          "priority": 1,
+          "speed_multiplier": 1.2,
+          "start_distance": 8.0,
+          "stop_distance": 3.0
+        },
+        "minecraft:behavior.random_stroll": {
+          "priority": 4,
+          "speed_multiplier": 1.0
+        },
+        "minecraft:behavior.look_at_player": {
+          "priority": 2,
+          "look_distance": 6.0,
+          "probability": 0.1
+        }
+      },
+      "ldns:nono_sitting": {
+        "minecraft:type_family": {
+          "family": [
+            "mob",
+            "nono"
+          ]
+        },
+        "minecraft:is_tamed": {},
+        "minecraft:inventory": {
+          "inventory_size": 9,
+          "container_type": "inventory",
+          "private": false
+        },
+        "minecraft:behavior.look_at_player": {
+          "priority": 1,
+          "look_distance": 6.0,
+          "probability": 0.1
+        }
+      }
+    },
+    "components": {
+      "minecraft:tameable": {
+        "tame_items": [
+          "ldns:error_ingot"
+        ],
+        "tame_event": {
+          "event": "ldns:on_tame_event",
+          "target": "self"
+        }
+      },
+      "minecraft:collision_box": {
+        "width": 0.6,
+        "height": 1.8
+      },
+      "minecraft:health": {
+        "value": 80,
+        "max": 80
+      },
+      "minecraft:physics": {},
+      "minecraft:movement": {
+        "value": 0.25
+      },
+      "minecraft:navigation.walk": {
+        "avoid_damage_blocks": true,
+        "can_pass_doors": true,
+        "can_jump": true
+      },
+      "minecraft:movement.basic": {},
+      "minecraft:jump.static": {},
+      "minecraft:can_climb": {}
+    },
+    "events": {
+      "minecraft:entity_spawned": {
+        "set_property": {
+          "ldns:is_sitting": false
+        },
+        "add": {
+          "component_groups": [
+            "ldns:nono_wild"
+          ]
+        }
+      },
+      "ldns:on_tame_event": {
+        "set_property": {
+          "ldns:is_sitting": false
+        },
+        "add": {
+          "component_groups": [
+            "ldns:nono_tamed"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "ldns:nono_wild"
+          ]
+        },
+        "queue_command": {
+          "command": [
+            "tag @s add ldns:tamed"
+          ]
+        }
+      },
+      "ldns:on_sit_event": {
+        "set_property": {
+          "ldns:is_sitting": true
+        },
+        "add": {
+          "component_groups": [
+            "ldns:nono_sitting"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "ldns:nono_tamed"
+          ]
+        }
+      },
+      "ldns:on_stand_event": {
+        "set_property": {
+          "ldns:is_sitting": false
+        },
+        "add": {
+          "component_groups": [
+            "ldns:nono_tamed"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "ldns:nono_sitting"
+          ]
+        }
+      }
+    }
+  }
+}

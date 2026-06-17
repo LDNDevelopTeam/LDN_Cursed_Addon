@@ -104,6 +104,13 @@ item.spawn_egg.entity.ldns:pv.name=Spawn Personal Villager
 entity.ldns:error64.name=Error64
 item.spawn_egg.entity.ldns:error64.name=Spawn Error64
 
+entity.ldns:the_watcher.name=The Watcher
+item.spawn_egg.entity.ldns:the_watcher.name=Spawn The Watcher
+
+entity.ldns:nono.name=NONO
+item.spawn_egg.entity.ldns:nono.name=Spawn NONO
+
+
 ##Block
 tile.ldns:error_block.name=繧ｨ繝ｩ繝ｼ Block
 
@@ -162,5 +169,8 @@ message.ldns.disable_random_chat=Disabled random chats
 
 ##UI
 container.crafting=繧ｯ繝ｩ繝輔ヨ
+container.nono=NONO
+container.ldns:nono=NONO
+container.ldns.nono=NONO
 message.mysterious_players.join=§e%s joined the game
 message.mysterious_players.leave=§e%s left the game

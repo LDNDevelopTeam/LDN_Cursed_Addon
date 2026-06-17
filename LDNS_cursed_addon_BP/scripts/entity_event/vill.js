@@ -1,5 +1,5 @@
 import { Dimension, Entity, Player, system, World, world } from "@minecraft/server";
-import { random } from '../util';
+import { random, giveItem } from '../util';
 world.afterEvents.entityHurt.subscribe((e) => {
     const player = e.damageSource.damagingEntity;
     const vill = e.hurtEntity;
@@ -17,7 +17,7 @@ world.afterEvents.entityHurt.subscribe((e) => {
                     world.sendMessage("§eWell found. Come on...§r");
                     player.playSound("random.totem", { pitch: 0.5, volume: 1.5 });
                     player.playSound("mob.villager.yes", { pitch: 0.666, volume: 6.66 });
-                    player.runCommand("give @s ldns:pendant_of_goscubus");
+                    giveItem(player, "ldns:pendant_of_goscubus");
                     container.setItem(i, null);
                     vill.remove();
                     break;

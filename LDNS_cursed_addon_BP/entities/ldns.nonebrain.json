@@ -64,10 +64,9 @@
                 "triggers": [
                     {
                         "filters": {
-                            "test": "is_nearby_player",
-                            "subject": "self",
-                            "operator": "==",
-                            "value": true
+                            "test": "distance_to_nearest_player",
+                            "operator": "<=",
+                            "value": 16.0
                         },
                         "event": "ldns:nonebrain_despawn_event"
                     }

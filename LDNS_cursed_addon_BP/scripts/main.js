@@ -30,6 +30,7 @@ import './entity_event/ov7';
 import './entity_event/ov8';
 import './entity_event/possibly';
 import './entity_event/personal_villager'
+import './entity_event/companion'
 
 const timezoneOffset = 0;
 

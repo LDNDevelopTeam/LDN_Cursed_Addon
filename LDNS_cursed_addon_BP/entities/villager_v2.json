@@ -1,5 +1,5 @@
 {
-  "format_version": "1.19.0",
+  "format_version": "1.26.30",
   "minecraft:entity": {
     "description": {
       "identifier": "minecraft:villager_v2",
@@ -13,8 +13,8 @@
         "minecraft:behavior.celebrate_survive": {
           "priority": 5,
           "fireworks_interval": {
-            "range_min": 2.0,
-            "range_max": 7.0
+            "min": 2.0,
+            "max": 7.0
           },
           "duration": 30.0,
           "on_celebration_end_event": {
@@ -570,7 +570,6 @@
       "bed_schedule_villager": {
         "minecraft:behavior.sleep": {
           "priority": 3,
-          "goal_radius": 1.5,
           "speed_multiplier": 0.6,
           "sleep_collider_height": 0.3,
           "sleep_collider_width": 1.0,
@@ -1597,10 +1596,8 @@
       },
         "minecraft:physics": {
       },
-      "minecraft:pushable": {
-        "is_pushable": true,
-        "is_pushable_by_piston": true
-      }
+      "minecraft:pushable_by_block": {},
+      "minecraft:pushable_by_entity": {}
     },
     "events":{
       "become_witch": {

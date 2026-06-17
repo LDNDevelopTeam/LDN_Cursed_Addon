@@ -1,5 +1,5 @@
 {
-    "format_version": "1.16.0",
+    "format_version": "1.26.30",
     "minecraft:entity": {
         "description": {
             "identifier": "minecraft:zombie_pigman",
@@ -88,7 +88,10 @@
                             "max_dist": 35
                         }
                     ],
-                    "attack_interval": 10
+                    "attack_interval": {
+                        "min": 10.0,
+                        "max": 10.0
+                    }
                 }
             },
             "minecraft:pig_zombie_angry": {
@@ -421,10 +424,8 @@
                 "priority": 9
             },
             "minecraft:physics": {},
-            "minecraft:pushable": {
-                "is_pushable": true,
-                "is_pushable_by_piston": true
-            },
+            "minecraft:pushable_by_block": {},
+            "minecraft:pushable_by_entity": {},
             "minecraft:timer": {
                 "looping": false,
                 "time": 0.01,

@@ -1,17 +1,31 @@
 import { world } from '@minecraft/server';
-// ボストロフィーに使うイベント(コマンドを実行)
+// ボストロフィーに使うイベント
 world.afterEvents.entitySpawn.subscribe((entityEvent) => {
-    if (entityEvent.entity.typeId == "ldns:boss_trophy") {
-        entityEvent.entity.runCommand("tp @s ~ ~ ~ facing @p")
-        entityEvent.entity.runCommand("execute as @s[rym=-23,ry=22] at @s run tp @s ~ ~ ~ 0 ~")
-        entityEvent.entity.runCommand("execute as @s[rym=22,ry=67] at @s run tp @s ~ ~ ~ 45 ~")
-        entityEvent.entity.runCommand("execute as @s[rym=67,ry=112] at @s run tp @s ~ ~ ~ 90 ~")
-        entityEvent.entity.runCommand("execute as @s[rym=112,ry=157] at @s run tp @s ~ ~ ~ 135 ~")
-        entityEvent.entity.runCommand("execute as @s[rym=157,ry=-158] at @s run tp @s ~ ~ ~ 180 ~")
-        entityEvent.entity.runCommand("execute as @s[rym=-158,ry=-113] at @s run tp @s ~ ~ ~ -135 ~")
-        entityEvent.entity.runCommand("execute as @s[rym=-113,ry=-68] at @s run tp @s ~ ~ ~ -90 ~")
-        entityEvent.entity.runCommand("execute as @s[rym=-68,ry=-23] at @s run tp @s ~ ~ ~ -45 ~")
+    const entity = entityEvent.entity;
+    if (entity.typeId === "ldns:boss_trophy") {
+        const players = entity.dimension.getPlayers();
+        if (players.length > 0) {
+            let closestPlayer = players[0];
+            let minDist = Infinity;
+            for (const player of players) {
+                const dx = player.location.x - entity.location.x;
+                const dy = player.location.y - entity.location.y;
+                const dz = player.location.z - entity.location.z;
+                const dist = dx * dx + dy * dy + dz * dz;
+                if (dist < minDist) {
+                    minDist = dist;
+                    closestPlayer = player;
+                }
+            }
+            const dx = closestPlayer.location.x - entity.location.x;
+            const dz = closestPlayer.location.z - entity.location.z;
+            const yaw = Math.atan2(-dx, dz) * 180 / Math.PI;
+            let snappedYaw = Math.round(yaw / 45) * 45;
+            if (snappedYaw > 180) snappedYaw -= 360;
+            if (snappedYaw <= -180) snappedYaw += 360;
+            entity.teleport(entity.location, { rotation: { x: 0, y: snappedYaw } });
+        }
     }
 });
 
-// 繝医Ο繝輔ぅ繝ｼ
+// 繝医Ο繝輔ぅ繝ｼ

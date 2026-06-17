@@ -1,5 +1,5 @@
 import { Entity, Player, system, world } from "@minecraft/server";
-import { random } from '../util';
+import { random, giveItem } from '../util';
 import { getTopmostBlockLocation } from '../functions/max_y';
 import { event14 } from "../script_event/spawn";
 
@@ -34,7 +34,7 @@ world.afterEvents.entityHurt.subscribe(async (e) => {
             if (!item) continue;
             // ペンダントの場合
             if (item.typeId === 'ldns:pendant_of_heat_sand') {
-                e.damageSource.damagingEntity.runCommand("give @s minecraft:emerald 8");
+                giveItem(e.damageSource.damagingEntity, "minecraft:emerald", 8);
                 e.damageSource.damagingEntity.sendMessage("§0D§1o§2n§3'§4t §5r§6u§7n §8a§9w§aa§by§c.");
                 await system.waitTicks(20 * 3);
                 const lposX = e.damageSource.damagingEntity.getDynamicProperty("LposX");

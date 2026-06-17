@@ -1,0 +1,31 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.nono.hair_sway": {
+			"loop": true,
+			"bones": {
+				"headwear": {
+					"rotation": [
+						"math.cos(query.life_time * 150) * 1.0 + query.modified_move_speed * 15.0 + math.cos(query.modified_distance_moved * 76.34) * 5.0",
+						0,
+						"math.sin(query.life_time * 120) * 1.0 + math.sin(query.modified_distance_moved * 38.17) * 4.0"
+					]
+				}
+			}
+		},
+		"animation.nono.sit": {
+			"loop": true,
+			"bones": {
+				"root": {
+					"position": [0, "query.property('ldns:is_sitting') ? -20.0 : 0.0", 0]
+				},
+				"leftLeg": {
+					"rotation": ["query.property('ldns:is_sitting') ? -80.0 : 0.0", 0, 0]
+				},
+				"rightLeg": {
+					"rotation": ["query.property('ldns:is_sitting') ? -80.0 : 0.0", 0, 0]
+				}
+			}
+		}
+	}
+}

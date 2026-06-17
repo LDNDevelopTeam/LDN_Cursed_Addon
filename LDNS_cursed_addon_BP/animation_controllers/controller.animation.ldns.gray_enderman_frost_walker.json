@@ -1,0 +1,23 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.ldns.gray_enderman_frost_walker": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "on_entry": [
+            "/execute at @s run fill ~-2 ~-1 ~-2 ~2 ~-1 ~2 frosted_ice replace water"
+          ],
+          "transitions": [
+            { "loop": "query.is_alive" }
+          ]
+        },
+        "loop": {
+          "transitions": [
+            { "default": "query.is_alive" }
+          ]
+        }
+      }
+    }
+  }
+}

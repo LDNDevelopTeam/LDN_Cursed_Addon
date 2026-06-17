@@ -512,6 +512,136 @@
                     "volume": 1.0
                 }
             ]
+        },
+        "mob.ldns.watcher.ambient": {
+            "__use_legacy_max_distance": false,
+            "category": "hostile",
+            "max_distance": 16,
+            "min_distance": 2,
+            "sounds": [
+                {
+                    "name": "sounds/ldns/new_sounds/watcher_ambient",
+                    "volume": 1.0,
+                    "pitch": 1.0
+                }
+            ]
+        },
+        "mob.ldns.watcher.hurt": {
+            "__use_legacy_max_distance": false,
+            "category": "hostile",
+            "max_distance": 16,
+            "min_distance": 2,
+            "sounds": [
+                {
+                    "name": "sounds/ldns/new_sounds/watcher_hurt",
+                    "volume": 1.0,
+                    "pitch": 1.0
+                }
+            ]
+        },
+        "mob.ldns.watcher.death": {
+            "__use_legacy_max_distance": false,
+            "category": "hostile",
+            "max_distance": 16,
+            "min_distance": 2,
+            "sounds": [
+                {
+                    "name": "sounds/ldns/new_sounds/watcher_death",
+                    "volume": 1.0,
+                    "pitch": 1.0
+                }
+            ]
+        },
+        "mob.ldns.nono.ambient": {
+            "__use_legacy_max_distance": false,
+            "category": "neutral",
+            "max_distance": 12,
+            "min_distance": 1,
+            "sounds": [
+                {
+                    "name": "sounds/ldns/new_sounds/nono_ambient",
+                    "volume": 1.0,
+                    "pitch": 1.0
+                }
+            ]
+        },
+        "mob.ldns.nono.hurt": {
+            "__use_legacy_max_distance": false,
+            "category": "neutral",
+            "max_distance": 12,
+            "min_distance": 1,
+            "sounds": [
+                {
+                    "name": "sounds/ldns/new_sounds/nono_hurt",
+                    "volume": 1.0,
+                    "pitch": 1.0
+                }
+            ]
+        },
+        "mob.ldns.nono.death": {
+            "__use_legacy_max_distance": false,
+            "category": "neutral",
+            "max_distance": 12,
+            "min_distance": 1,
+            "sounds": [
+                {
+                    "name": "sounds/ldns/new_sounds/nono_death",
+                    "volume": 1.0,
+                    "pitch": 1.0
+                }
+            ]
+        },
+        "mob.ldns.nono.tame": {
+            "__use_legacy_max_distance": false,
+            "category": "neutral",
+            "max_distance": 12,
+            "min_distance": 1,
+            "sounds": [
+                {
+                    "name": "sounds/ldns/new_sounds/nono_tame",
+                    "volume": 1.0,
+                    "pitch": 1.0
+                }
+            ]
+        },
+        "mob.ldns.nono.spawn": {
+            "__use_legacy_max_distance": false,
+            "category": "neutral",
+            "max_distance": 12,
+            "min_distance": 1,
+            "sounds": [
+                {
+                    "name": "sounds/ldns/new_sounds/nono_spawn",
+                    "volume": 1.0,
+                    "pitch": 1.0
+                }
+            ]
+        },
+        "mob.ldns.watcher.gaze_alarm": {
+            "__use_legacy_max_distance": false,
+            "category": "hostile",
+            "max_distance": 16,
+            "min_distance": 2,
+            "sounds": [
+                {
+                    "name": "sounds/ldns/new_sounds/watcher_gaze_alarm",
+                    "volume": 1.0,
+                    "pitch": 1.0
+                }
+            ]
+        },
+        "mob.ldns.watcher.savior_warp": {
+            "__use_legacy_max_distance": false,
+            "category": "neutral",
+            "max_distance": 16,
+            "min_distance": 2,
+            "sounds": [
+                {
+                    "name": "sounds/ldns/new_sounds/watcher_savior_warp",
+                    "volume": 1.0,
+                    "pitch": 1.0
+                }
+            ]
         }
     }
 }

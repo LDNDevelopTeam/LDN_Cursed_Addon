@@ -1,5 +1,5 @@
 import { EquipmentSlot, Player, system, world } from '@minecraft/server';
-import { random } from '../util';
+import { random, hasItem } from '../util';
 import { MinecraftEffectTypes } from '../lib/mojang-effect';
 
 const errorTools = [
@@ -31,7 +31,7 @@ function error_tool_damage(targetPlayer) {
     // アイテム装備
     const equippable = targetPlayer.getComponent('minecraft:equippable');
     // ペンダントを持っているときのカウント
-    const items = targetPlayer.runCommand('testfor @s[hasitem={item=ldns:pendant_of_twilight}]').successCount;
+    const items = hasItem(targetPlayer, 'ldns:pendant_of_twilight');
     // errortoolscount=>Errorツール類のカウント, erroritemscount=>Errorインゴットのカウント(別の処理にするためにカウントを別にしている)
     let errortoolscount = 0;
     let erroritemscount = 0;

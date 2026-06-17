@@ -1,5 +1,5 @@
 import { Entity, ItemStack, Player, system, world } from "@minecraft/server";
-import { random } from "../util";
+import { random, giveItem } from "../util";
 
 const timezoneOffset = 0;
 
@@ -29,8 +29,8 @@ world.afterEvents.entityDie.subscribe((edae) => {
             // ペンダントの場合
             if (item.typeId === 'ldns:pendant_of_heat_sand') {
                 if (random(0, 8) === 0) {
-                    if (isEven(d.getHours())) { damageSource.damagingEntity.runCommand("give @s ldns:ld5987"); }
-                    else if (isOdd(d.getHours())) { damageSource.damagingEntity.runCommand("give @s ldns:dn3895"); }
+                    if (isEven(d.getHours())) { giveItem(damageSource.damagingEntity, "ldns:ld5987"); }
+                    else if (isOdd(d.getHours())) { giveItem(damageSource.damagingEntity, "ldns:dn3895"); }
                     container.setItem(i, null);
                     break;
                 }

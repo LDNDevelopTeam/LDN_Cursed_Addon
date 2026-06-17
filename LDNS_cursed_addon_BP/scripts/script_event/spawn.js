@@ -1,5 +1,5 @@
 import { EquipmentSlot, Player, system, world } from "@minecraft/server";
-import { random } from "../util";
+import { random, giveItem, hasItem } from "../util";
 import { freeze } from "../functions/kanasibari";
 import { MinecraftEffectTypes } from "../lib/mojang-effect";
 import { MessageFormData, ModalFormData } from "@minecraft/server-ui";
@@ -476,7 +476,7 @@ function isOdd(number) {
 function event0(d, v, playerlocation) {
     // UTCが偶数の時にPPが出る
     if (isEven(d.getHours())) {
-        v.dimension.runCommand("tellraw @a {\"rawtext\":[{\"text\":\"If the hand §oholding§r the leg §3trembles§r, cut §lthe leg off.§r§§\"}]}");
+        world.sendMessage("If the hand §oholding§r the leg §3trembles§r, cut §lthe leg off.§r§§");
         v.playSound("ldns.pp_spawn");
         v.onScreenDisplay.setTitle("ppse");
         freeze(v, playerlocation, 100);
@@ -485,7 +485,7 @@ function event0(d, v, playerlocation) {
     }
     // UTCが奇数の時にYYが出る
     else if (isOdd(d.getHours())) {
-        v.dimension.runCommand("tellraw @a {\"rawtext\":[{\"text\":\"I'm on your §lside§r, so I'll keep§l§o watching§r until that §6blood dries§r.\"}]}");
+        world.sendMessage("I'm on your §lside§r, so I'll keep§l§o watching§r until that §6blood dries§r.");
         v.playSound("ldns.yy_spawn");
         v.onScreenDisplay.setTitle("yyse");
         freeze(v, playerlocation, 100);
@@ -524,8 +524,8 @@ function event1(v) {
  * @param {Player} v 
  */
 function event2(d, v) {
-    if (isEven(d.getHours())) { v.runCommand("give @s ldns:dn3895"); }
-    else if (isOdd(d.getHours())) { v.runCommand("give @s ldns:ld5987"); }
+    if (isEven(d.getHours())) { giveItem(v, "ldns:dn3895"); }
+    else if (isOdd(d.getHours())) { giveItem(v, "ldns:ld5987"); }
 }
 
 /**
@@ -613,17 +613,17 @@ async function event4(d, v, playerlength, playerall) {
                         await system.waitTicks(20 * 3);
                         switch (items) {
                             case 0:
-                                psplayer.runCommand("give @s ldns:error_ingot");
+                                giveItem(psplayer, "ldns:error_ingot");
                                 break;
                             case 1:
-                                psplayer.runCommand("give @s ldns:heavy_stone");
+                                giveItem(psplayer, "ldns:heavy_stone");
                                 break;
                         }
                         break;
                     case 2:
                         world.sendMessage("<" + v.name + "> " + psplayer.name + ", What do you think?");
                         await system.waitTicks(20 * 3);
-                        psplayer.runCommand("give @s ldns:cursed_soul");
+                        giveItem(psplayer, "ldns:cursed_soul");
                         break;
                     case 3:
                         world.sendMessage("<" + v.name + "> " + "Have you become 縺ゅｌ?");
@@ -633,10 +633,10 @@ async function event4(d, v, playerlength, playerall) {
                         await system.waitTicks(20 * 3);
                         switch (items) {
                             case 0:
-                                psplayer.runCommand("give @s ldns:ld5987");
+                                giveItem(psplayer, "ldns:ld5987");
                                 break;
                             case 1:
-                                psplayer.runCommand("give @s ldns:dn3895");
+                                giveItem(psplayer, "ldns:dn3895");
                                 break;
                         }
                         break;
@@ -676,8 +676,10 @@ function event6(v) {
  */
 function event7(v) {
     v.teleport(v.location, { rotation: { x: random(-90, 90), y: random(0, 180) } });
-    v.runCommand("tellraw @s[tag=debug_log] {\"rawtext\":[{\"text\":\"【ADD-ON】Debug - States (controller.animation.ldns.random_rotation) : ldns.rotation\"}]}");
-    v.runCommand("tellraw @s[tag=debug_log] {\"rawtext\":[{\"text\":\"【ADD-ON】Debug - States (controller.animation.ldns.random_rotation) : default \"}]}");
+    if (v.hasTag("debug_log")) {
+        v.sendMessage("【ADD-ON】Debug - States (controller.animation.ldns.random_rotation) : ldns.rotation");
+        v.sendMessage("【ADD-ON】Debug - States (controller.animation.ldns.random_rotation) : default ");
+    }
 }
 
 /**
@@ -686,8 +688,10 @@ function event7(v) {
  */
 function event8(v) {
     v.playSound("player.ldns.random_step_1", { location: v.location, volume: 0.5 });
-    v.runCommand("tellraw @s[tag=debug_log] {\"rawtext\":[{\"text\":\"【ADD-ON】Debug - States (controller.animation.ldns.random_step_1) : ldns.step_1\"}]}");
-    v.runCommand("tellraw @s[tag=debug_log] {\"rawtext\":[{\"text\":\"【ADD-ON】Debug - States (controller.animation.ldns.random_step_1) : default \"}]}");
+    if (v.hasTag("debug_log")) {
+        v.sendMessage("【ADD-ON】Debug - States (controller.animation.ldns.random_step_1) : ldns.step_1");
+        v.sendMessage("【ADD-ON】Debug - States (controller.animation.ldns.random_step_1) : default ");
+    }
 }
 
 /**

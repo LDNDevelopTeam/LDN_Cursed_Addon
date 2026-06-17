@@ -1,5 +1,5 @@
 import { Entity, Player, system, world } from "@minecraft/server";
-import { random } from "../util";
+import { random, hasItem } from "../util";
 import { MinecraftEffectTypes } from "../lib/mojang-effect";
 
 // Nullbrainが死んだときのイベント
@@ -23,7 +23,7 @@ async function nullbraindievent(damagingEntity, deadEntity) {
     // 1/66の確立
     const rand = random(0, 66);
     // ペンダントを持っているときは無効
-    const items = damagingEntity.runCommand('testfor @s[hasitem={item=ldns:pendant_of_twilight}]').successCount;
+    const items = hasItem(damagingEntity, 'ldns:pendant_of_twilight');
     if (items <= 0) {
         try {
             // 値を事前に設定
@@ -59,7 +59,7 @@ async function nullbrainhurtevent(damage, damagingEntity, hurtEntity) {
     const rand = random(0, 66);
     const rand2 = random(0, 1333);
     // ペンダントを持っているときは無効
-    const items = damagingEntity.runCommand('testfor @s[hasitem={item=ldns:pendant_of_twilight}]').successCount;
+    const items = hasItem(damagingEntity, 'ldns:pendant_of_twilight');
     if (items <= 0) {
         // 与えたダメージが4以下のとき
         if (damage <= 4) {

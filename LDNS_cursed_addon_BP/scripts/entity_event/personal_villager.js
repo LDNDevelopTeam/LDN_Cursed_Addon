@@ -1,5 +1,5 @@
 import { EntityComponentTypes, ItemStack, Player, system, world } from '@minecraft/server';
-import { random } from '../util';
+import { random, giveItem } from '../util';
 import { MessageFormData } from '@minecraft/server-ui';
 
 world.afterEvents.entitySpawn.subscribe((event) => {
@@ -144,7 +144,7 @@ world.afterEvents.entityHitEntity.subscribe(async (event) => {
                 break;
             case 3:
                 if (random(0, 8) == 0) {
-                    event.hitEntity.runCommand("give @s emerald");
+                    giveItem(event.hitEntity, "minecraft:emerald");
                 }
                 break;
         }

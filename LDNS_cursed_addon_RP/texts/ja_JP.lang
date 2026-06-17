@@ -113,6 +113,13 @@ item.spawn_egg.entity.ldns:pv.name=Personal Villager のスポーンエッグ
 entity.ldns:error64.name=Error64
 item.spawn_egg.entity.ldns:error64.name=Error64 のスポーンエッグ
 
+entity.ldns:the_watcher.name=ザ・ウォッチャー
+item.spawn_egg.entity.ldns:the_watcher.name=ザ・ウォッチャーのスポーンエッグ
+
+entity.ldns:nono.name=NONO
+item.spawn_egg.entity.ldns:nono.name=NONOのスポーンエッグ
+
+
 ##ブロック
 tile.ldns:error_block.name=繧ｨ繝ｩ繝ｼ ブロック
 
@@ -169,5 +176,8 @@ message.ldns.disable_random_chat=ランダムチャットを無効化しまし�
 
 ##UI
 container.crafting=繧ｯ繝ｩ繝輔ヨ
+container.nono=NONO
+container.ldns:nono=NONO
+container.ldns.nono=NONO
 message.mysterious_players.join=§e%s がゲームに参加しました
 message.mysterious_players.leave=§e%s がゲームを退出しました

@@ -1,5 +1,5 @@
 import { Entity, Player, system, world } from "@minecraft/server";
-import { random } from '../util';
+import { random, hasItem } from '../util';
 import { freeze } from '../functions/kanasibari';
 import { random_move } from '../functions/random_move';
 
@@ -140,7 +140,7 @@ async function errordamage(targetPlayer) {
 function errorhurt(damageSource) {
     if (!(damageSource instanceof Player)) return;
     // ペンダントを持っているときのカウント
-    const items = damageSource.runCommand('testfor @s[hasitem={item=ldns:pendant_of_twilight}]').successCount;
+    const items = hasItem(damageSource, 'ldns:pendant_of_twilight');
     const rand = random(0, 100);
     const playerlocation = damageSource.location;
     // Error画面

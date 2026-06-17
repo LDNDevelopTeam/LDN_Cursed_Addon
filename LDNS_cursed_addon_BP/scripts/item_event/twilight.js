@@ -1,6 +1,7 @@
 import { Entity, EquipmentSlot, Player, world } from '@minecraft/server';
 import { MinecraftEffectTypes } from '../lib/mojang-effect';
 import { targetEntities } from '../lib/ldns_entity';
+import { hasItem } from '../util';
 
 // エンティティに攻撃したとき
 world.afterEvents.entityHitEntity.subscribe(ev => {
@@ -17,7 +18,7 @@ world.afterEvents.entityHitEntity.subscribe(ev => {
 function applyItemEffect(hitEntity, damagingEntity) {
     if (!(damagingEntity instanceof Player)) return;
     // ペンダントを持っているときのカウント
-    const items = damagingEntity.runCommand('testfor @s[hasitem={item=ldns:pendant_of_twilight}]').successCount;
+    const items = hasItem(damagingEntity, 'ldns:pendant_of_twilight');
     if (!((items >= 1) && hitEntity.typeId in targetEntities)) return;
     // mob判定？
     const conditions = targetEntities[hitEntity.typeId];

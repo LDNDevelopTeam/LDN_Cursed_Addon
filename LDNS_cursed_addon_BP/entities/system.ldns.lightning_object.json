@@ -12,27 +12,29 @@
                 "minecraft:instant_despawn": {}
             },
             "test": {
-                "minecraft:entity_sensor": {
-                    "sensor_range": 4,
-                    "relative_range": false,
-                    "require_all": false,
-                    "minimum_count": 1,
-                    "event_filters": {
-                        "all_of": [
-                            {
-                                "test": "is_family",
-                                "subject": "other",
-                                "value": "player"
-                            },
-                            {
-                                "test": "has_tag",
-                                "subject": "other",
-                                "value": "ldns_lightning"                                
-                            }
-                        ]
-                    },
-                    "event": "lightning"
-                }
+                "minecraft:entity_sensor": [
+                    {
+                        "sensor_range": 4,
+                        "relative_range": false,
+                        "require_all": false,
+                        "minimum_count": 1,
+                        "event_filters": {
+                            "all_of": [
+                                {
+                                    "test": "is_family",
+                                    "subject": "other",
+                                    "value": "player"
+                                },
+                                {
+                                    "test": "has_tag",
+                                    "subject": "other",
+                                    "value": "ldns_lightning"                                
+                                }
+                            ]
+                        },
+                        "event": "lightning"
+                    }
+                ]
             },
             "lightning": {
                 "minecraft:spawn_entity": {

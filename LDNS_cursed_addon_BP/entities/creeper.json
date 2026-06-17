@@ -1,5 +1,5 @@
 {
-  "format_version": "1.16.0",
+  "format_version": "1.26.30",
   "minecraft:entity": {
     "description": {
       "identifier": "minecraft:creeper",
@@ -116,7 +116,7 @@
             },
             "event": "minecraft:become_charged"
           },
-          "deals_damage": false
+          "deals_damage": "no"
         }
       },
       "minecraft:target_nearby_sensor": {
@@ -233,16 +233,17 @@
             "max_dist": 16
           }
         ],
-        "attack_interval": 10
+        "attack_interval": {
+          "min": 10.0,
+          "max": 10.0
+        }
       },
       "minecraft:behavior.hurt_by_target": {
         "priority": 2
       },
       "minecraft:physics": {},
-      "minecraft:pushable": {
-        "is_pushable": true,
-        "is_pushable_by_piston": true
-      },
+      "minecraft:pushable_by_block": {},
+      "minecraft:pushable_by_entity": {},
       "minecraft:on_target_escape": {
         "event": "minecraft:stop_exploding",
         "target": "self"
