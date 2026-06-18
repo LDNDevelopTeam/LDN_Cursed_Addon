@@ -144,6 +144,10 @@
       },
       "piglin_baby": {
         "minecraft:is_baby": {},
+        "minecraft:collision_box": {
+          "width": 0.3,
+          "height": 0.95
+        },
         "minecraft:scale": {
           "value": 0.5
         },

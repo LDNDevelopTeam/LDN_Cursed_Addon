@@ -10,10 +10,12 @@
       },
       "textures": {
         "default": "textures/entity/zombie/zombie",
+        "baby": "textures/entity/zombie/zombie_baby",
         "charged": "textures/entity/zombie/zombie"
       },
       "geometry": {
         "default": "geometry.zombie.v1.8",
+        "baby": "geometry.zombie.baby",
         "custom_1": "geometry.ldns.zombie.custom_1",
         "charged": "geometry.ldns.zombie.custom_2"
       },
@@ -61,6 +63,7 @@
         "bow_and_arrow": "animation.humanoid.bow_and_arrow",
         "use_item_progress": "animation.humanoid.use_item_progress",
         "zombie_attack_bare_hand": "animation.zombie.attack_bare_hand",
+        "baby_zombie_attack_bare_hand": "animation.zombie.attack_bare_hand",
         "swimming": "animation.zombie.swimming",
 
         "humanoid_baby_big_head_controller": "controller.animation.humanoid.baby_big_head",

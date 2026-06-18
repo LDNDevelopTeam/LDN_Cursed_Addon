@@ -9,10 +9,12 @@
       },
       "textures": {
         "default": "textures/entity/piglin/zombie_piglin",
+        "baby": "textures/entity/piglin/zombie_piglin_baby",
         "custom_1": "textures/entity/ldns/noface_zombie_piglin"
       },
       "geometry": {
-        "default": "geometry.piglin"
+        "default": "geometry.piglin",
+        "baby": "geometry.piglin.baby"
       },
       "spawn_egg": {
         "texture": "spawn_egg",
@@ -62,6 +64,7 @@
         "swimming": "animation.humanoid.swimming",
         "use_item_progress": "animation.humanoid.use_item_progress",
         "zombie_attack_bare_hand": "animation.zombie.attack_bare_hand",
+        "baby_zombie_attack_bare_hand": "animation.zombie.attack_bare_hand",
         "humanoid_baby_big_head_controller": "controller.animation.humanoid.baby_big_head",
         "humanoid_base_pose_controller": "controller.animation.humanoid.base_pose",
         "look_at_target_controller": "controller.animation.humanoid.look_at_target",

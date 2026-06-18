@@ -8,10 +8,12 @@
         "default": "zombie"
       },
       "textures": {
-        "default": "textures/entity/ldns/skele_zombie"
+        "default": "textures/entity/ldns/skele_zombie",
+        "baby": "textures/entity/ldns/skele_zombie"
       },
       "geometry": {
-        "default": "geometry.zombie.v1.8"
+        "default": "geometry.zombie.v1.8",
+        "baby": "geometry.zombie.baby"
       },
       "spawn_egg": {
         "texture": "spawn_egg",
@@ -41,6 +43,7 @@
         "bow_and_arrow": "animation.humanoid.bow_and_arrow",
         "use_item_progress": "animation.humanoid.use_item_progress",
         "zombie_attack_bare_hand": "animation.zombie.attack_bare_hand",
+        "baby_zombie_attack_bare_hand": "animation.zombie.attack_bare_hand",
         "swimming": "animation.zombie.swimming"
       },
       "animation_controllers": [

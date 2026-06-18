@@ -11,14 +11,14 @@
                     ]
                 }
             },
-            "geometry": "Array.geo[query.variant]",
+            "geometry": "query.is_baby ? Geometry.baby : Array.geo[query.variant]",
             "materials": [
                 {
                     "*": "Material.default"
                 }
             ],
             "textures": [
-                "Texture.default"
+                "query.is_baby ? Texture.baby : Texture.default"
             ]
         }
     }
