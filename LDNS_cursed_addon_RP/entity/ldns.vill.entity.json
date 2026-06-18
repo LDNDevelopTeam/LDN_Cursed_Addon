@@ -18,7 +18,8 @@
       "animations": {
         "general": "animation.villager.general",
         "look_at_target": "animation.common.look_at_target",
-        "move": "animation.villager.move"
+        "move": "animation.villager.move",
+        "baby_transform": "animation.villager.baby_transform"
       },
       "animation_controllers": [
         {
@@ -26,6 +27,9 @@
         },
         {
           "move": "controller.animation.villager.move"
+        },
+        {
+          "baby": "controller.animation.villager.baby"
         }
       ],
       "render_controllers": [

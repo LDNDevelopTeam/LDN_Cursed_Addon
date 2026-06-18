@@ -23,9 +23,9 @@
         "animate": [
           "general",
           { "move": "query.modified_move_speed" },
-          "look_at_target",
-          { "baby_transform": "query.is_baby" }
-        ]
+          "look_at_target"
+        ],
+        "scale": "query.is_baby ? 1.0 : 1.0"
       },
       "render_controllers": [ "controller.render.chicken" ],
       "spawn_egg": {

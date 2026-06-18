@@ -17,7 +17,7 @@
                 }
             ],
             "textures": [
-                "query.is_baby ? Texture.baby : Array.skins[query.variant]"
+                "query.is_baby ? (query.variant == 0 ? Texture.baby : Array.skins[query.variant]) : Array.skins[query.variant]"
             ]
         }
     }

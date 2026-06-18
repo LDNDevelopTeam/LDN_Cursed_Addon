@@ -8,10 +8,12 @@
         "default": "zombie"
       },
       "textures": {
-        "default": "textures/entity/zombie/zombie"
+        "default": "textures/entity/zombie/zombie",
+        "baby": "textures/entity/zombie/zombie_baby"
       },
       "geometry": {
-        "default": "geometry.zombie.v1.8"
+        "default": "geometry.zombie.v1.8",
+        "baby": "geometry.zombie.baby"
       },
       "spawn_egg": {
         "texture": "spawn_egg",
@@ -20,7 +22,8 @@
       "scripts": {
         "pre_animation": [
           "variable.tcos0 = (Math.cos(query.modified_distance_moved * 38.17) * query.modified_move_speed / variable.gliding_speed_value) * 57.3;"
-        ]
+        ],
+        "scale": "query.is_baby ? 2.0 : 1.0"
       },
       "animations": {
         "humanoid_big_head": "animation.humanoid.big_head",

@@ -30,6 +30,9 @@
       "spawn_egg": {
         "texture": "spawn_egg",
         "texture_index": 24
+      },
+      "scripts": {
+        "scale": "query.is_baby ? 1.0 : 1.0"
       }
     }
   }

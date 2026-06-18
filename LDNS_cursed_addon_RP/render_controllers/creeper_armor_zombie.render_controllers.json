@@ -2,25 +2,25 @@
   "format_version": "1.8.0",
   "render_controllers": {
     "controller.render.creeper_armor_zombie": {
-      "geometry": "query.variant == 2 ? Geometry.charged : Geometry.default",
+      "geometry": "query.is_baby ? Geometry.baby_custom_2 : Geometry.charged",
       "materials": [
         {
-          "*": "query.variant == 2 ? Material.charged : Material.default"
+          "*": "Material.charged"
         }
       ],
       "textures": [
-        "query.variant == 2 ? Texture.charged : Texture.default"
+        "query.is_baby ? Texture.baby : Texture.charged"
       ],
       "overlay_color": {
         "r": 1.0,
         "g": 1.0,
         "b": 1.0,
-        "a": "query.variant == 2 ? 1.0 : 0.0"
+        "a": 1.0
       },
       "uv_anim": {
         "offset": [
-          "(query.variant == 2 ) ? (query.is_powered) ? (Math.floor(query.life_time * 20.0) + query.frame_alpha) * 0.01 : 0.0 : 0.0",
-          "(query.variant == 2 ) ? (query.is_powered) ? (Math.floor(query.life_time * 20.0) + query.frame_alpha) * 0.01 : 0.0 : 0.0"
+          "(query.is_powered) ? (Math.floor(query.life_time * 20.0) + query.frame_alpha) * 0.01 : 0.0",
+          "(query.is_powered) ? (Math.floor(query.life_time * 20.0) + query.frame_alpha) * 0.01 : 0.0"
         ],
         "scale": [
           1.0,

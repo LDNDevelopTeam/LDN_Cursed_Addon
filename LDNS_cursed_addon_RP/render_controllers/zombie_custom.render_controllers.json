@@ -8,10 +8,15 @@
                         "Geometry.default",
                         "Geometry.custom_1",
                         "Geometry.charged"
+                    ],
+                    "Array.baby_geo": [
+                        "Geometry.baby",
+                        "Geometry.baby_custom_1",
+                        "Geometry.baby_custom_2"
                     ]
                 }
             },
-            "geometry": "query.is_baby ? Geometry.baby : Array.geo[query.variant]",
+            "geometry": "query.is_baby ? Array.baby_geo[query.variant] : Array.geo[query.variant]",
             "materials": [
                 {
                     "*": "Material.default"

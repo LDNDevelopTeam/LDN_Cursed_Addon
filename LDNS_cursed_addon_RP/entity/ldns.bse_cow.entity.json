@@ -8,7 +8,7 @@
         "default": "textures/entity/ldns/bse_cow"
       },
       "geometry": {
-        "default": "geometry.cow"
+        "default": "geometry.ldns.bse_cow"
       },
       "animations": {
         "setup": "animation.cow.setup.v1.0",
@@ -20,9 +20,9 @@
         "animate": [
           "setup",
           { "walk": "query.modified_move_speed" },
-          "look_at_target",
-          { "baby_transform": "query.is_baby" }
-        ]
+          "look_at_target"
+        ],
+        "scale": "query.is_baby ? 1.0 : 1.0"
       },
       "render_controllers": [ "controller.render.cow" ],
       "spawn_egg": {
