@@ -1,6 +1,6 @@
 import { world, system, Player, Entity, ItemStack, EquipmentSlot, GameMode } from "@minecraft/server";
 import { MessageFormData } from "@minecraft/server-ui";
-import { random, randomValue, hasItem, giveItem } from "../util";
+import { random, randomValue, hasItem, giveItem, removeItem } from "../util";
 import { MinecraftEffectTypes } from "../lib/mojang-effect";
 
 // Helper to get owner name of a tamed companion
@@ -435,15 +435,6 @@ world.beforeEvents.playerInteractWithEntity.subscribe((event) => {
 
     if (target.typeId === "ldns:nono") {
         if (!target.hasTag("ldns:tamed")) {
-            // Check hand item
-            const equippable = player.getComponent("minecraft:equippable");
-            const handItem = equippable ? equippable.getEquipment(EquipmentSlot.Mainhand) : null;
-
-            if (handItem && handItem.typeId === "ldns:error_ingot") {
-                // Let the native tame_items handle it!
-                return;
-            }
-
             // Otherwise show interaction dialog and cancel the default interaction
             event.cancel = true;
 
@@ -489,8 +480,20 @@ function showNonoDialog(player, nono) {
 
         if (response.selection === 0) {
             // Friend request
+            const isCreative = player.getGameMode() === GameMode.Creative;
+            const hasIngot = hasItem(player, "ldns:error_ingot") > 0;
+
+            if (!hasIngot && !isCreative) {
+                player.sendMessage("§4[NONO] §7Not enough... feed me more of your errors.");
+                player.playSound("mob.villager.no", { location: player.location });
+                return;
+            }
+
             if (Math.random() < 0.3) {
                 // Tame!
+                if (!isCreative) {
+                    removeItem(player, "ldns:error_ingot", 1);
+                }
                 nono.triggerEvent("ldns:on_tame_event");
                 nono.addTag("ldns:tamed");
                 nono.addTag("owner:" + player.name);
@@ -499,8 +502,7 @@ function showNonoDialog(player, nono) {
             } else {
                 player.sendMessage("§4[NONO] §7Not enough... feed me more of your errors.");
                 player.playSound("mob.villager.no", { location: player.location });
-                // Give error ingot
-                giveItem(player, "ldns:error_ingot");
+                // Note: The ingot is not consumed on failure, which behaves as if it was returned as an apology.
             }
         } else if (response.selection === 1) {
             // Play game
@@ -664,3 +666,58 @@ world.afterEvents.entitySpawn.subscribe((event) => {
         }
     }
 });
+
+// Tick loop for wild NONO and The Watcher cleanup (every 20 ticks = 1 second)
+system.runInterval(() => {
+    for (const dimensionId of ["minecraft:overworld", "minecraft:nether", "minecraft:the_end"]) {
+        try {
+            const dimension = world.getDimension(dimensionId);
+            const wildNonos = dimension.getEntities({ type: "ldns:nono" }).filter(e => !e.hasTag("ldns:tamed"));
+            const wildWatchers = dimension.getEntities({ type: "ldns:the_watcher" }).filter(e => !e.hasTag("ldns:tamed"));
+
+            const wildEntities = [...wildNonos, ...wildWatchers];
+            for (const entity of wildEntities) {
+                if (!entity.isValid) continue;
+
+                // Check if players are nearby (within 16 blocks)
+                let playersNearby = false;
+                try {
+                    const players = entity.dimension.getPlayers({ location: entity.location, maxDistance: 16 });
+                    if (players.length > 0) {
+                        playersNearby = true;
+                    }
+                } catch (e) { }
+
+                if (playersNearby) {
+                    // Reset age tag if players are close to avoid despawning in front of them
+                    const currentAgeTag = entity.getTags().find(tag => tag.startsWith("ldns:age_"));
+                    if (currentAgeTag) {
+                        entity.removeTag(currentAgeTag);
+                    }
+                    entity.addTag("ldns:age_0");
+                    continue;
+                }
+
+                // Increment age
+                const currentAgeTag = entity.getTags().find(tag => tag.startsWith("ldns:age_"));
+                let age = 0;
+                if (currentAgeTag) {
+                    age = parseInt(currentAgeTag.substring(9), 10);
+                    entity.removeTag(currentAgeTag);
+                }
+                age += 1;
+
+                if (age >= 300) { // 300 seconds = 5 minutes
+                    // Spawn smoke particles before removing
+                    try {
+                        entity.dimension.spawnParticle("minecraft:basic_smoke_particle", entity.location);
+                    } catch (e) { }
+                    entity.remove();
+                } else {
+                    entity.addTag("ldns:age_" + age);
+                }
+            }
+        } catch (e) { }
+    }
+}, 20);
+
