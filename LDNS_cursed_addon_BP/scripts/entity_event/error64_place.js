@@ -100,8 +100,16 @@ async function place_event(entity, player) {
     const lposY = player.getDynamicProperty("LposY");
     const lposZ = player.getDynamicProperty("LposZ");
 
-    let kickcommand = player.runCommand("kick " + player.name + " §cI won't let you escape");
-    if (kickcommand.successCount == 0) {
+    let kickSuccess = false;
+    try {
+        const overworld = world.getDimension("minecraft:overworld");
+        const result = overworld.runCommand(`kick "${player.name}" §cI won't let you escape`);
+        if (result.successCount > 0) {
+            kickSuccess = true;
+        }
+    } catch (e) {}
+
+    if (!kickSuccess) {
         // Host handling
         player.onScreenDisplay.setTitle("Error1");
 

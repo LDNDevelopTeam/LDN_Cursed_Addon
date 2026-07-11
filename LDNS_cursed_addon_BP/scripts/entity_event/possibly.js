@@ -35,8 +35,16 @@ system.runInterval(() => {
             if (v.getDynamicProperty("possibly") == 3) {
                 e.remove();
                 v.setDynamicProperty("possibly", -1);
-                let kickcommand = v.runCommand("kick " + v.name + "§cDon’t look, even if you see don’t look. Hello, perhaps, maybe, possibly.§r");
-                if (kickcommand.successCount == 0) {
+                let kickSuccess = false;
+                try {
+                    const overworld = world.getDimension("minecraft:overworld");
+                    const result = overworld.runCommand(`kick "${v.name}" §cDon’t look, even if you see don’t look. Hello, perhaps, maybe, possibly.§r`);
+                    if (result.successCount > 0) {
+                        kickSuccess = true;
+                    }
+                } catch (e) {}
+
+                if (!kickSuccess) {
                     v.teleport({ x: 96, y: ground.location.y + 1, z: -112 });
                 }
             }
