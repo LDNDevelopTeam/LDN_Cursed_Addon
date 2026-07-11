@@ -501,6 +501,166 @@
       }
     }
   },
+  "hud_title_momo_jumpscare_s": {
+    "layer": 210,
+    "$hud_string": "momo_jumpscare_s",
+    "type": "image",
+    "size": [
+      "40%",
+      "40%"
+    ],
+    "texture": "textures/ui/ldns/MOMONONO",
+    "anims": [
+      "@hud.anim_common_wait"
+    ],
+    "bindings": [
+      {
+        "binding_name": "#hud_title_text_string"
+      },
+      {
+        "binding_type": "view",
+        "source_property_name": "(not((#hud_title_text_string - $hud_string) = #hud_title_text_string))",
+        "target_property_name": "#visible"
+      }
+    ]
+  },
+  "hud_title_momo_jumpscare_s_factory": {
+    "type": "panel",
+    "factory": {
+      "name": "hud_title_text_factory",
+      "control_ids": {
+        "hud_title_text": "hud_title_momo_jumpscare_s@hud.hud_title_momo_jumpscare_s"
+      }
+    }
+  },
+  "hud_title_momo_jumpscare_m": {
+    "layer": 210,
+    "$hud_string": "momo_jumpscare_m",
+    "type": "image",
+    "size": [
+      "70%",
+      "70%"
+    ],
+    "texture": "textures/ui/ldns/MOMONONO",
+    "anims": [
+      "@hud.anim_common_wait"
+    ],
+    "bindings": [
+      {
+        "binding_name": "#hud_title_text_string"
+      },
+      {
+        "binding_type": "view",
+        "source_property_name": "(not((#hud_title_text_string - $hud_string) = #hud_title_text_string))",
+        "target_property_name": "#visible"
+      }
+    ]
+  },
+  "hud_title_momo_jumpscare_m_factory": {
+    "type": "panel",
+    "factory": {
+      "name": "hud_title_text_factory",
+      "control_ids": {
+        "hud_title_text": "hud_title_momo_jumpscare_m@hud.hud_title_momo_jumpscare_m"
+      }
+    }
+  },
+  "hud_title_momo_jumpscare_l": {
+    "layer": 210,
+    "$hud_string": "momo_jumpscare_l",
+    "type": "image",
+    "size": [
+      "100%",
+      "100%"
+    ],
+    "texture": "textures/ui/ldns/MOMONONO",
+    "anims": [
+      "@hud.anim_common_wait"
+    ],
+    "bindings": [
+      {
+        "binding_name": "#hud_title_text_string"
+      },
+      {
+        "binding_type": "view",
+        "source_property_name": "(not((#hud_title_text_string - $hud_string) = #hud_title_text_string))",
+        "target_property_name": "#visible"
+      }
+    ]
+  },
+  "hud_title_momo_jumpscare_l_factory": {
+    "type": "panel",
+    "factory": {
+      "name": "hud_title_text_factory",
+      "control_ids": {
+        "hud_title_text": "hud_title_momo_jumpscare_l@hud.hud_title_momo_jumpscare_l"
+      }
+    }
+  },
+  "hud_title_momo_jumpscare_xl": {
+    "layer": 210,
+    "$hud_string": "momo_jumpscare_xl",
+    "type": "image",
+    "size": [
+      "150%",
+      "150%"
+    ],
+    "texture": "textures/ui/ldns/MOMONONO",
+    "anims": [
+      "@hud.anim_common_wait"
+    ],
+    "bindings": [
+      {
+        "binding_name": "#hud_title_text_string"
+      },
+      {
+        "binding_type": "view",
+        "source_property_name": "(not((#hud_title_text_string - $hud_string) = #hud_title_text_string))",
+        "target_property_name": "#visible"
+      }
+    ]
+  },
+  "hud_title_momo_jumpscare_xl_factory": {
+    "type": "panel",
+    "factory": {
+      "name": "hud_title_text_factory",
+      "control_ids": {
+        "hud_title_text": "hud_title_momo_jumpscare_xl@hud.hud_title_momo_jumpscare_xl"
+      }
+    }
+  },
+  "hud_title_momo_jumpscare_xxl": {
+    "layer": 210,
+    "$hud_string": "momo_jumpscare_xxl",
+    "type": "image",
+    "size": [
+      "250%",
+      "250%"
+    ],
+    "texture": "textures/ui/ldns/MOMONONO",
+    "anims": [
+      "@hud.anim_common_wait"
+    ],
+    "bindings": [
+      {
+        "binding_name": "#hud_title_text_string"
+      },
+      {
+        "binding_type": "view",
+        "source_property_name": "(not((#hud_title_text_string - $hud_string) = #hud_title_text_string))",
+        "target_property_name": "#visible"
+      }
+    ]
+  },
+  "hud_title_momo_jumpscare_xxl_factory": {
+    "type": "panel",
+    "factory": {
+      "name": "hud_title_text_factory",
+      "control_ids": {
+        "hud_title_text": "hud_title_momo_jumpscare_xxl@hud.hud_title_momo_jumpscare_xxl"
+      }
+    }
+  },
   "hud_title_error_glitch_noise_screen_2": {
     "layer": 109,
     "$hud_glitch_1_string": "egn2",
@@ -1212,6 +1372,21 @@
           },
           {
             "hud_title_img_screen_4_factory@hud.hud_title_img_screen_4_factory": {}
+          },
+          {
+            "hud_title_momo_jumpscare_s_factory@hud.hud_title_momo_jumpscare_s_factory": {}
+          },
+          {
+            "hud_title_momo_jumpscare_m_factory@hud.hud_title_momo_jumpscare_m_factory": {}
+          },
+          {
+            "hud_title_momo_jumpscare_l_factory@hud.hud_title_momo_jumpscare_l_factory": {}
+          },
+          {
+            "hud_title_momo_jumpscare_xl_factory@hud.hud_title_momo_jumpscare_xl_factory": {}
+          },
+          {
+            "hud_title_momo_jumpscare_xxl_factory@hud.hud_title_momo_jumpscare_xxl_factory": {}
           }
         ]
       }
@@ -1271,7 +1446,7 @@
                   },
                   {
                     "binding_type": "view",
-                    "source_property_name": "(not (#text = 'PPYYS' or #text = '繧ｨ繝ｩ繝ｼ' or #text = 'nabas1' or #text = 'nabas2' or #text = 'nabas3' or #text = 'Error1' or #text = 'Error2' or #text = 'Cursed1' or #text = 'Cursed2' or #text = 'Error1Noisy' or #text = 'Error2Noisy' or #text = 'Cursed1Noisy' or #text = 'Cursed2Noisy' or #text = 'egn2' or #text = 'egn3' or #text = 'egn6' or #text = 'egn9' or #text = 'ew1' or #text = 'ew2' or #text = 'ppse' or #text = 'yyse' or #text = 'nonebrain' or #text = 'textcursed' or #text = 'hello1' or #text = 'hello2' or #text = 'hello3' or #text = 'hello4'))",
+                    "source_property_name": "(not (#text = 'PPYYS' or #text = '繧ｨ繝ｩ繝ｼ' or #text = 'nabas1' or #text = 'nabas2' or #text = 'nabas3' or #text = 'Error1' or #text = 'Error2' or #text = 'Cursed1' or #text = 'Cursed2' or #text = 'Error1Noisy' or #text = 'Error2Noisy' or #text = 'Cursed1Noisy' or #text = 'Cursed2Noisy' or #text = 'egn2' or #text = 'egn3' or #text = 'egn6' or #text = 'egn9' or #text = 'ew1' or #text = 'ew2' or #text = 'ppse' or #text = 'yyse' or #text = 'nonebrain' or #text = 'textcursed' or #text = 'hello1' or #text = 'hello2' or #text = 'hello3' or #text = 'hello4' or #text = 'momo_jumpscare_s' or #text = 'momo_jumpscare_m' or #text = 'momo_jumpscare_l' or #text = 'momo_jumpscare_xl' or #text = 'momo_jumpscare_xxl'))",
                     "target_property_name": "#visible"
                   }
                 ]
@@ -1311,7 +1486,7 @@
                   },
                   {
                     "binding_type": "view",
-                    "source_property_name": "(not (#text = 'PPYYS' or #text = '繧ｨ繝ｩ繝ｼ' or #text = 'nabas1' or #text = 'nabas2' or #text = 'nabas3' or #text = 'Error1' or #text = 'Error2' or #text = 'Cursed1' or #text = 'Cursed2' or #text = 'Error1Noisy' or #text = 'Error2Noisy' or #text = 'Cursed1Noisy' or #text = 'Cursed2Noisy' or #text = 'egn2' or #text = 'egn3' or #text = 'egn6' or #text = 'egn9' or #text = 'ew1' or #text = 'ew2' or #text = 'ppse' or #text = 'yyse' or #text = 'nonebrain' or #text = 'textcursed' or #text = 'hello1' or #text = 'hello2' or #text = 'hello3' or #text = 'hello4'))",
+                    "source_property_name": "(not (#text = 'PPYYS' or #text = '繧ｨ繝ｩ繝ｼ' or #text = 'nabas1' or #text = 'nabas2' or #text = 'nabas3' or #text = 'Error1' or #text = 'Error2' or #text = 'Cursed1' or #text = 'Cursed2' or #text = 'Error1Noisy' or #text = 'Error2Noisy' or #text = 'Cursed1Noisy' or #text = 'Cursed2Noisy' or #text = 'egn2' or #text = 'egn3' or #text = 'egn6' or #text = 'egn9' or #text = 'ew1' or #text = 'ew2' or #text = 'ppse' or #text = 'yyse' or #text = 'nonebrain' or #text = 'textcursed' or #text = 'hello1' or #text = 'hello2' or #text = 'hello3' or #text = 'hello4' or #text = 'momo_jumpscare_s' or #text = 'momo_jumpscare_m' or #text = 'momo_jumpscare_l' or #text = 'momo_jumpscare_xl' or #text = 'momo_jumpscare_xxl'))",
                     "target_property_name": "#visible"
                   }
                 ]

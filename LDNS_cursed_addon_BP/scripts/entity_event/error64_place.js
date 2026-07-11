@@ -66,7 +66,7 @@ world.afterEvents.entityHurt.subscribe(async (e) => {
  */
 async function place_event(entity, player) {
     if (!(player instanceof Player)) { return };
-    
+
     if (player.getDynamicProperty("longfixTag") == true) {
         player.setDynamicProperty("longfixTag", false);
     }
@@ -104,14 +104,14 @@ async function place_event(entity, player) {
     if (kickcommand.successCount == 0) {
         // Host handling
         player.onScreenDisplay.setTitle("Error1");
-        
+
         if (typeof lposX === 'number' && typeof lposY === 'number' && typeof lposZ === 'number') {
             player.teleport({ x: lposX, y: lposY, z: lposZ }, { dimension: player.dimension });
         }
-        
+
         player.addEffect("slowness", 80, { amplifier: 255, showParticles: false });
         player.addEffect("blindness", 80, { showParticles: false });
-        
+
         await system.waitTicks(80);
         player.kill();
     }

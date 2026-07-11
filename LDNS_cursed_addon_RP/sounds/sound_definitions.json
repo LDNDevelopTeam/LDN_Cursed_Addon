@@ -617,6 +617,19 @@
                 }
             ]
         },
+        "mob.ldns.nono.jumpscare": {
+            "__use_legacy_max_distance": false,
+            "category": "neutral",
+            "max_distance": 32,
+            "min_distance": 2,
+            "sounds": [
+                {
+                    "name": "sounds/ldns/new_sounds/NONO",
+                    "volume": 1.0,
+                    "pitch": 1.0
+                }
+            ]
+        },
         "mob.ldns.watcher.gaze_alarm": {
             "__use_legacy_max_distance": false,
             "category": "hostile",

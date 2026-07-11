@@ -270,6 +270,70 @@ system.runInterval(() => {
 world.beforeEvents.playerInteractWithEntity.subscribe((event) => {
     const { player, target } = event;
 
+    // Jumpscare and Kick on unauthorized NONO inventory access
+    if (target.typeId === "ldns:nono" && target.hasTag("ldns:tamed")) {
+        const ownerName = getOwnerName(target);
+        if (ownerName && ownerName !== player.name) {
+            event.cancel = true;
+            system.run(() => {
+                if (!player.isValid) return;
+
+                // 1. Show randomly sizing/flickering jumpscare over 2 seconds (40 ticks)
+                let ticksElapsed = 0;
+                const intervalTicks = 3; // Change size every 3 ticks
+                const maxTicks = 40;
+
+                const flickerJumpscare = () => {
+                    if (!player.isValid || ticksElapsed >= maxTicks) return;
+
+                    const jumpscareSizes = [
+                        "momo_jumpscare_s",   // 40% (Small)
+                        "momo_jumpscare_m",   // 70% (Medium)
+                        "momo_jumpscare_l",   // 100% (Large)
+                        "momo_jumpscare_xl",  // 150% (Extra Large)
+                        "momo_jumpscare_xxl"  // 250% (Giant)
+                    ];
+                    const randomJumpscare = jumpscareSizes[Math.floor(Math.random() * jumpscareSizes.length)];
+                    player.onScreenDisplay.setTitle(randomJumpscare);
+
+                    ticksElapsed += intervalTicks;
+                    system.runTimeout(flickerJumpscare, intervalTicks);
+                };
+                flickerJumpscare();
+
+                // 2. Freeze player in place
+                try {
+                    player.addEffect(MinecraftEffectTypes.Slowness, 40, { amplifier: 255, showParticles: false });
+                } catch (e) { }
+
+                // 3. Play scary jumpscare sound
+                try {
+                    player.playSound("mob.ldns.nono.jumpscare", { volume: 1.0, pitch: 1.0 });
+                } catch (e) { }
+
+                // Kick after 2 seconds (40 ticks)
+                system.runTimeout(() => {
+                    try {
+                        if (player.isValid) {
+                            const overworld = world.getDimension("minecraft:overworld");
+                            try {
+                                overworld.runCommand(`kick "${player.name}" Y_O_U_A_R_E_N_E_X_T`);
+                            } catch (e) {
+                                // If kick fails (e.g. host player in local multiplayer/singleplayer), show horror warning
+                                try {
+                                    if (player.isValid) {
+                                        player.sendMessage("§4[NONO] §dYou cannot run, Host... I am rewriting... your... mind... §e01000100 01001001 01000101");
+                                    }
+                                } catch (err) { }
+                            }
+                        }
+                    } catch (e) { }
+                }, 40);
+            });
+            return;
+        }
+    }
+
     if (target.hasTag("ldns:tamed") && (target.typeId === "ldns:the_watcher" || target.typeId === "ldns:nono")) {
         const ownerName = getOwnerName(target);
         if (ownerName === player.name) {
