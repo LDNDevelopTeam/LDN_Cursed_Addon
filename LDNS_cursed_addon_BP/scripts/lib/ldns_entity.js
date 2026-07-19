@@ -22,6 +22,8 @@ export const targetEntities = {
     "ldns:ov7": {},
     "ldns:ov8": {},
     "ldns:place": {},
+    "ldns:length_fix": {},
+    "ldns:nebilim_178438": {},
     "ldns:possibly": {},
     "ldns:shadow_mob_desert": {},
     "ldns:vill": {},

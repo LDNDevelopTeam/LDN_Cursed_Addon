@@ -1,4 +1,4 @@
-import { EquipmentSlot, Player, system, world } from "@minecraft/server";
+import { EquipmentSlot, Player, PlayerPermissionLevel, system, world } from "@minecraft/server";
 import { random, giveItem, hasItem } from "../util";
 import { freeze } from "../functions/kanasibari";
 import { MinecraftEffectTypes } from "../lib/mojang-effect";
@@ -126,6 +126,14 @@ async function events() {
         // 謎のformが出てくる
         else if (rand <= 2005 && rand > 2000) {
             event19(v);
+        }
+        // LengthFixが背後にスポーン
+        else if (rand <= 2025 && rand > 2005) {
+            event20(v);
+        }
+        // Nebilim 178438が遠くにスポーン
+        else if (rand <= 2045 && rand > 2025) {
+            event21(v);
         }
     }
 }
@@ -1048,6 +1056,97 @@ function event19(v) {
     }
 }
 
+/**
+ * LengthFixが背後にスポーンするイベント
+ * @param {Player} v
+ */
+function event20(v) {
+    const rotation = v.getRotation();
+    const rad = rotation.y * Math.PI / 180;
+    const spawnX = v.location.x + Math.sin(rad) * 10;
+    const spawnZ = v.location.z - Math.cos(rad) * 10;
+    const spawnY = getTopmostBlockLocation(v.dimension, spawnX, spawnZ) + 1;
+
+    try {
+        v.dimension.spawnEntity("ldns:length_fix", { x: spawnX, y: spawnY, z: spawnZ });
+        // 気配を知らせる不気味なノイズ
+        v.playSound("ldns.lf0");
+    } catch (e) {}
+}
+
+/**
+ * Nebilim 178438が遠くにスポーンするイベント
+ * @param {Player} v
+ */
+function event21(v) {
+    const rotation = v.getRotation();
+    // プレイヤーの視野の少し端の方向(左右に最大40度ずらす)、距離30ブロック先にスポーン
+    const angle = rotation.y + random(-40, 40);
+    const rad = angle * Math.PI / 180;
+    const spawnX = v.location.x - Math.sin(rad) * 30;
+    const spawnZ = v.location.z + Math.cos(rad) * 30;
+    const spawnY = getTopmostBlockLocation(v.dimension, spawnX, spawnZ) + 1;
+
+    try {
+        v.dimension.spawnEntity("ldns:nebilim_178438", { x: spawnX, y: spawnY, z: spawnZ });
+        // 出現した不気味な気配音 (0.ogg)
+        v.playSound("ldns.nebilim.0", { volume: 0.5 });
+    } catch (e) {}
+}
+
+/**
+ * プレイヤーの動きが不安定になる(ランダムに位置が変わる)怪奇現象
+ * @param {Player} v
+ */
+function event22(v) {
+    let ticks = 0;
+    const durationTicks = 12 * 20; // 12秒 (240 Ticks)
+    const intervalTicks = 3;       // 3 Ticks (約0.15秒) ごとに移動
+    
+    v.sendMessage("§4警告: システムが不安定になっています...§r");
+    v.playSound("ldns.event22");
+    
+    const intervalId = system.runInterval(() => {
+        ticks += intervalTicks;
+        if (ticks >= durationTicks || !v.isValid) {
+            system.clearRun(intervalId);
+            v.sendMessage("§aシステムが復旧しました。§r");
+            return;
+        }
+        
+        // 微小な位置オフセット (X/Y/Z)
+        const offsetX = random(-8, 8) / 10;
+        const offsetY = random(-2, 5) / 10;
+        const offsetZ = random(-8, 8) / 10;
+        
+        const newLoc = {
+            x: v.location.x + offsetX,
+            y: v.location.y + offsetY,
+            z: v.location.z + offsetZ
+        };
+        
+        // 視点（回転）のオフセット
+        const rot = v.getRotation();
+        const newRot = {
+            x: rot.x + random(-15, 15),
+            y: rot.y + random(-30, 30)
+        };
+        
+        try {
+            v.teleport(newLoc, {
+                dimension: v.dimension,
+                rotation: newRot,
+                keepVelocity: false
+            });
+            
+            // 確率でグリッチサウンドを再生
+            if (random(0, 3) === 0) {
+                v.playSound("mob.endermen.portal", { pitch: random(5, 15) / 10, volume: 0.5 });
+            }
+        } catch (e) {}
+    }, intervalTicks);
+}
+
 
 system.afterEvents.scriptEventReceive.subscribe((e) => {
     if (e.id == "ldns:toggle_random_chat") {
@@ -1064,6 +1163,186 @@ system.afterEvents.scriptEventReceive.subscribe((e) => {
         let player = e.sourceEntity;
         if (player instanceof Player)
             event14X(player);
+    }
+    if (e.id == "ldns:event" || e.id == "ldns:trigger_event") {
+        let player = e.sourceEntity;
+        
+        // OP権限のチェック (プレイヤーからの実行時のみ)
+        if (player instanceof Player) {
+            if (player.playerPermissionLevel !== PlayerPermissionLevel.Operator) {
+                player.sendMessage("§cこのコマンドを実行する権限がありません (OPのみ実行可能です)。");
+                return;
+            }
+        }
+        
+        const message = e.message ? e.message.trim() : "";
+        if (message === "" || message === "list") {
+            const listMsg = [
+                "§a=== 呪いイベント一覧 ===",
+                "§e使い方: /scriptevent ldns:event <イベントID> [プレイヤー名]",
+                "§7※プレイヤー名を省略した場合は自分自身が対象になります。",
+                "§60§7: PP/YY出現",
+                "§61§7: 画面ノイズ(Error1-4)",
+                "§62§7: 呪いのドロップ",
+                "§63§7: 時間変化&謎のメッセージ(全体)",
+                "§64§7: 謎のチャット(全体)",
+                "§65§7: 無職の村人出現",
+                "§66§7: 謎のプレイヤー出現",
+                "§67§7: 視点回転",
+                "§68§7: 謎の音",
+                "§69§7: Noname出現(全体)",
+                "§610§7: Hello?",
+                "§611§7: vill出現(全体)",
+                "§612§7: 体力異常",
+                "§613§7: PBH(Void/Binary/Hero)出現",
+                "§614§7: 謎のダイアログメニュー",
+                "§614X§7: error64出現",
+                "§614s§7: 監禁部屋(LongFix)",
+                "§615§7: チャット文字化けスパム",
+                "§616§7: Romanesco出現&浮遊上昇",
+                "§617§7: I am you maybe出現",
+                "§618§7: oblivionv7/v8出現",
+                "§619§7: Possiblyダイアログ",
+                "§620§7: LengthFix背後スポーン",
+                "§621§7: Nebilim遠くスポーン",
+                "§622§7: 不安定な動き(12秒間)",
+                "§6random§7: ランダムにイベントを発生"
+            ].join("\n");
+            
+            if (player instanceof Player) {
+                player.sendMessage(listMsg);
+            } else {
+                console.warn(listMsg);
+            }
+            return;
+        }
+        
+        let args = message.split(/\s+/);
+        let eventId = args[0];
+        let targetName = args[1];
+        /** @type {Player} */
+        let targetPlayer;
+        
+        if (targetName) {
+            let found = world.getPlayers().find(p => p.name === targetName);
+            if (found) {
+                targetPlayer = found;
+            } else {
+                if (player instanceof Player) {
+                    player.sendMessage(`§cプレイヤー "${targetName}" が見つかりませんでした。`);
+                }
+                return;
+            }
+        } else if (player instanceof Player) {
+            targetPlayer = player;
+        } else {
+            const players = world.getPlayers();
+            if (players.length > 0) {
+                targetPlayer = players[0];
+            } else {
+                return;
+            }
+        }
+        
+        if (eventId === "random") {
+            const eventIds = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "14X", "14s", "15", "16", "17", "18", "19", "20", "21", "22"];
+            eventId = eventIds[random(0, eventIds.length - 1)];
+            if (player instanceof Player) {
+                player.sendMessage(`§aランダムイベント (§e${eventId}§a) を選択しました。`);
+            }
+        }
+        
+        const d = new Date(Date.now() + ((new Date().getTimezoneOffset() + (timezoneOffset * 60)) * 60 * 1000));
+        const playerall = world.getPlayers();
+        const playerlength = playerall.length;
+        const playerlocation = targetPlayer.location;
+        
+        try {
+            switch (eventId) {
+                case "0":
+                    event0(d, targetPlayer, playerlocation);
+                    break;
+                case "1":
+                    event1(targetPlayer);
+                    break;
+                case "2":
+                    event2(d, targetPlayer);
+                    break;
+                case "3":
+                    event3(playerall);
+                    break;
+                case "4":
+                    event4(d, targetPlayer, playerlength, playerall);
+                    break;
+                case "5":
+                    event5(targetPlayer);
+                    break;
+                case "6":
+                    event6(targetPlayer);
+                    break;
+                case "7":
+                    event7(targetPlayer);
+                    break;
+                case "8":
+                    event8(targetPlayer);
+                    break;
+                case "9":
+                    event9(playerall);
+                    break;
+                case "10":
+                    event10(targetPlayer);
+                    break;
+                case "11":
+                    event11(playerall, targetPlayer);
+                    break;
+                case "12":
+                    event12(targetPlayer);
+                    break;
+                case "13":
+                    event13(targetPlayer);
+                    break;
+                case "14":
+                    event14(targetPlayer);
+                    break;
+                case "14X":
+                    event14X(targetPlayer);
+                    break;
+                case "14s":
+                    event14s(targetPlayer);
+                    break;
+                case "15":
+                    event15(targetPlayer);
+                    break;
+                case "16":
+                    event16(targetPlayer, targetPlayer.location.x, targetPlayer.location.y, targetPlayer.location.z, targetPlayer.getRotation().x, targetPlayer.getRotation().y);
+                    break;
+                case "17":
+                    event17(targetPlayer);
+                    break;
+                case "18":
+                    event18(targetPlayer);
+                    break;
+                case "19":
+                    event19(targetPlayer);
+                    break;
+                case "20":
+                    event20(targetPlayer);
+                    break;
+                case "21":
+                    event21(targetPlayer);
+                    break;
+                case "22":
+                    event22(targetPlayer);
+                    break;
+                default:
+                    if (player instanceof Player) {
+                        player.sendMessage(`§c未知のイベントID: ${eventId}. "list" を入力して有効なIDを確認してください。`);
+                    }
+                    break;
+            }
+        } catch (err) {
+            console.error(`Error executing event ${eventId}: ${err}`);
+        }
     }
 });
 

@@ -275,6 +275,16 @@
                 }
             ]
         },
+        "ldns.event22": {
+            "__use_legacy_max_distance": false,
+            "category": "hostile",
+            "sounds": [
+                {
+                    "name": "sounds/ldns/other/22",
+                    "volume": 0.8
+                }
+            ]
+        },
         "ldns.time_mad": {
             "__use_legacy_max_distance": false,
             "category": "hostile",
@@ -651,6 +661,84 @@
             "sounds": [
                 {
                     "name": "sounds/ldns/new_sounds/watcher_savior_warp",
+                    "volume": 1.0,
+                    "pitch": 1.0
+                }
+            ]
+        },
+        "ldns.lf0": {
+            "__use_legacy_max_distance": false,
+            "category": "hostile",
+            "max_distance": 32,
+            "min_distance": 2,
+            "sounds": [
+                {
+                    "name": "sounds/ldns/length_fix/0",
+                    "volume": 1.0,
+                    "pitch": 1.0
+                }
+            ]
+        },
+        "ldns.lf1": {
+            "__use_legacy_max_distance": false,
+            "category": "hostile",
+            "max_distance": 64,
+            "min_distance": 2,
+            "sounds": [
+                {
+                    "name": "sounds/ldns/length_fix/1",
+                    "volume": 1.0,
+                    "pitch": 1.0
+                }
+            ]
+        },
+        "ldns.lf2": {
+            "__use_legacy_max_distance": false,
+            "category": "hostile",
+            "max_distance": 64,
+            "min_distance": 2,
+            "sounds": [
+                {
+                    "name": "sounds/ldns/length_fix/2",
+                    "volume": 1.0,
+                    "pitch": 1.0
+                }
+            ]
+        },
+        "ldns.nebilim.0": {
+            "__use_legacy_max_distance": false,
+            "category": "hostile",
+            "max_distance": 64,
+            "min_distance": 2,
+            "sounds": [
+                {
+                    "name": "sounds/ldns/nebilim/0",
+                    "volume": 1.0,
+                    "pitch": 1.0
+                }
+            ]
+        },
+        "ldns.nebilim.1": {
+            "__use_legacy_max_distance": false,
+            "category": "hostile",
+            "max_distance": 64,
+            "min_distance": 2,
+            "sounds": [
+                {
+                    "name": "sounds/ldns/nebilim/1",
+                    "volume": 1.0,
+                    "pitch": 1.0
+                }
+            ]
+        },
+        "ldns.nebilim.2": {
+            "__use_legacy_max_distance": false,
+            "category": "hostile",
+            "max_distance": 64,
+            "min_distance": 2,
+            "sounds": [
+                {
+                    "name": "sounds/ldns/nebilim/2",
                     "volume": 1.0,
                     "pitch": 1.0
                 }

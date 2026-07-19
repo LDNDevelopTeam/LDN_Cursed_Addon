@@ -1,0 +1,56 @@
+{
+    "format_version": "1.18.31",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "ldns:nebilim_178438",
+            "is_spawnable": false,
+            "is_summonable": true,
+            "is_experimental": false
+        },
+        "components": {
+            "minecraft:behavior.float": {
+                "priority": 0
+            },
+            "minecraft:nameable": {},
+            "minecraft:type_family": {
+                "family": [
+                    "monster",
+                    "mob"
+                ]
+            },
+            "minecraft:collision_box": {
+                "width": 0.6,
+                "height": 3.6
+            },
+            "minecraft:health": {
+                "value": 100,
+                "max": 100
+            },
+            "minecraft:behavior.look_at_player": {
+                "priority": 1,
+                "look_distance": 100,
+                "probability": 1.0
+            },
+            "minecraft:follow_range": {
+                "value": 100,
+                "max": 100
+            },
+            "minecraft:physics": {},
+            "minecraft:movement": {
+                "value": 0.0
+            },
+            "minecraft:navigation.walk": {
+                "can_path_over_water": false,
+                "can_pass_doors": false,
+                "can_open_doors": false,
+                "avoid_water": true
+            },
+            "minecraft:movement.basic": {},
+            "minecraft:jump.static": {},
+            "minecraft:tick_world": {
+                "radius": 2,
+                "distance_to_players": 256
+            }
+        }
+    }
+}

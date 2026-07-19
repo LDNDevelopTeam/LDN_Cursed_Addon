@@ -23,6 +23,8 @@ import './entity_event/public_void';
 import './entity_event/binary444';
 import './entity_event/herovoid';
 import './entity_event/error64_place';
+import './entity_event/length_fix';
+import './entity_event/nebilim_178438';
 import './entity_event/iamyoumaybe';
 import './entity_event/tbd';
 import './entity_event/never_sleep';
