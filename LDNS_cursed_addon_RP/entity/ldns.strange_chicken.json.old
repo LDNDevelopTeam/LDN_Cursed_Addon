@@ -1,0 +1,41 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ldns:strange_chicken",
+      "materials": {
+        "default": "chicken",
+        "legs": "chicken_legs"
+      },
+      "textures": {
+        "default": "textures/entity/ldns/strange_chicken"
+      },
+      "geometry": {
+        "default": "geometry.chicken.v1.12"
+      },
+      "animations": {
+        "move": "animation.chicken.move",
+        "general": "animation.chicken.general",
+        "look_at_target": "animation.common.look_at_target",
+        "baby_transform": "animation.chicken.baby_transform"
+      },
+      "scripts": {
+        "animate": [
+          "general",
+          {
+            "move": "query.modified_move_speed"
+          },
+          "look_at_target"
+        ],
+        "scale": "query.is_baby ? 1.0 : 1.0"
+      },
+      "render_controllers": [
+        "controller.render.chicken"
+      ],
+      "spawn_egg": {
+        "base_color": "#ff00ff",
+        "overlay_color": "#ff0000"
+      }
+    }
+  }
+}

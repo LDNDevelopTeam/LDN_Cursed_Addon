@@ -8,5 +8,20 @@
   },
   "ldns:fake_deepslate_explosive": {
     "sound": "deepslate"
+  },
+  "ldns:null0": {
+    "sound": "stone"
+  },
+  "ldns:null1": {
+    "sound": "stone"
+  },
+  "ldns:null2": {
+    "sound": "stone"
+  },
+  "ldns:null3": {
+    "sound": "stone"
+  },
+  "ldns:null4": {
+    "sound": "stone"
   }
 }

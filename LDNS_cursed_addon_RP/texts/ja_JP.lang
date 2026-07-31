@@ -26,8 +26,8 @@ entity.ldns:nether_portal_explosion.name=呪いのポータル
 entity.ldns:killer_rabbit.name=殺人ウサギ
 item.spawn_egg.entity.ldns:killer_rabbit.name=殺人ウサギのスポーンエッグ
 
-entity.ldns:bse_cow.name=海綿状脳症のウシ
-item.spawn_egg.entity.ldns:bse_cow.name=海綿状脳症のウシのスポーンエッグ
+entity.ldns:bse_cow.name=イカれた牛
+item.spawn_egg.entity.ldns:bse_cow.name=イカれた牛のスポーンエッグ
 
 entity.ldns:skeleton_trader.name=スケルトンの商人
 item.spawn_egg.entity.ldns:skeleton_trader.name=スケルトンの商人のスポーンエッグ
@@ -119,9 +119,17 @@ item.spawn_egg.entity.ldns:the_watcher.name=ザ・ウォッチャーのスポー
 entity.ldns:nono.name=NONO
 item.spawn_egg.entity.ldns:nono.name=NONOのスポーンエッグ
 
+entity.ldns:irregularity.name=Irregularity
+item.spawn_egg.entity.ldns:irregularity.name=Irregularity のスポーンエッグ
+
 
 ##ブロック
 tile.ldns:error_block.name=繧ｨ繝ｩ繝ｼ ブロック
+tile.ldns:null0.name=Null 0
+tile.ldns:null1.name=Null 1
+tile.ldns:null2.name=Null 2
+tile.ldns:null3.name=Null 3
+tile.ldns:null4.name=Null 4
 
 ##アイテム
 

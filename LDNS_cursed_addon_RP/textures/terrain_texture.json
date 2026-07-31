@@ -6,6 +6,21 @@
     "texture_data": {
         "error_block": {
             "textures": "textures/block/ldns/error_block"
+        },
+        "null0": {
+            "textures": "textures/block/ldns/null0"
+        },
+        "null1": {
+            "textures": "textures/block/ldns/null1"
+        },
+        "null2": {
+            "textures": "textures/block/ldns/null2"
+        },
+        "null3": {
+            "textures": "textures/block/ldns/null3"
+        },
+        "null4": {
+            "textures": "textures/block/ldns/null4"
         }
     }
 }

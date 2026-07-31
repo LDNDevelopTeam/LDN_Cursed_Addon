@@ -88,12 +88,12 @@
           }
         ],
         "must_see": true,
-          "attack_interval": 10
+        "attack_interval": 10
       },
       "minecraft:is_hidden_when_invisible": {},
       "minecraft:type_family": {
         "family": [
-          "chicken",
+          "strange_chicken",
           "mob",
           "monster"
         ]
@@ -131,7 +131,7 @@
       "minecraft:movement": {
         "value": 2.0
       },
-      "minecraft:water_movement":{
+      "minecraft:water_movement": {
         "drag_factor": 1.5
       },
       "minecraft:damage_sensor": {

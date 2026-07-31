@@ -1,0 +1,52 @@
+{
+    "format_version": "1.18.31",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "ldns:irregularity",
+            "is_spawnable": true,
+            "is_summonable": true,
+            "is_experimental": false
+        },
+        "components": {
+            "minecraft:type_family": {
+                "family": [
+                    "mob",
+                    "monster"
+                ]
+            },
+            "minecraft:collision_box": {
+                "width": 0.6,
+                "height": 2.5
+            },
+            "minecraft:health": {
+                "value": 50,
+                "max": 50
+            },
+            "minecraft:movement": {
+                "value": 0.25
+            },
+            "minecraft:behavior.random_stroll": {
+                "priority": 2,
+                "speed_multiplier": 1.0
+            },
+            "minecraft:behavior.look_at_player": {
+                "priority": 1,
+                "look_distance": 16
+            },
+            "minecraft:behavior.random_look_around": {
+                "priority": 3
+            },
+            "minecraft:physics": {},
+            "minecraft:pushable": {
+                "is_pushable": true,
+                "is_pushable_by_piston": true
+            },
+            "minecraft:navigation.walk": {
+                "avoid_damage_blocks": true,
+                "can_pass_doors": true,
+                "can_jump": true
+            },
+            "minecraft:jump.static": {}
+        }
+    }
+}

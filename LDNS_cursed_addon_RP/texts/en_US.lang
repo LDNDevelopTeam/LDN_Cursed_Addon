@@ -26,8 +26,8 @@ entity.ldns:nether_portal_explosion.name=Cursed portal
 entity.ldns:killer_rabbit.name=Killer rabbit
 item.spawn_egg.entity.ldns:killer_rabbit.name=Spawn Killer rabbit
 
-entity.ldns:bse_cow.name=BSE cow
-item.spawn_egg.entity.ldns:bse_cow.name=Spawn BSE cow
+entity.ldns:bse_cow.name=Crazy cow
+item.spawn_egg.entity.ldns:bse_cow.name=Spawn Crazy cow
 
 entity.ldns:skeleton_trader.name=Skeleton trader
 item.spawn_egg.entity.ldns:skeleton_trader.name=Spawn skeleton trader

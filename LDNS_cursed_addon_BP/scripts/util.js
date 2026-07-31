@@ -10,6 +10,8 @@ export function random(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
+export { freeze } from './functions/kanasibari';
+
 /**
  * @template T
  * @param {T[]} array 

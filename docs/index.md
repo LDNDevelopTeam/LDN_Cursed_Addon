@@ -5,7 +5,8 @@
 [![](https://img.youtube.com/vi/5ZAA2FWlyQw/0.jpg)](https://www.youtube.com/watch?v=5ZAA2FWlyQw)
 
 ### 詳しくは
-[呪いのバージョン「Minecraft LDN」Wiki](https://github.com/LDNServer/LDN_Cursed_Addon/wiki)
+* [呪いのバージョン「Minecraft LDN」Wiki](https://github.com/LDNServer/LDN_Cursed_Addon/wiki)
+* [バイオーム一覧](biomes.md)
 
 ### ダウンロード
 [ダウンロード](https://minecraft-mcworld.com/17029/)

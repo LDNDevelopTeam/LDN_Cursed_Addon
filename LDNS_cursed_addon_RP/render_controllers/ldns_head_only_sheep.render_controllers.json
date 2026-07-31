@@ -1,0 +1,27 @@
+{
+  "format_version": "1.8.0",
+  "render_controllers": {
+    "controller.render.ldns_head_only_sheep_base": {
+      "geometry": "query.is_baby ? Geometry.baby : Geometry.sheared",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "query.is_baby ? Texture.baby : Texture.default"
+      ]
+    },
+    "controller.render.ldns_head_only_sheep_wool": {
+      "geometry": "query.is_sheared ? Geometry.none : Geometry.default",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "Texture.default"
+      ]
+    }
+  }
+}

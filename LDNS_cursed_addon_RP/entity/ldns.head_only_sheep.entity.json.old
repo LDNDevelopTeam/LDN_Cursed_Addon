@@ -4,21 +4,17 @@
     "description": {
       "identifier": "ldns:head_only_sheep",
       "min_engine_version": "1.8.0",
-      "materials": {
-        "default": "sheep"
-      },
+      "materials": { "default": "sheep" },
       "textures": {
-        "default": "textures/entity/ldns/head_only_sheep",
-        "baby": "textures/entity/ldns/head_only_sheep_baby"
+        "default": "textures/entity/ldns/head_only_sheep"
       },
       "geometry": {
-        "default": "geometry.head_only_sheep.v1.8",
-        "sheared": "geometry.head_only_sheep.sheared.v1.8",
-        "baby": "geometry.head_only_sheep.baby"
+        "default": "geometry.head_only_sheep",
+        "sheared": "geometry.head_only_sheep.sheared"
       },
       "animations": {
-        "setup": "animation.sheep.setup.v2",
-        "grazing": "animation.sheep.grazing.v2",
+        "setup": "animation.sheep.setup",
+        "grazing": "animation.sheep.grazing",
         "walk": "animation.quadruped.walk",
         "look_at_target": "animation.common.look_at_target",
         "baby_transform": "animation.sheep.baby_transform",
@@ -30,13 +26,12 @@
           "look_at_target",
           "move"
         ],
-        "scale": "query.is_baby ? 2.0 : 1.0"
+        "scale": "query.is_baby ? 1.0 : 1.0"
       },
-      "render_controllers": [
-        "controller.render.sheep.v2"
-      ],
+      "render_controllers": [ "controller.render.sheep" ],
       "spawn_egg": {
-        "texture": "spawn_egg_sheep"
+        "texture": "spawn_egg",
+        "texture_index": 3
       }
     }
   }

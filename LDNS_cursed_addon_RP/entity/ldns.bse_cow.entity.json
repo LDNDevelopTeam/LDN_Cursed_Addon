@@ -3,15 +3,27 @@
   "minecraft:client_entity": {
     "description": {
       "identifier": "ldns:bse_cow",
-      "materials": { "default": "cow" },
+      "min_engine_version": "1.8.0",
+      "materials": {
+        "default": "cow",
+        "cold": "cow_cold"
+      },
       "textures": {
-        "default": "textures/entity/ldns/bse_cow"
+        "default": "textures/entity/ldns/crazy_cow",
+        "warm": "textures/entity/ldns/crazy_cow_warm",
+        "cold": "textures/entity/ldns/crazy_cow_cold",
+        "baby_default": "textures/entity/ldns/crazy_cow_baby",
+        "baby_cold": "textures/entity/ldns/crazy_cow_baby_cold",
+        "baby_warm": "textures/entity/ldns/crazy_cow_baby_warm"
       },
       "geometry": {
-        "default": "geometry.ldns.bse_cow"
+        "default": "geometry.crazy_cow.v2",
+        "warm": "geometry.crazy_cow.warm",
+        "cold": "geometry.crazy_cow.cold",
+        "baby": "geometry.crazy_cow.baby"
       },
       "animations": {
-        "setup": "animation.cow.setup.v1.0",
+        "setup": "animation.cow.setup",
         "walk": "animation.quadruped.walk",
         "look_at_target": "animation.common.look_at_target",
         "baby_transform": "animation.cow.baby_transform"
@@ -19,15 +31,22 @@
       "scripts": {
         "animate": [
           "setup",
-          { "walk": "query.modified_move_speed" },
+          {
+            "walk": "query.modified_move_speed"
+          },
           "look_at_target"
         ],
-        "scale": "query.is_baby ? 1.0 : 1.0"
+        "pre_animation": [
+          "v.index = 0;",
+          "v.is_cold = 0;"
+        ],
+        "scale": "query.is_baby ? 2.0 : 1.0"
       },
-      "render_controllers": [ "controller.render.cow" ],
+      "render_controllers": [
+        "controller.render.cow.v3"
+      ],
       "spawn_egg": {
-        "texture": "spawn_egg",
-        "texture_index": 1
+        "texture": "spawn_egg_cow"
       }
     }
   }

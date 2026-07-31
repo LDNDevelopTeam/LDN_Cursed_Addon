@@ -1,0 +1,26 @@
+{
+    "format_version": "1.20.80",
+    "minecraft:block": {
+        "description": {
+            "identifier": "ldns:null3",
+            "menu_category": {
+                "category": "construction"
+            }
+        },
+        "components": {
+            "minecraft:loot": "loot_tables/blocks/null3.json",
+            "minecraft:destructible_by_mining": {
+                "seconds_to_destroy": 0.0
+            },
+            "minecraft:friction": 0.4,
+            "minecraft:map_color": "#ff00ff",
+            "minecraft:material_instances": {
+                "*": {
+                    "render_method": "opaque",
+                    "texture": "null3"
+                }
+            },
+            "minecraft:geometry": "minecraft:geometry.full_block"
+        }
+    }
+}

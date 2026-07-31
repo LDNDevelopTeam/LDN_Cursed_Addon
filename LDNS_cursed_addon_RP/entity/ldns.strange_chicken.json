@@ -3,15 +3,25 @@
   "minecraft:client_entity": {
     "description": {
       "identifier": "ldns:strange_chicken",
+      "min_engine_version": "1.12.0",
       "materials": {
         "default": "chicken",
-        "legs": "chicken_legs"
+        "legs": "chicken_legs",
+        "cold": "chicken_cold"
       },
       "textures": {
-        "default": "textures/entity/ldns/strange_chicken"
+        "default": "textures/entity/ldns/chicken",
+        "warm": "textures/entity/ldns/chicken_warm",
+        "cold": "textures/entity/ldns/chicken_cold",
+        "baby_default": "textures/entity/ldns/chicken_temperate_baby",
+        "baby_warm": "textures/entity/ldns/chicken_warm_baby",
+        "baby_cold": "textures/entity/ldns/chicken_cold_baby"
       },
       "geometry": {
-        "default": "geometry.chicken.v1.12"
+        "default": "geometry.chicken.v1.12",
+        "warm": "geometry.chicken.v1.12",
+        "cold": "geometry.chicken.cold",
+        "baby": "geometry.chicken.baby"
       },
       "animations": {
         "move": "animation.chicken.move",
@@ -22,15 +32,22 @@
       "scripts": {
         "animate": [
           "general",
-          { "move": "query.modified_move_speed" },
+          {
+            "move": "query.modified_move_speed"
+          },
           "look_at_target"
         ],
-        "scale": "query.is_baby ? 1.0 : 1.0"
+        "pre_animation": [
+          "v.index = 0;",
+          "v.is_cold = 0;"
+        ],
+        "scale": "query.is_baby ? 2.0 : 1.0"
       },
-      "render_controllers": [ "controller.render.chicken" ],
+      "render_controllers": [
+        "controller.render.chicken.v3"
+      ],
       "spawn_egg": {
-        "base_color": "#ff00ff",
-        "overlay_color": "#ff0000"
+        "texture": "spawn_egg_chicken"
       }
     }
   }

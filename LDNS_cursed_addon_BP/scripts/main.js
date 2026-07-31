@@ -8,6 +8,7 @@ import './item_event/error-tool-damage';
 import './entity_event/nametag_mysterious_players';
 import './item_event/twilight';
 import './item_event/error-tool-block-event';
+import './block_event/null_blocks';
 import './item_event/boss-trophy';
 import './entity_event/nullbrain';
 import './entity_event/nonebrain';
