@@ -122,7 +122,7 @@
         ]
       },
       "minecraft:movement": {
-        "value": 0.50
+        "value": 0.40
       },
       "minecraft:despawn": {
         "despawn_from_distance": {}

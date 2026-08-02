@@ -10,12 +10,12 @@
         "cold": "chicken_cold"
       },
       "textures": {
-        "default": "textures/entity/ldns/chicken",
-        "warm": "textures/entity/ldns/chicken_warm",
-        "cold": "textures/entity/ldns/chicken_cold",
-        "baby_default": "textures/entity/ldns/chicken_temperate_baby",
-        "baby_warm": "textures/entity/ldns/chicken_warm_baby",
-        "baby_cold": "textures/entity/ldns/chicken_cold_baby"
+        "default": "textures/entity/ldns/chicken/strange_chicken",
+        "warm": "textures/entity/ldns/chicken/strange_chicken_warm",
+        "cold": "textures/entity/ldns/chicken/strange_chicken_cold",
+        "baby_default": "textures/entity/ldns/chicken/strange_chicken_temperate_baby",
+        "baby_warm": "textures/entity/ldns/chicken/strange_chicken_warm_baby",
+        "baby_cold": "textures/entity/ldns/chicken/strange_chicken_cold_baby"
       },
       "geometry": {
         "default": "geometry.chicken.v1.12",
