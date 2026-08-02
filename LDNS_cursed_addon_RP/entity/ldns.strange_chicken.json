@@ -38,8 +38,9 @@
           "look_at_target"
         ],
         "pre_animation": [
-          "v.index = 0;",
-          "v.is_cold = 0;"
+          "t.variant = query.property('minecraft:climate_variant');",
+          "v.index = (t.variant == 'temperate') ? 0 : ((t.variant == 'warm') ? 1 : 2);",
+          "v.is_cold = t.variant == 'cold';"
         ],
         "scale": "query.is_baby ? 2.0 : 1.0"
       },

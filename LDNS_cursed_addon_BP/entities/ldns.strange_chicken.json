@@ -1,12 +1,20 @@
 {
-  "format_version": "1.16.0",
+  "format_version": "1.21.0",
   "minecraft:entity": {
     "description": {
       "identifier": "ldns:strange_chicken",
       "is_spawnable": true,
       "is_summonable": true,
       "is_experimental": false,
-      "runtime_identifier": "minecraft:chicken"
+      "runtime_identifier": "minecraft:chicken",
+      "properties": {
+        "minecraft:climate_variant": {
+          "type": "enum",
+          "values": [ "temperate", "warm", "cold" ],
+          "default": "temperate",
+          "client_sync": true
+        }
+      }
     },
     "component_groups": {
       "ldns:strange_chicken_baby": {
@@ -198,18 +206,44 @@
         }
       },
       "minecraft:entity_spawned": {
-        "randomize": [
+        "sequence": [
           {
-            "weight": 95,
-            "trigger": "ldns:strange_chicken_spawn_adult"
+            "randomize": [
+              {
+                "weight": 95,
+                "trigger": "ldns:strange_chicken_spawn_adult"
+              },
+              {
+                "weight": 5,
+                "add": {
+                  "component_groups": [
+                    "ldns:strange_chicken_baby"
+                  ]
+                }
+              }
+            ]
           },
           {
-            "weight": 5,
-            "add": {
-              "component_groups": [
-                "ldns:strange_chicken_baby"
-              ]
-            }
+            "first_valid": [
+              {
+                "filters": {
+                  "test": "has_biome_tag",
+                  "value": "spawns_warm_variant_farm_animals"
+                },
+                "set_property": {
+                  "minecraft:climate_variant": "warm"
+                }
+              },
+              {
+                "filters": {
+                  "test": "has_biome_tag",
+                  "value": "spawns_cold_variant_farm_animals"
+                },
+                "set_property": {
+                  "minecraft:climate_variant": "cold"
+                }
+              }
+            ]
           }
         ]
       },
