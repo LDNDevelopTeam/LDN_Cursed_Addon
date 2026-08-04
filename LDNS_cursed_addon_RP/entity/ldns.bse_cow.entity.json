@@ -44,7 +44,7 @@
         "scale": "query.is_baby ? 2.0 : 1.0"
       },
       "render_controllers": [
-        "controller.render.cow.v3"
+        "controller.render.ldns_bse_cow"
       ],
       "spawn_egg": {
         "texture": "spawn_egg_cow"

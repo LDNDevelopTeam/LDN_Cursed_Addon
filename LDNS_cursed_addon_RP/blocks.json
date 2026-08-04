@@ -23,5 +23,11 @@
   },
   "ldns:null4": {
     "sound": "stone"
+  },
+  "ldns:bomber_dungeon_player_checker": {
+    "sound": "stone"
+  },
+  "ldns:replace_torch_block": {
+    "sound": "stone"
   }
 }
