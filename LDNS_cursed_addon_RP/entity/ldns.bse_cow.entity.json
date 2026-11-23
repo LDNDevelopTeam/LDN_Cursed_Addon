@@ -12,9 +12,9 @@
         "default": "textures/entity/ldns/cow/crazy_cow",
         "warm": "textures/entity/ldns/cow/crazy_cow_warm",
         "cold": "textures/entity/ldns/cow/crazy_cow_cold",
-        "baby_default": "textures/entity/ldns/cow/crazy_cow_baby",
-        "baby_cold": "textures/entity/ldns/cow/crazy_cow_baby_cold",
-        "baby_warm": "textures/entity/ldns/cow/crazy_cow_baby_warm"
+        "baby_default": "textures/entity/ldns/cow/crazy_cow_temperate_baby",
+        "baby_cold": "textures/entity/ldns/cow/crazy_cow_cold_baby",
+        "baby_warm": "textures/entity/ldns/cow/crazy_cow_warm_baby"
       },
       "geometry": {
         "default": "geometry.crazy_cow.v2",

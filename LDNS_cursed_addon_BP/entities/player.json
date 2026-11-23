@@ -1,5 +1,5 @@
 {
-    "format_version": "beta",
+    "format_version": "1.26.40",
     "minecraft:entity": {
         "description": {
             "identifier": "minecraft:player",
@@ -340,10 +340,10 @@
                 },
                 "minecraft:timer": {
                     "looping": false,
-                    "time": [
-                        0.0,
-                        0.0
-                    ],
+                    "time": {
+                        "min": 0.0,
+                        "max": 0.0
+                    },
                     "time_down_event": {
                         "event": "minecraft:clear_add_raid_omen",
                         "target": "self"
