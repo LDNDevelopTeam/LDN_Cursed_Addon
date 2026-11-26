@@ -110,11 +110,11 @@ def main() -> None:
 
     # 更新対象ファイルのリストアップ
     target_files: list[Path] = []
-    for manifest in [Path("BP/manifest.json"), Path("RP/manifest.json")]:
+    for manifest in [Path("LDNS_cursed_addon_BP/manifest.json"), Path("LDNS_cursed_addon_RP/manifest.json")]:
         if manifest.exists():
             target_files.append(manifest)
 
-    scripts_dir = Path("BP/scripts")
+    scripts_dir = Path("LDNS_cursed_addon_BP/scripts")
     if scripts_dir.exists():
         for ext in ("*.js", "*.ts"):
             target_files.extend(sorted(scripts_dir.rglob(ext)))
