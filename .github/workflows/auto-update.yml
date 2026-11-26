@@ -1,0 +1,54 @@
+name: Auto Update and Release Addon
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # 毎日1回自動チェック
+  workflow_dispatch:     # 手動テスト実行用ボタンを有効化
+
+jobs:
+  update-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Check version and update via LLM
+        id: updater
+        env:
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+        run: python scripts/update_addon.py
+
+      - name: Package .mcaddon
+        if: steps.updater.outputs.updated == 'true'
+        run: |
+          zip -r LDNS_cursed_addon-${{ steps.updater.outputs.new_version }}.mcaddon LDNS_cursed_addon_BP LDNS_cursed_addon_RP
+          
+      - name: Package .zip
+        if: steps.updater.outputs.updated == 'true'
+        run: |
+          zip -r LDNS_cursed_addon-${{ steps.updater.outputs.new_version }}.zip LDNS_cursed_addon_BP RP
+
+      - name: Commit updated files
+        if: steps.updater.outputs.updated == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add LDNS_cursed_addon_BP LDNS_cursed_addon_RP version.txt
+          git commit -m "chore: update addon for Bedrock ${{ steps.updater.outputs.new_version }}"
+          git push
+
+      - name: Create GitHub Release
+        if: steps.updater.outputs.updated == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "v${{ steps.updater.outputs.new_version }}" \
+            "LDNS_cursed_addon-${{ steps.updater.outputs.new_version }}.mcaddon" \
+            "LDNS_cursed_addon-${{ steps.updater.outputs.new_version }}.zip" \
+            --title "Bedrock ${{ steps.updater.outputs.new_version }} 対応版" \
+            --notes "Minecraft Bedrock ${{ steps.updater.outputs.new_version }} 向けにLLMで自動更新されました。"
