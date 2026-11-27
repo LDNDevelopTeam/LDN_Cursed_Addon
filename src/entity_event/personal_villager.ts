@@ -98,7 +98,7 @@ world.afterEvents.entitySpawn.subscribe(async (event) => {
     if (event.entity.typeId == LdnsEntityTypes.Pv) {
         let spawns = system.runInterval(() => {
             if (!(event.entity.isValid)) {
-                system.clearJob(spawns);
+                system.clearRun(spawns);
             }
             if (event.entity.isValid) {
                 event.entity.dimension?.playSound("mob.villager.death", event.entity.location);
