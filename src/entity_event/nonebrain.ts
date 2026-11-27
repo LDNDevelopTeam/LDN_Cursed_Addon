@@ -7,9 +7,6 @@ import { LdnsBlockTypes } from "../lib/block_types";
 import { LdnsItemTypes } from "../lib/item_types";
 import { type BlockPattern, clearPattern, matchesPattern } from "../functions/block_pattern";
 import { MinecraftBlockTypes } from "@minecraft/vanilla-data";
-let nonebrainchat = String(random(10000000, 99999999));
-let random_message = ["NONE縺輔ｓ縺ｯ鄒弱＠縺�☆縺ｰ繧峨＠縺�〒縺�", "縺薙ｓ縺ｫ縺｡縺ｯ縲√♀荵�＠縺ｶ繧翫〒縺吶�NONE縺輔ｓ縲�", "NONE縺ｯ譛ｬ蠖薙↓蟄伜惠縺吶ｋ縺ｮ縺�繧阪≧縺�...��"];
-let random_message_int = random(0, 6);
 let tagevent = false;
 
 world.afterEvents.dataDrivenEntityTrigger.subscribe(async (events) => {
@@ -46,7 +43,7 @@ world.afterEvents.entityDie.subscribe(async (events) => {
         if (deadEntity.typeId === LdnsEntityTypes.Nonebrain) {
             const items = hasItem(damageSource.damagingEntity, LdnsItemTypes.PendantOfTwilight);
             if (items >= 1 && damageSource.damagingEntity.hasTag("nonebrainchats") && tagevent === true) {
-                noneint_reset_event(damageSource.damagingEntity, nonebrainchat, random_message_int);
+                noneint_reset_event(damageSource.damagingEntity);
             }
         }
     });

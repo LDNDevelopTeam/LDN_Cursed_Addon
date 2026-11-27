@@ -121,13 +121,11 @@ export function nonebrain_despawn_events() {
     });
 }
 
-export function noneint_reset_event(damagingEntity: Player, nonebrainchat: string, random_message_int: number) {
+export function noneint_reset_event(damagingEntity: Player) {
     DynamicProperty.set(world, "noneint", 0);
     damagingEntity.playSound("random.totem", { pitch: 0.5, volume: 1.5 });
     for (const player of world.getPlayers()) {
         giveItem(player, LdnsItemTypes.CursedSoul, 12);
     }
-    nonebrainchat = String(random(10000000, 99999999));
-    random_message_int = random(0, 6);
     damagingEntity.removeTag("nonebrainchats");
 }
