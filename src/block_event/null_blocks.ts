@@ -1,4 +1,5 @@
 import { type Dimension, type Vector3, system, world, Player } from "@minecraft/server";
+import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 import { random, freeze } from "../util";
 
 // null3のグリッチタイマーを保持 (entity.id -> remainingTicks)
@@ -71,7 +72,7 @@ system.runInterval(() => {
 
             // null2: 空腹エフェクト
             if (typeId === "ldns:null2" && isEvery5Ticks) {
-                try { player.addEffect("hunger", 60, { amplifier: 1, showParticles: true }); } catch (e) {}
+                try { player.addEffect(MinecraftEffectTypes.Hunger, 60, { amplifier: 1, showParticles: true }); } catch (e) {}
             }
 
             // null3: グリッチエフェクト

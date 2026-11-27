@@ -123,10 +123,6 @@ system.runInterval(() => {
             // Check if it's a monster/hostile family
             const fam = monster.getComponent("minecraft:type_family");
             if (fam && fam.hasTypeFamily("monster")) {
-                try {
-                    monster.addEffect("glowing", 40, { showParticles: false });
-                } catch (e) { }
-
                 // If extremely close, sound warning
                 const dist = Math.sqrt(
                     Math.pow(monster.location.x - owner.location.x, 2) +

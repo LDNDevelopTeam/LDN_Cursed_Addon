@@ -1,4 +1,5 @@
 import { Entity, Player, system, world } from "@minecraft/server";
+import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 
 // プレイヤーが攻撃した時 (entityHurt)
 world.afterEvents.entityHurt.subscribe((e) => {
@@ -34,8 +35,8 @@ async function length_fix_event(entity: Entity, player: Player) {
     }
 
     // 暗転（盲目）と拘束（移動速度低下）を付与
-    player.addEffect("blindness", 120, { showParticles: false });
-    player.addEffect("slowness", 120, { amplifier: 255, showParticles: false });
+    player.addEffect(MinecraftEffectTypes.Blindness, 120, { showParticles: false });
+    player.addEffect(MinecraftEffectTypes.Slowness, 120, { amplifier: 255, showParticles: false });
 
     // 警告ノイズ/エラー音 (lf1.ogg)
     player.playSound("ldns.lf1", { location: player.location });

@@ -1,4 +1,5 @@
 import { Entity, Player, system, world } from "@minecraft/server";
+import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 import { random, giveItem } from '../util';
 import { getTopmostBlockLocation } from '../functions/max_y';
 import { event14 } from "../script_event/spawn";
@@ -113,8 +114,8 @@ async function place_event(entity: Entity, player: Player) {
             player.teleport({ x: lposX, y: lposY, z: lposZ }, { dimension: player.dimension });
         }
 
-        player.addEffect("slowness", 80, { amplifier: 255, showParticles: false });
-        player.addEffect("blindness", 80, { showParticles: false });
+        player.addEffect(MinecraftEffectTypes.Slowness, 80, { amplifier: 255, showParticles: false });
+        player.addEffect(MinecraftEffectTypes.Blindness, 80, { showParticles: false });
 
         await system.waitTicks(80);
         player.kill();
