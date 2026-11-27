@@ -1,5 +1,6 @@
 import { EquipmentSlot, GameMode, ItemStack, Player, system, world } from "@minecraft/server";
 import { LdnsEntityTypes } from "../lib/entity_types";
+import { LdnsItemTypes } from "../lib/item_types";
 
 system.beforeEvents.startup.subscribe((event) => {
     event.itemComponentRegistry.registerCustomComponent("ldns:custom_tool", {
@@ -92,19 +93,19 @@ system.beforeEvents.startup.subscribe((event) => {
 
 world.afterEvents.playerInteractWithBlock.subscribe((e) => {
     const { itemStack, player } = e;
-    if (itemStack?.typeId == "ldns:error_axe") {
+    if (itemStack?.typeId == LdnsItemTypes.ErrorAxe) {
         // 音を鳴らす
         player.playSound("use.wood");
         // アイテム耐久値の関数
         durabilitys(player, itemStack);
     }
-    if (itemStack?.typeId == "ldns:error_hoe") {
+    if (itemStack?.typeId == LdnsItemTypes.ErrorHoe) {
         // 音を鳴らす
         player.playSound("use.gravel");
         // アイテム耐久値の関数
         durabilitys(player, itemStack);
     }
-    if (itemStack?.typeId == "ldns:error_shovel") {
+    if (itemStack?.typeId == LdnsItemTypes.ErrorShovel) {
         // 音を鳴らす
         player.playSound("use.grass");
         // アイテム耐久値の関数

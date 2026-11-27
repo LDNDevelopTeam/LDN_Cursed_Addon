@@ -2,6 +2,7 @@ import { type Dimension, type Vector3, system, world, Player } from "@minecraft/
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 import { random, freeze } from "../util";
 import { LdnsEntityTypes } from "../lib/entity_types";
+import { LdnsBlockTypes } from "../lib/block_types";
 
 // null3のグリッチタイマーを保持 (entity.id -> remainingTicks)
 const glitchTimers = new Map();
@@ -58,12 +59,12 @@ system.runInterval(() => {
             const typeId = blockBelow.typeId;
 
             // null0: ダメージ
-            if (typeId === "ldns:null0" && isEvery5Ticks) {
+            if (typeId === LdnsBlockTypes.Null0 && isEvery5Ticks) {
                 try { player.applyDamage(2); } catch (e) {}
             }
 
             // null1: ガタガタ動く（移動しやすいように微弱な揺れに緩和）
-            if (typeId === "ldns:null1" && isEvery5Ticks) {
+            if (typeId === LdnsBlockTypes.Null1 && isEvery5Ticks) {
                 try {
                     const rx = (Math.random() - 0.5) * 0.05;
                     const rz = (Math.random() - 0.5) * 0.05;
@@ -72,12 +73,12 @@ system.runInterval(() => {
             }
 
             // null2: 空腹エフェクト
-            if (typeId === "ldns:null2" && isEvery5Ticks) {
+            if (typeId === LdnsBlockTypes.Null2 && isEvery5Ticks) {
                 try { player.addEffect(MinecraftEffectTypes.Hunger, 60, { amplifier: 1, showParticles: true }); } catch (e) {}
             }
 
             // null3: グリッチエフェクト
-            if (typeId === "ldns:null3") {
+            if (typeId === LdnsBlockTypes.Null3) {
                 glitchTimers.set(player.id, 100);
             }
 
@@ -170,7 +171,7 @@ system.runInterval(() => {
                             if (targetBlock && !targetBlock.isAir && !targetBlock.typeId.startsWith("ldns:null")) {
                                 const replaceableBlocks = ["minecraft:grass_block", "minecraft:dirt", "minecraft:stone", "minecraft:sand", "minecraft:gravel"];
                                 if (replaceableBlocks.includes(targetBlock.typeId)) {
-                                    const nullBlocks = ["ldns:null0", "ldns:null1", "ldns:null2", "ldns:null3", "ldns:null4"];
+                                    const nullBlocks = [LdnsBlockTypes.Null0, LdnsBlockTypes.Null1, LdnsBlockTypes.Null2, LdnsBlockTypes.Null3, LdnsBlockTypes.Null4];
                                     const chosenNull = nullBlocks[Math.floor(Math.random() * nullBlocks.length)];
                                     try { targetBlock.setType(chosenNull); } catch (e) {}
                                 }
@@ -252,7 +253,7 @@ system.runInterval(() => {
 function generateGlitchedTree(dimension: Dimension, pos: Vector3) {
     const height = Math.floor(Math.random() * 4) + 4; // 高さ4~7
     const treeType = Math.floor(Math.random() * 3); // 0: 葉なし, 1: 幹欠損, 2: Null化
-    const nullBlocks = ["ldns:null0", "ldns:null1", "ldns:null2", "ldns:null3", "ldns:null4"];
+    const nullBlocks = [LdnsBlockTypes.Null0, LdnsBlockTypes.Null1, LdnsBlockTypes.Null2, LdnsBlockTypes.Null3, LdnsBlockTypes.Null4];
 
     // 幹の生成
     for (let h = 0; h < height; h++) {
@@ -308,7 +309,7 @@ function generateGlitchedCross(dimension: Dimension, pos: Vector3) {
     const isInverted = Math.random() < 0.45; // 45%の確率で逆十字
     const height = Math.floor(Math.random() * 3) + 5; // 高さ5~7
     const armY = isInverted ? pos.y + 2 : pos.y + height - 2; // 腕の高さ
-    const nullBlocks = ["ldns:null0", "ldns:null1", "ldns:null2", "ldns:null3", "ldns:null4", "ldns:error_block"];
+    const nullBlocks = [LdnsBlockTypes.Null0, LdnsBlockTypes.Null1, LdnsBlockTypes.Null2, LdnsBlockTypes.Null3, LdnsBlockTypes.Null4, LdnsBlockTypes.ErrorBlock];
 
     // 縦柱の生成
     for (let h = 0; h < height; h++) {
@@ -337,7 +338,7 @@ function generateGlitchedCross(dimension: Dimension, pos: Vector3) {
         if (Math.random() < 0.7) {
             dimension.getBlock({ x: pos.x, y: pos.y + height, z: pos.z })?.setType("minecraft:redstone_torch");
         } else {
-            dimension.getBlock({ x: pos.x, y: pos.y + height, z: pos.z })?.setType("ldns:null3");
+            dimension.getBlock({ x: pos.x, y: pos.y + height, z: pos.z })?.setType(LdnsBlockTypes.Null3);
         }
     } catch (e) {}
 

@@ -3,6 +3,7 @@ import { MessageFormData } from "@minecraft/server-ui";
 import { random, randomValue, hasItem, giveItem, removeItem } from "../util";
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 import { LdnsEntityTypes } from "../lib/entity_types";
+import { LdnsItemTypes } from "../lib/item_types";
 
 // Helper to get owner name of a tamed companion
 function getOwnerName(entity: Entity) {
@@ -41,7 +42,7 @@ system.runInterval(() => {
     for (const player of players) {
         let hasPendant = false;
         try {
-            hasPendant = hasItem(player, "ldns:pendant_of_twilight") > 0;
+            hasPendant = hasItem(player, LdnsItemTypes.PendantOfTwilight) > 0;
         } catch (e) { }
 
         const watchers = overworld.getEntities({
@@ -342,12 +343,12 @@ world.beforeEvents.playerInteractWithEntity.subscribe((event) => {
             if (healthComp && healthComp.currentValue < healthComp.effectiveMax && handItem) {
                 let healAmount = 0;
                 if (target.typeId === LdnsEntityTypes.TheWatcher) {
-                    if (handItem.typeId === "ldns:heavy_stone") healAmount = 40;
+                    if (handItem.typeId === LdnsItemTypes.HeavyStone) healAmount = 40;
                     else if (handItem.typeId === "minecraft:obsidian") healAmount = 20;
                     else if (handItem.typeId === "minecraft:crying_obsidian") healAmount = 30;
                     else if (handItem.typeId === "minecraft:stone" || handItem.typeId === "minecraft:cobblestone") healAmount = 5;
                 } else if (target.typeId === LdnsEntityTypes.Nono) {
-                    if (handItem.typeId === "ldns:error_ingot") healAmount = 40;
+                    if (handItem.typeId === LdnsItemTypes.ErrorIngot) healAmount = 40;
                     else if (handItem.typeId === "minecraft:iron_ingot") healAmount = 15;
                     else if (handItem.typeId === "minecraft:gold_ingot") healAmount = 20;
                     else if (handItem.typeId === "minecraft:redstone") healAmount = 10;
@@ -420,7 +421,7 @@ world.beforeEvents.playerInteractWithEntity.subscribe((event) => {
             if (inventory && inventory.container) {
                 for (let i = 0; i < inventory.container.size; i++) {
                     const item = inventory.container.getItem(i);
-                    if (item && item.typeId === "ldns:pendant_of_twilight") {
+                    if (item && item.typeId === LdnsItemTypes.PendantOfTwilight) {
                         hasPendant = true;
                         break;
                     }
@@ -437,7 +438,7 @@ world.beforeEvents.playerInteractWithEntity.subscribe((event) => {
             const equippable = player.getComponent("minecraft:equippable");
             const handItem = equippable ? equippable.getEquipment(EquipmentSlot.Mainhand) : null;
 
-            if (handItem && handItem.typeId === "ldns:heavy_stone") {
+            if (handItem && handItem.typeId === LdnsItemTypes.HeavyStone) {
                 event.cancel = true;
 
                 system.run(() => {
@@ -542,7 +543,7 @@ function showNonoDialog(player: Player, nono: Entity) {
         if (response.selection === 0) {
             // Friend request
             const isCreative = player.getGameMode() === GameMode.Creative;
-            const hasIngot = hasItem(player, "ldns:error_ingot") > 0;
+            const hasIngot = hasItem(player, LdnsItemTypes.ErrorIngot) > 0;
 
             if (!hasIngot && !isCreative) {
                 player.sendMessage("§4[NONO] §7Not enough... feed me more of your errors.");
@@ -553,7 +554,7 @@ function showNonoDialog(player: Player, nono: Entity) {
             if (Math.random() < 0.3) {
                 // Tame!
                 if (!isCreative) {
-                    removeItem(player, "ldns:error_ingot", 1);
+                    removeItem(player, LdnsItemTypes.ErrorIngot, 1);
                 }
                 nono.triggerEvent("ldns:on_tame_event");
                 nono.addTag("ldns:tamed");
@@ -587,7 +588,7 @@ function showNonoGame(player: Player, nono: Entity) {
             nono.dimension.createExplosion(nono.location, 2, { breaksBlocks: false });
             if (Math.random() < 0.5) {
                 player.sendMessage("§4[NONO] §dThe glitch spares you... for now.");
-                giveItem(player, "ldns:error_ingot");
+                giveItem(player, LdnsItemTypes.ErrorIngot);
                 try {
                     player.addEffect(MinecraftEffectTypes.Regeneration, 100, { amplifier: 1 });
                 } catch (e) { }

@@ -1,6 +1,7 @@
 import { Entity, ItemStack, Player, system, world } from "@minecraft/server";
 import { random, giveItem } from "../util";
 import { LdnsEntityTypes } from "../lib/entity_types";
+import { LdnsItemTypes } from "../lib/item_types";
 
 const timezoneOffset = 0;
 
@@ -29,10 +30,10 @@ world.afterEvents.entityDie.subscribe((edae) => {
             const item = container.getItem(i);
             if (!item) continue;
             // ペンダントの場合
-            if (item.typeId === 'ldns:pendant_of_heat_sand') {
+            if (item.typeId === LdnsItemTypes.PendantOfHeatSand) {
                 if (random(0, 8) === 0) {
-                    if (isEven(d.getHours())) { giveItem(damageSource.damagingEntity, "ldns:ld5987"); }
-                    else if (isOdd(d.getHours())) { giveItem(damageSource.damagingEntity, "ldns:dn3895"); }
+                    if (isEven(d.getHours())) { giveItem(damageSource.damagingEntity, LdnsItemTypes.Ld5987); }
+                    else if (isOdd(d.getHours())) { giveItem(damageSource.damagingEntity, LdnsItemTypes.Dn3895); }
                     container.setItem(i, undefined);
                     break;
                 }

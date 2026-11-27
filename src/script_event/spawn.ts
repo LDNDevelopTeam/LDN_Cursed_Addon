@@ -6,6 +6,8 @@ import { MessageFormData, ModalFormData } from "@minecraft/server-ui";
 import { getTopmostBlockLocation } from "../functions/max_y";
 import { DynamicProperty } from "../lib/dynamic_property";
 import { LdnsEntityTypes } from "../lib/entity_types";
+import { LdnsBlockTypes } from "../lib/block_types";
+import { LdnsItemTypes } from "../lib/item_types";
 
 const timezoneOffset = 0;
 
@@ -147,13 +149,13 @@ world.afterEvents.buttonPush.subscribe(async (e) => {
     if (!(e.source instanceof Player)) return;
     // PPスポーン
     if ((buttoname === "minecraft:acacia_button" || buttoname === "minecraft:crimson_button" || buttoname === "minecraft:mangrove_button") && button.permutation.getState("facing_direction") === 0) {
-        if (button.offset({ x: 0, y: 1, z: 0 })?.typeId === "ldns:error_block" &&
+        if (button.offset({ x: 0, y: 1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
             button.offset({ x: 0, y: 1, z: -1 })?.typeId === "minecraft:redstone_block" &&
             button.offset({ x: 0, y: 1, z: 1 })?.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: 0, y: 0, z: -1 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: 0, z: 1 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: -1, z: -1 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: -1, z: 1 })?.typeId === "ldns:error_block" &&
+            button.offset({ x: 0, y: 0, z: -1 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: 0, z: 1 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: -1, z: -1 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: -1, z: 1 })?.typeId === LdnsBlockTypes.ErrorBlock &&
             button.offset({ x: 0, y: 2, z: -1 })?.typeId === "minecraft:carved_pumpkin") {
             button.dimension.spawnParticle("ldns:error_particle", button.location);
             button.setType("air");
@@ -168,13 +170,13 @@ world.afterEvents.buttonPush.subscribe(async (e) => {
             await system.waitTicks(20 * 3);
             button.dimension.spawnEntity(LdnsEntityTypes.Pp, button.location);
         }
-        else if (button.offset({ x: 0, y: 1, z: 0 })?.typeId === "ldns:error_block" &&
+        else if (button.offset({ x: 0, y: 1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
             button.offset({ x: 0, y: 1, z: 1 })?.typeId === "minecraft:redstone_block" &&
             button.offset({ x: 0, y: 1, z: -1 })?.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: 0, y: 0, z: 1 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: 0, z: -1 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: -1, z: 1 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: -1, z: -1 })?.typeId === "ldns:error_block" &&
+            button.offset({ x: 0, y: 0, z: 1 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: 0, z: -1 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: -1, z: 1 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: -1, z: -1 })?.typeId === LdnsBlockTypes.ErrorBlock &&
             button.offset({ x: 0, y: 2, z: 1 })?.typeId === "minecraft:carved_pumpkin") {
             button.dimension.spawnParticle("ldns:error_particle", button.location);
             button.setType("air");
@@ -189,13 +191,13 @@ world.afterEvents.buttonPush.subscribe(async (e) => {
             await system.waitTicks(20 * 3);
             button.dimension.spawnEntity(LdnsEntityTypes.Pp, button.location);
         }
-        else if (button.offset({ x: 0, y: 1, z: 0 })?.typeId === "ldns:error_block" &&
+        else if (button.offset({ x: 0, y: 1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
             button.offset({ x: 1, y: 1, z: 0 })?.typeId === "minecraft:redstone_block" &&
             button.offset({ x: -1, y: 1, z: 0 })?.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: 1, y: 0, z: 0 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: -1, y: 0, z: 0 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 1, y: -1, z: 0 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: -1, y: -1, z: 0 })?.typeId === "ldns:error_block" &&
+            button.offset({ x: 1, y: 0, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: -1, y: 0, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 1, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: -1, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
             button.offset({ x: 1, y: 2, z: 0 })?.typeId === "minecraft:carved_pumpkin") {
             button.dimension.spawnParticle("ldns:error_particle", button.location);
             button.setType("air");
@@ -210,13 +212,13 @@ world.afterEvents.buttonPush.subscribe(async (e) => {
             await system.waitTicks(20 * 3);
             button.dimension.spawnEntity(LdnsEntityTypes.Pp, button.location);
         }
-        else if (button.offset({ x: 0, y: 1, z: 0 })?.typeId === "ldns:error_block" &&
+        else if (button.offset({ x: 0, y: 1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
             button.offset({ x: -1, y: 1, z: 0 })?.typeId === "minecraft:redstone_block" &&
             button.offset({ x: 1, y: 1, z: 0 })?.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: -1, y: 0, z: 0 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 1, y: 0, z: 0 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: -1, y: -1, z: 0 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 1, y: -1, z: 0 })?.typeId === "ldns:error_block" &&
+            button.offset({ x: -1, y: 0, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 1, y: 0, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: -1, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 1, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
             button.offset({ x: -1, y: 2, z: 0 })?.typeId === "minecraft:carved_pumpkin") {
             button.dimension.spawnParticle("ldns:error_particle", button.location);
             button.setType("air");
@@ -235,14 +237,14 @@ world.afterEvents.buttonPush.subscribe(async (e) => {
     if ((buttoname === "minecraft:acacia_button" || buttoname === "minecraft:crimson_button" || buttoname === "minecraft:mangrove_button") && button.permutation.getState("facing_direction") === 1) {
         if (button.offset({ x: 0, y: 0, z: -1 })?.typeId === "minecraft:redstone_block" &&
             button.offset({ x: 0, y: 0, z: 1 })?.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: 0, y: 0, z: -2 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: 0, z: 2 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: 1, z: 0 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: -1, z: 0 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: -1, z: -2 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: -1, z: 2 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: 1, z: -2 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: 1, z: 2 })?.typeId === "ldns:error_block" &&
+            button.offset({ x: 0, y: 0, z: -2 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: 0, z: 2 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: 1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: -1, z: -2 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: -1, z: 2 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: 1, z: -2 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: 1, z: 2 })?.typeId === LdnsBlockTypes.ErrorBlock &&
             button.offset({ x: 0, y: 2, z: -2 })?.typeId === "minecraft:carved_pumpkin" &&
             button.offset({ x: 0, y: 2, z: 2 })?.typeId === "minecraft:carved_pumpkin") {
             button.dimension.spawnParticle("ldns:error_particle", button.location);
@@ -264,14 +266,14 @@ world.afterEvents.buttonPush.subscribe(async (e) => {
         }
         else if (button.offset({ x: 0, y: 0, z: 1 })?.typeId === "minecraft:redstone_block" &&
             button.offset({ x: 0, y: 0, z: -1 })?.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: 0, y: 0, z: 2 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: 0, z: -2 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: 1, z: 0 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: -1, z: 0 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: -1, z: 2 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: -1, z: -2 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: 1, z: 2 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: 1, z: -2 })?.typeId === "ldns:error_block" &&
+            button.offset({ x: 0, y: 0, z: 2 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: 0, z: -2 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: 1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: -1, z: 2 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: -1, z: -2 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: 1, z: 2 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: 1, z: -2 })?.typeId === LdnsBlockTypes.ErrorBlock &&
             button.offset({ x: 0, y: 2, z: 2 })?.typeId === "minecraft:carved_pumpkin" &&
             button.offset({ x: 0, y: 2, z: -2 })?.typeId === "minecraft:carved_pumpkin") {
             button.dimension.spawnParticle("ldns:error_particle", button.location);
@@ -293,14 +295,14 @@ world.afterEvents.buttonPush.subscribe(async (e) => {
         }
         else if (button.offset({ x: -1, y: 0, z: 0 })?.typeId === "minecraft:redstone_block" &&
             button.offset({ x: 1, y: 0, z: 0 })?.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: -2, y: 0, z: 0 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 2, y: 0, z: 0 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: 1, z: 0 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: -1, z: 0 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: -2, y: -1, z: 0 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 2, y: -1, z: 0 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: -2, y: 1, z: 0 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 2, y: 1, z: 0 })?.typeId === "ldns:error_block" &&
+            button.offset({ x: -2, y: 0, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 2, y: 0, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: 1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: -2, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 2, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: -2, y: 1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 2, y: 1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
             button.offset({ x: -2, y: 2, z: 0 })?.typeId === "minecraft:carved_pumpkin" &&
             button.offset({ x: 2, y: 2, z: 0 })?.typeId === "minecraft:carved_pumpkin") {
             button.dimension.spawnParticle("ldns:error_particle", button.location);
@@ -322,14 +324,14 @@ world.afterEvents.buttonPush.subscribe(async (e) => {
         }
         else if (button.offset({ x: 1, y: 0, z: 0 })?.typeId === "minecraft:redstone_block" &&
             button.offset({ x: -1, y: 0, z: 0 })?.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: 2, y: 0, z: 0 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: -2, y: 0, z: 0 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: 1, z: 0 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: -1, z: 0 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 2, y: -1, z: 0 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: -2, y: -1, z: 0 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: 2, y: 1, z: 0 })?.typeId === "ldns:error_block" &&
-            button.offset({ x: -2, y: 1, z: 0 })?.typeId === "ldns:error_block" &&
+            button.offset({ x: 2, y: 0, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: -2, y: 0, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: 1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 2, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: -2, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 2, y: 1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: -2, y: 1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
             button.offset({ x: 2, y: 2, z: 0 })?.typeId === "minecraft:carved_pumpkin" &&
             button.offset({ x: -2, y: 2, z: 0 })?.typeId === "minecraft:carved_pumpkin") {
             button.dimension.spawnParticle("ldns:error_particle", button.location);
@@ -360,12 +362,12 @@ world.afterEvents.playerInteractWithBlock.subscribe(async (e) => {
     const button = player.dimension.getBlock(player.location);
     if (!button || !equipments) return;
     if (
-        button.offset({ x: 0, y: -1, z: 0 })?.typeId === "ldns:error_block" &&
-        button.offset({ x: 1, y: -1, z: 0 })?.typeId === "ldns:error_block" &&
-        button.offset({ x: 0, y: -1, z: -1 })?.typeId === "ldns:error_block" &&
-        button.offset({ x: 0, y: -1, z: 1 })?.typeId === "ldns:error_block" &&
-        button.offset({ x: -1, y: -1, z: 0 })?.typeId === "ldns:error_block" &&
-        button.offset({ x: -2, y: -1, z: 0 })?.typeId === "ldns:error_block" &&
+        button.offset({ x: 0, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+        button.offset({ x: 1, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+        button.offset({ x: 0, y: -1, z: -1 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+        button.offset({ x: 0, y: -1, z: 1 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+        button.offset({ x: -1, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
+        button.offset({ x: -2, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
         button.offset({ x: 1, y: -1, z: -1 })?.typeId === "minecraft:chiseled_quartz_block" &&
         button.offset({ x: 1, y: -1, z: 1 })?.typeId === "minecraft:chiseled_quartz_block" &&
         button.offset({ x: 2, y: -1, z: -1 })?.typeId === "minecraft:chiseled_quartz_block" &&
@@ -400,19 +402,19 @@ world.afterEvents.playerInteractWithBlock.subscribe(async (e) => {
         button.offset({ x: -3, y: 0, z: 0 })?.typeId === "minecraft:soul_sand" &&
         button.offset({ x: -3, y: 2, z: -1 })?.typeId === "minecraft:soul_sand" &&
         button.offset({ x: -3, y: 2, z: 1 })?.typeId === "minecraft:soul_sand" &&
-        equipments.getEquipment(EquipmentSlot.Head)?.typeId === "ldns:error_helmet" &&
-        equipments.getEquipment(EquipmentSlot.Chest)?.typeId === "ldns:error_chestplate" &&
-        equipments.getEquipment(EquipmentSlot.Legs)?.typeId === "ldns:error_leggings" &&
-        equipments.getEquipment(EquipmentSlot.Feet)?.typeId === "ldns:error_boots" &&
-        container?.getItem(4 + 9)?.typeId === "ldns:error_sword" &&
-        container?.getItem(12 + 9)?.typeId === "ldns:error_shovel" &&
-        container?.getItem(13 + 9)?.typeId === "ldns:error_pickaxe" &&
-        container?.getItem(14 + 9)?.typeId === "ldns:error_axe" &&
-        container?.getItem(22 + 9)?.typeId === "ldns:error_hoe" &&
-        container?.getItem(3 + 9)?.typeId === "ldns:ld5987" &&
-        container?.getItem(5 + 9)?.typeId === "ldns:dn3895" &&
-        container?.getItem(21 + 9)?.typeId === "ldns:dn3895" &&
-        container?.getItem(23 + 9)?.typeId === "ldns:ld5987" &&
+        equipments.getEquipment(EquipmentSlot.Head)?.typeId === LdnsItemTypes.ErrorHelmet &&
+        equipments.getEquipment(EquipmentSlot.Chest)?.typeId === LdnsItemTypes.ErrorChestplate &&
+        equipments.getEquipment(EquipmentSlot.Legs)?.typeId === LdnsItemTypes.ErrorLeggings &&
+        equipments.getEquipment(EquipmentSlot.Feet)?.typeId === LdnsItemTypes.ErrorBoots &&
+        container?.getItem(4 + 9)?.typeId === LdnsItemTypes.ErrorSword &&
+        container?.getItem(12 + 9)?.typeId === LdnsItemTypes.ErrorShovel &&
+        container?.getItem(13 + 9)?.typeId === LdnsItemTypes.ErrorPickaxe &&
+        container?.getItem(14 + 9)?.typeId === LdnsItemTypes.ErrorAxe &&
+        container?.getItem(22 + 9)?.typeId === LdnsItemTypes.ErrorHoe &&
+        container?.getItem(3 + 9)?.typeId === LdnsItemTypes.Ld5987 &&
+        container?.getItem(5 + 9)?.typeId === LdnsItemTypes.Dn3895 &&
+        container?.getItem(21 + 9)?.typeId === LdnsItemTypes.Dn3895 &&
+        container?.getItem(23 + 9)?.typeId === LdnsItemTypes.Ld5987 &&
         e.block.location.x === button.location.x - 3 &&
         e.block.location.y === button.location.y + 1 &&
         e.block.location.z === button.location.z &&
@@ -521,8 +523,8 @@ function event1(v: Player) {
 }
 
 function event2(d: Date, v: Player) {
-    if (isEven(d.getHours())) { giveItem(v, "ldns:dn3895"); }
-    else if (isOdd(d.getHours())) { giveItem(v, "ldns:ld5987"); }
+    if (isEven(d.getHours())) { giveItem(v, LdnsItemTypes.Dn3895); }
+    else if (isOdd(d.getHours())) { giveItem(v, LdnsItemTypes.Ld5987); }
 }
 
 function event3(playerall: Player[]) {
@@ -599,17 +601,17 @@ async function event4(d: Date, v: Player, playerlength: number, playerall: Playe
                         await system.waitTicks(20 * 3);
                         switch (items) {
                             case 0:
-                                giveItem(psplayer, "ldns:error_ingot");
+                                giveItem(psplayer, LdnsItemTypes.ErrorIngot);
                                 break;
                             case 1:
-                                giveItem(psplayer, "ldns:heavy_stone");
+                                giveItem(psplayer, LdnsItemTypes.HeavyStone);
                                 break;
                         }
                         break;
                     case 2:
                         world.sendMessage("<" + v.name + "> " + psplayer.name + ", What do you think?");
                         await system.waitTicks(20 * 3);
-                        giveItem(psplayer, "ldns:cursed_soul");
+                        giveItem(psplayer, LdnsItemTypes.CursedSoul);
                         break;
                     case 3:
                         world.sendMessage("<" + v.name + "> " + "Have you become 縺ゅｌ?");
@@ -619,10 +621,10 @@ async function event4(d: Date, v: Player, playerlength: number, playerall: Playe
                         await system.waitTicks(20 * 3);
                         switch (items) {
                             case 0:
-                                giveItem(psplayer, "ldns:ld5987");
+                                giveItem(psplayer, LdnsItemTypes.Ld5987);
                                 break;
                             case 1:
-                                giveItem(psplayer, "ldns:dn3895");
+                                giveItem(psplayer, LdnsItemTypes.Dn3895);
                                 break;
                         }
                         break;

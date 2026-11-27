@@ -2,6 +2,7 @@ import { Entity, Player, world } from "@minecraft/server";
 import { random, hasItem } from '../util';
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 import { LdnsEntityTypes } from "../lib/entity_types";
+import { LdnsItemTypes } from "../lib/item_types";
 
 world.afterEvents.entityHurt.subscribe((e) => {
     const { damageSource, hurtEntity } = e;
@@ -12,7 +13,7 @@ world.afterEvents.entityHurt.subscribe((e) => {
 function entity787hurt(hurtEntity: Entity, damageSource: Entity | undefined) {
     if (!(damageSource instanceof Player)) return;
     // ペンダントを持っているときのカウント
-    const items = hasItem(damageSource, 'ldns:pendant_of_twilight');
+    const items = hasItem(damageSource, LdnsItemTypes.PendantOfTwilight);
     const rand = random(0, 160);
     // 夕焼けのペンダントを持っていないときに発動
     if (items <= 0) {

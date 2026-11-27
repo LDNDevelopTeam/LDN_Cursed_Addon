@@ -3,6 +3,7 @@ import { random, hasItem } from '../util';
 import { freeze } from '../functions/kanasibari';
 import { random_move } from '../functions/random_move';
 import { LdnsEntityTypes } from "../lib/entity_types";
+import { LdnsItemTypes } from "../lib/item_types";
 
 world.afterEvents.entityHitEntity.subscribe((e) => {
     const { damagingEntity, hitEntity } = e;
@@ -136,7 +137,7 @@ async function errordamage(targetPlayer: Entity) {
 function errorhurt(damageSource: Entity | undefined) {
     if (!(damageSource instanceof Player)) return;
     // ペンダントを持っているときのカウント
-    const items = hasItem(damageSource, 'ldns:pendant_of_twilight');
+    const items = hasItem(damageSource, LdnsItemTypes.PendantOfTwilight);
     const rand = random(0, 100);
     const playerlocation = damageSource.location;
     // Error画面

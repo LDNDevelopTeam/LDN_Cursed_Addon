@@ -2,6 +2,7 @@ import { Dimension, Entity, Player, system, World, world } from "@minecraft/serv
 import { random, giveItem } from '../util';
 import { DynamicProperty } from "../lib/dynamic_property";
 import { LdnsEntityTypes } from "../lib/entity_types";
+import { LdnsItemTypes } from "../lib/item_types";
 world.afterEvents.entityHurt.subscribe((e) => {
     const player = e.damageSource.damagingEntity;
     const vill = e.hurtEntity;
@@ -15,12 +16,12 @@ world.afterEvents.entityHurt.subscribe((e) => {
             const item = container.getItem(i);
             if (!item) continue;
             // ペンダントの場合
-            if (item.typeId === 'ldns:pendant_of_heat_sand') {
+            if (item.typeId === LdnsItemTypes.PendantOfHeatSand) {
                 if (random(0, 18) === 0) {
                     world.sendMessage("§eWell found. Come on...§r");
                     player.playSound("random.totem", { pitch: 0.5, volume: 1.5 });
                     player.playSound("mob.villager.yes", { pitch: 0.666, volume: 6.66 });
-                    giveItem(player, "ldns:pendant_of_goscubus");
+                    giveItem(player, LdnsItemTypes.PendantOfGoscubus);
                     container.setItem(i, undefined);
                     vill.remove();
                     break;

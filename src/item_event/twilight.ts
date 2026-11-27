@@ -2,6 +2,7 @@ import { Entity, EquipmentSlot, Player, world } from '@minecraft/server';
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 import { targetEntities } from '../lib/ldns_entity';
 import { hasItem } from '../util';
+import { LdnsItemTypes } from "../lib/item_types";
 
 // エンティティに攻撃したとき
 world.afterEvents.entityHitEntity.subscribe(ev => {
@@ -13,7 +14,7 @@ world.afterEvents.entityHitEntity.subscribe(ev => {
 function applyItemEffect(hitEntity: Entity, damagingEntity?: Entity) {
     if (!(damagingEntity instanceof Player)) return;
     // ペンダントを持っているときのカウント
-    const items = hasItem(damagingEntity, 'ldns:pendant_of_twilight');
+    const items = hasItem(damagingEntity, LdnsItemTypes.PendantOfTwilight);
     if (!((items >= 1) && hitEntity.typeId in targetEntities)) return;
     // mob判定？
     const conditions = targetEntities[hitEntity.typeId];

@@ -3,6 +3,8 @@ import { random, hasItem } from "../util";
 import { nonebrain_despawn_events, noneint_reset_event } from "./nonebrain_function";
 import { DynamicProperty } from "../lib/dynamic_property";
 import { LdnsEntityTypes } from "../lib/entity_types";
+import { LdnsBlockTypes } from "../lib/block_types";
+import { LdnsItemTypes } from "../lib/item_types";
 let nonebrainchat = String(random(10000000, 99999999));
 let random_message = ["NONE縺輔ｓ縺ｯ鄒弱＠縺�☆縺ｰ繧峨＠縺�〒縺�", "縺薙ｓ縺ｫ縺｡縺ｯ縲√♀荵�＠縺ｶ繧翫〒縺吶�NONE縺輔ｓ縲�", "NONE縺ｯ譛ｬ蠖薙↓蟄伜惠縺吶ｋ縺ｮ縺�繧阪≧縺�...��"];
 let random_message_int = random(0, 6);
@@ -40,7 +42,7 @@ world.afterEvents.entityDie.subscribe(async (events) => {
         const { damageSource, deadEntity } = events;
         if (!(damageSource.damagingEntity instanceof Player)) return;
         if (deadEntity.typeId === LdnsEntityTypes.Nonebrain) {
-            const items = hasItem(damageSource.damagingEntity, 'ldns:pendant_of_twilight');
+            const items = hasItem(damageSource.damagingEntity, LdnsItemTypes.PendantOfTwilight);
             if (items >= 1 && damageSource.damagingEntity.hasTag("nonebrainchats") && tagevent === true) {
                 noneint_reset_event(damageSource.damagingEntity, nonebrainchat, random_message_int);
             }
@@ -54,15 +56,15 @@ world.afterEvents.buttonPush.subscribe(async (e) => {
     const buttoname = button.typeId;
     if (!(e.source instanceof Player)) return;
     if ((buttoname === "minecraft:acacia_button" || buttoname === "minecraft:crimson_button" || buttoname === "minecraft:mangrove_button") && button.permutation.getState("facing_direction") === 1) {
-        if (button.offset({ x: -1, y: -1, z: -1 })!.typeId === "ldns:error_block" &&
-            button.offset({ x: -1, y: -1, z: 0 })!.typeId === "ldns:error_block" &&
-            button.offset({ x: -1, y: -1, z: 1 })!.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: -1, z: -1 })!.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: -1, z: 0 })!.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: -1, z: 1 })!.typeId === "ldns:error_block" &&
-            button.offset({ x: 1, y: -1, z: 0 })!.typeId === "ldns:error_block" &&
-            button.offset({ x: 1, y: -1, z: -1 })!.typeId === "ldns:error_block" &&
-            button.offset({ x: 1, y: -1, z: 1 })!.typeId === "ldns:error_block") {
+        if (button.offset({ x: -1, y: -1, z: -1 })!.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: -1, y: -1, z: 0 })!.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: -1, y: -1, z: 1 })!.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: -1, z: -1 })!.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: -1, z: 0 })!.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: -1, z: 1 })!.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 1, y: -1, z: 0 })!.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 1, y: -1, z: -1 })!.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 1, y: -1, z: 1 })!.typeId === LdnsBlockTypes.ErrorBlock) {
             button.dimension.spawnParticle("ldns:error_particle", button.location);
             button.setType("air");
             button.offset({ x: -1, y: -1, z: -1 })!.setType("air");
@@ -122,11 +124,11 @@ world.afterEvents.pressurePlatePush.subscribe(async (e) => {
             button.offset({ x: 0, y: -1, z: 2 })!.typeId === "minecraft:redstone_wire" &&
             button.offset({ x: -2, y: -1, z: 0 })!.typeId === "minecraft:redstone_wire" &&
             button.offset({ x: 0, y: -1, z: -2 })!.typeId === "minecraft:redstone_wire" &&
-            button.offset({ x: 0, y: -1, z: 1 })!.typeId === "ldns:error_block" &&
-            button.offset({ x: 1, y: -1, z: 0 })!.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: -1, z: -1 })!.typeId === "ldns:error_block" &&
-            button.offset({ x: -1, y: -1, z: 0 })!.typeId === "ldns:error_block" &&
-            button.offset({ x: 0, y: -1, z: 0 })!.typeId === "ldns:error_block") {
+            button.offset({ x: 0, y: -1, z: 1 })!.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 1, y: -1, z: 0 })!.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: -1, z: -1 })!.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: -1, y: -1, z: 0 })!.typeId === LdnsBlockTypes.ErrorBlock &&
+            button.offset({ x: 0, y: -1, z: 0 })!.typeId === LdnsBlockTypes.ErrorBlock) {
             button.setType("air");
             button.offset({ x: 0, y: -2, z: 2 })!.setType("air");
             button.offset({ x: 0, y: -2, z: -2 })!.setType("air");

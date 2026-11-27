@@ -5,6 +5,7 @@ import { getTopmostBlockLocation } from '../functions/max_y';
 import { event14 } from "../script_event/spawn";
 import { DynamicProperty } from "../lib/dynamic_property";
 import { LdnsEntityTypes } from "../lib/entity_types";
+import { LdnsItemTypes } from "../lib/item_types";
 
 system.runInterval(() => {
     world.getPlayers().forEach((v, i, a) => {
@@ -37,7 +38,7 @@ world.afterEvents.entityHurt.subscribe(async (e) => {
             const item = container.getItem(i);
             if (!item) continue;
             // ペンダントの場合
-            if (item.typeId === 'ldns:pendant_of_heat_sand') {
+            if (item.typeId === LdnsItemTypes.PendantOfHeatSand) {
                 giveItem(e.damageSource.damagingEntity, "minecraft:emerald", 8);
                 e.damageSource.damagingEntity.sendMessage("§0D§1o§2n§3'§4t §5r§6u§7n §8a§9w§aa§by§c.");
                 await system.waitTicks(20 * 3);

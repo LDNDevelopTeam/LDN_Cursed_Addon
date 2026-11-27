@@ -1,13 +1,15 @@
 import { EquipmentSlot, Player, system, world } from '@minecraft/server';
 import { random, hasItem } from '../util';
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
+import { LdnsBlockTypes } from "../lib/block_types";
+import { LdnsItemTypes } from "../lib/item_types";
 
 const errorTools = [
-    'ldns:error_sword',
-    'ldns:error_pickaxe',
-    'ldns:error_axe',
-    'ldns:error_shovel',
-    'ldns:error_hoe'
+    LdnsItemTypes.ErrorSword,
+    LdnsItemTypes.ErrorPickaxe,
+    LdnsItemTypes.ErrorAxe,
+    LdnsItemTypes.ErrorShovel,
+    LdnsItemTypes.ErrorHoe
 ];
 
 system.runInterval(() => {
@@ -28,7 +30,7 @@ function error_tool_damage(targetPlayer: Player) {
     const equippable = targetPlayer.getComponent('minecraft:equippable');
     if (!equippable) return;
     // ペンダントを持っているときのカウント
-    const items = hasItem(targetPlayer, 'ldns:pendant_of_twilight');
+    const items = hasItem(targetPlayer, LdnsItemTypes.PendantOfTwilight);
     // errortoolscount=>Errorツール類のカウント, erroritemscount=>Errorインゴットのカウント(別の処理にするためにカウントを別にしている)
     let errortoolscount = 0;
     let erroritemscount = 0;
@@ -48,24 +50,24 @@ function error_tool_damage(targetPlayer: Player) {
             if (item.typeId === tool) errortoolscount += item.amount;
         })
         // インゴットの場合erroritemscountを1プラス(スタック数もカウント)
-        if (item.typeId === 'ldns:error_ingot') erroritemscount += item.amount;
+        if (item.typeId === LdnsItemTypes.ErrorIngot) erroritemscount += item.amount;
         // ブロックの場合erroritemscountを1プラス(スタック数もカウント)
-        if (item.typeId === 'ldns:error_block') erroritemscount += item.amount * 2.666;
+        if (item.typeId === LdnsBlockTypes.ErrorBlock) erroritemscount += item.amount * 2.666;
     }
     //krtを条件に合わせて増やす
     let krx = 0;
-    if (equippable.getEquipment(EquipmentSlot.Head)?.typeId === 'ldns:error_helmet') krx += 4;
-    if (equippable.getEquipment(EquipmentSlot.Chest)?.typeId === 'ldns:error_chestplate') krx += 6;
-    if (equippable.getEquipment(EquipmentSlot.Legs)?.typeId === 'ldns:error_leggings') krx += 4;
-    if (equippable.getEquipment(EquipmentSlot.Feet)?.typeId === 'ldns:error_boots') krx += 2;
+    if (equippable.getEquipment(EquipmentSlot.Head)?.typeId === LdnsItemTypes.ErrorHelmet) krx += 4;
+    if (equippable.getEquipment(EquipmentSlot.Chest)?.typeId === LdnsItemTypes.ErrorChestplate) krx += 6;
+    if (equippable.getEquipment(EquipmentSlot.Legs)?.typeId === LdnsItemTypes.ErrorLeggings) krx += 4;
+    if (equippable.getEquipment(EquipmentSlot.Feet)?.typeId === LdnsItemTypes.ErrorBoots) krx += 2;
 
     // Error装備を装備しているときまたはErrorツール、Errorインゴットをインベントリに入れているとき
     if (errortoolscount >= 1 ||
         erroritemscount >= 1 ||
-        equippable.getEquipment(EquipmentSlot.Head)?.typeId === 'ldns:error_helmet' ||
-        equippable.getEquipment(EquipmentSlot.Chest)?.typeId === 'ldns:error_chestplate' ||
-        equippable.getEquipment(EquipmentSlot.Legs)?.typeId === 'ldns:error_leggings' ||
-        equippable.getEquipment(EquipmentSlot.Feet)?.typeId === 'ldns:error_boots'
+        equippable.getEquipment(EquipmentSlot.Head)?.typeId === LdnsItemTypes.ErrorHelmet ||
+        equippable.getEquipment(EquipmentSlot.Chest)?.typeId === LdnsItemTypes.ErrorChestplate ||
+        equippable.getEquipment(EquipmentSlot.Legs)?.typeId === LdnsItemTypes.ErrorLeggings ||
+        equippable.getEquipment(EquipmentSlot.Feet)?.typeId === LdnsItemTypes.ErrorBoots
     ) {
         // 夕焼けのペンダントを持っていないときに発動
         if (items <= 0) {

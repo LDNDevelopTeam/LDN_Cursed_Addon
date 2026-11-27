@@ -2,6 +2,7 @@ import { Entity, Player, system, world } from "@minecraft/server";
 import { random, hasItem } from "../util";
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 import { LdnsEntityTypes } from "../lib/entity_types";
+import { LdnsItemTypes } from "../lib/item_types";
 
 // Nullbrainが死んだときのイベント
 world.afterEvents.entityDie.subscribe((edae) => {
@@ -20,7 +21,7 @@ async function nullbraindievent(damagingEntity: Entity | undefined, deadEntity: 
     // 1/66の確立
     const rand = random(0, 66);
     // ペンダントを持っているときは無効
-    const items = hasItem(damagingEntity, 'ldns:pendant_of_twilight');
+    const items = hasItem(damagingEntity, LdnsItemTypes.PendantOfTwilight);
     if (items <= 0) {
         try {
             // 値を事前に設定
@@ -51,7 +52,7 @@ async function nullbrainhurtevent(damage: number, damagingEntity: Entity | undef
     const rand = random(0, 66);
     const rand2 = random(0, 1333);
     // ペンダントを持っているときは無効
-    const items = hasItem(damagingEntity, 'ldns:pendant_of_twilight');
+    const items = hasItem(damagingEntity, LdnsItemTypes.PendantOfTwilight);
     if (items <= 0) {
         // 与えたダメージが4以下のとき
         if (damage <= 4) {

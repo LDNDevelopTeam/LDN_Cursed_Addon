@@ -1,13 +1,14 @@
 import { Entity, EquipmentSlot, Player, system, world } from '@minecraft/server';
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 import { targetEntities } from '../lib/ldns_entity';
+import { LdnsItemTypes } from "../lib/item_types";
 
-const errorTools = [
-  'ldns:error_sword',
-  'ldns:error_pickaxe',
-  'ldns:error_axe',
-  'ldns:error_shovel',
-  'ldns:error_hoe',
+const errorTools: readonly string[] = [
+  LdnsItemTypes.ErrorSword,
+  LdnsItemTypes.ErrorPickaxe,
+  LdnsItemTypes.ErrorAxe,
+  LdnsItemTypes.ErrorShovel,
+  LdnsItemTypes.ErrorHoe,
 ];
 
 world.afterEvents.entityHurt.subscribe(ev => {
@@ -24,10 +25,10 @@ function applyArmorEffects(hurtEntity: Entity, damagingEntity?: Entity) {
   if (!equippable) return;
   if (
     damagingEntity?.typeId.startsWith('ldns:') &&
-    equippable.getEquipment(EquipmentSlot.Head)?.typeId === 'ldns:error_helmet' &&
-    equippable.getEquipment(EquipmentSlot.Chest)?.typeId === 'ldns:error_chestplate' &&
-    equippable.getEquipment(EquipmentSlot.Legs)?.typeId === 'ldns:error_leggings' &&
-    equippable.getEquipment(EquipmentSlot.Feet)?.typeId === 'ldns:error_boots'
+    equippable.getEquipment(EquipmentSlot.Head)?.typeId === LdnsItemTypes.ErrorHelmet &&
+    equippable.getEquipment(EquipmentSlot.Chest)?.typeId === LdnsItemTypes.ErrorChestplate &&
+    equippable.getEquipment(EquipmentSlot.Legs)?.typeId === LdnsItemTypes.ErrorLeggings &&
+    equippable.getEquipment(EquipmentSlot.Feet)?.typeId === LdnsItemTypes.ErrorBoots
   ) {
     // 特定のmobに攻撃されると自分に耐性がつく
     hurtEntity.addEffect(MinecraftEffectTypes.Resistance, 5 * 20);
