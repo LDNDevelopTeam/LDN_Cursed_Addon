@@ -5,3 +5,6 @@ LDNS_cursed_addon.mcaddon
 .vscode/
 scratch/
 wiki_repo/
+
+# tsdown build output
+LDNS_cursed_addon_BP/scripts/

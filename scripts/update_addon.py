@@ -114,7 +114,7 @@ def main() -> None:
         if manifest.exists():
             target_files.append(manifest)
 
-    scripts_dir = Path("LDNS_cursed_addon_BP/scripts")
+    scripts_dir = Path("src")
     if scripts_dir.exists():
         for ext in ("*.js", "*.ts"):
             target_files.extend(sorted(scripts_dir.rglob(ext)))

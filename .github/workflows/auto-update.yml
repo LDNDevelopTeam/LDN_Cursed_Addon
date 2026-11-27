@@ -23,6 +23,24 @@ jobs:
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
         run: python scripts/update_addon.py
 
+      - name: Setup pnpm
+        if: steps.updater.outputs.updated == 'true'
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        if: steps.updater.outputs.updated == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: pnpm
+
+      - name: Build scripts
+        if: steps.updater.outputs.updated == 'true'
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm run typecheck
+          pnpm run build
+
       - name: Package .mcaddon
         if: steps.updater.outputs.updated == 'true'
         run: |
@@ -38,7 +56,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add LDNS_cursed_addon_BP LDNS_cursed_addon_RP version.txt
+          git add src LDNS_cursed_addon_BP LDNS_cursed_addon_RP version.txt
           git commit -m "chore: update addon for Bedrock ${{ steps.updater.outputs.new_version }}"
           git push
 

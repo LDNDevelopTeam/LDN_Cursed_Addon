@@ -1,11 +1,31 @@
 {
   "name": "ldn_cursed_addon",
-  "version": "1.0.0",
+  "version": "1.1.13",
+  "private": true,
   "description": "LDNServerで作られた、呪いのバージョン「Minecraft LDN」 | Made with LDNServer, a cursed version 「Minecraft LDN」",
   "license": "Apache-2.0",
-  "dependencies": {
-    "@minecraft/server": "2.9.0",
-    "@minecraft/server-ui": "2.1.0",
-    "@minecraft/vanilla-data": "1.26.40"
+  "type": "module",
+  "scripts": {
+    "build": "tsdown",
+    "watch": "tsdown --watch",
+    "typecheck": "tsc"
+  },
+  "devDependencies": {
+    "@bedrock-apis/env-types": "1.1.0-rc",
+    "@minecraft/server": "2.11.0",
+    "@minecraft/server-ui": "2.3.0",
+    "@minecraft/vanilla-data": "1.26.60",
+    "tsdown": "^0.23.7",
+    "typescript": "^7.0.2"
+  },
+  "overrides": {
+    "@minecraft/server": "$@minecraft/server"
+  },
+  "packageManager": "pnpm@12.23.0",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.23.0"
+    }
   }
 }
