@@ -1,5 +1,6 @@
 import { Dimension, Entity, Player, system, World, world } from "@minecraft/server";
 import { random, giveItem } from '../util';
+import { DynamicProperty } from "../lib/dynamic_property";
 world.afterEvents.entityHurt.subscribe((e) => {
     const player = e.damageSource.damagingEntity;
     const vill = e.hurtEntity;
@@ -37,18 +38,18 @@ let isJumping = false; // ジャンプ中かどうか
 let playerRand = 666;
 
 world.afterEvents.playerLeave.subscribe((e) => {
-    if (e.playerId == world.getDynamicProperty("villTGid")) {
+    if (e.playerId == DynamicProperty.get(world, "villTGid")) {
         const players = world.getPlayers();
         if (players.length > 0) {
-            world.setDynamicProperty("villTGid", players[random(0, players.length)].id);
+            DynamicProperty.set(world, "villTGid", players[random(0, players.length)].id);
         }
     }
 });
 
 world.afterEvents.entitySpawn.subscribe((e) => {
-    if (e.entity.typeId == "ldns:vill" && world.getDynamicProperty("villTGS") === true) {
+    if (e.entity.typeId == "ldns:vill" && DynamicProperty.get(world, "villTGS") === true) {
         const players = world.getPlayers();
-        world.setDynamicProperty("villTGid", players[random(0, players.length)].id);
+        DynamicProperty.set(world, "villTGid", players[random(0, players.length)].id);
     }
 });
 
@@ -56,9 +57,9 @@ system.runInterval(async () => {
     const players = world.getPlayers();
     if (players.length === 0) return;
     if (playerRand === 66 || playerRand === 666) {
-        world.setDynamicProperty("villTGid", players[random(0, players.length)].id);
+        DynamicProperty.set(world, "villTGid", players[random(0, players.length)].id);
     }
-    let targetPlayer = players.find(player => player.id === world.getDynamicProperty("villTGid"));
+    let targetPlayer = players.find(player => player.id === DynamicProperty.get(world, "villTGid"));
     if (!(targetPlayer instanceof Player)) { return };
     const mobs = targetPlayer.dimension.getEntities({ type: "ldns:vill" });
     if (mobs) {

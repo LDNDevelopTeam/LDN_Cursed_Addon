@@ -1,9 +1,10 @@
 import { system, world } from "@minecraft/server";
 import { random } from '../util';
+import { DynamicProperty } from "../lib/dynamic_property";
 
 world.beforeEvents.playerInteractWithBlock.subscribe(async (event) => {
     if (event.block.typeId === "minecraft:bed") {
-        if (random(0, 66) === 0 && world.getDynamicProperty("neversleep") == false || world.getDynamicProperty("neversleep") == undefined) {
+        if (random(0, 66) === 0 && DynamicProperty.get(world, "neversleep") == false || DynamicProperty.get(world, "neversleep") == undefined) {
             world.sendMessage("§4Taboo: You've gone too far");
             system.runTimeout(() => {
                 const ex = event.player.location.x - event.player.getViewDirection().x * 3;
@@ -12,13 +13,13 @@ world.beforeEvents.playerInteractWithBlock.subscribe(async (event) => {
                 world.getDimension("overworld").spawnEntity("ldns:never_sleep", { x: ex, y: ey, z: ez });
                 event.player.playSound("ldns.never_sleep");
             }, 20 * 6);
-            world.setDynamicProperty("neversleep", true);
+            DynamicProperty.set(world, "neversleep", true);
         }
     }
 });
 
 system.runInterval(() => {
-    if (world.getDynamicProperty("neversleep") === true && world.getTimeOfDay() === 2) {
-        world.setDynamicProperty("neversleep", false);
+    if (DynamicProperty.get(world, "neversleep") === true && world.getTimeOfDay() === 2) {
+        DynamicProperty.set(world, "neversleep", false);
     }
 }, 1);

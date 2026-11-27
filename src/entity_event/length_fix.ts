@@ -1,5 +1,6 @@
 import { Entity, Player, system, world } from "@minecraft/server";
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
+import { DynamicProperty } from "../lib/dynamic_property";
 
 // プレイヤーが攻撃した時 (entityHurt)
 world.afterEvents.entityHurt.subscribe((e) => {
@@ -24,10 +25,10 @@ async function length_fix_event(entity: Entity, player: Player) {
     if (!(player instanceof Player)) { return };
 
     // 多重発動防止
-    if (player.getDynamicProperty("lengthFixTriggered") === true) {
+    if (DynamicProperty.get(player, "lengthFixTriggered") === true) {
         return;
     }
-    player.setDynamicProperty("lengthFixTriggered", true);
+    DynamicProperty.set(player, "lengthFixTriggered", true);
 
     // エンティティの消去
     if (entity && entity.isValid) {
@@ -86,7 +87,7 @@ async function length_fix_event(entity: Entity, player: Player) {
     }
 
     // トリガーのリセットとフォールバック処理
-    player.setDynamicProperty("lengthFixTriggered", false);
+    DynamicProperty.set(player, "lengthFixTriggered", false);
 
     if (!kickSuccess) {
         // キックが失敗した場合（ローカルホストやシングルプレイなど）は即死させる

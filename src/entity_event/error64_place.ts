@@ -3,6 +3,7 @@ import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 import { random, giveItem } from '../util';
 import { getTopmostBlockLocation } from '../functions/max_y';
 import { event14 } from "../script_event/spawn";
+import { DynamicProperty } from "../lib/dynamic_property";
 
 system.runInterval(() => {
     world.getPlayers().forEach((v, i, a) => {
@@ -39,20 +40,20 @@ world.afterEvents.entityHurt.subscribe(async (e) => {
                 giveItem(e.damageSource.damagingEntity, "minecraft:emerald", 8);
                 e.damageSource.damagingEntity.sendMessage("§0D§1o§2n§3'§4t §5r§6u§7n §8a§9w§aa§by§c.");
                 await system.waitTicks(20 * 3);
-                const lposX = e.damageSource.damagingEntity.getDynamicProperty("LposX");
-                const lposY = e.damageSource.damagingEntity.getDynamicProperty("LposY");
-                const lposZ = e.damageSource.damagingEntity.getDynamicProperty("LposZ");
+                const lposX = DynamicProperty.get(e.damageSource.damagingEntity, "LposX");
+                const lposY = DynamicProperty.get(e.damageSource.damagingEntity, "LposY");
+                const lposZ = DynamicProperty.get(e.damageSource.damagingEntity, "LposZ");
                 if (typeof lposX !== 'number' || typeof lposY !== 'number' || typeof lposZ !== 'number') {
                     e.damageSource.damagingEntity.teleport({ x: 0, y: getTopmostBlockLocation(e.damageSource.damagingEntity.dimension, 0, 0), z: 0 });
                 } else {
                     e.damageSource.damagingEntity.teleport({ x: lposX, y: lposY, z: lposZ });
                 }
                 container.setItem(i, undefined);
-                if (e.damageSource.damagingEntity.getDynamicProperty("longfixTag") == true) {
-                    e.damageSource.damagingEntity.setDynamicProperty("longfixTag", false);
+                if (DynamicProperty.get(e.damageSource.damagingEntity, "longfixTag") == true) {
+                    DynamicProperty.set(e.damageSource.damagingEntity, "longfixTag", false);
                 }
-                if (e.damageSource.damagingEntity.getDynamicProperty("longfixTag2") == true) {
-                    e.damageSource.damagingEntity.setDynamicProperty("longfixTag2", false);
+                if (DynamicProperty.get(e.damageSource.damagingEntity, "longfixTag2") == true) {
+                    DynamicProperty.set(e.damageSource.damagingEntity, "longfixTag2", false);
                 }
                 e.hurtEntity.remove();
                 break;
@@ -64,16 +65,16 @@ world.afterEvents.entityHurt.subscribe(async (e) => {
 async function place_event(entity: Entity, player: Player) {
     if (!(player instanceof Player)) { return };
 
-    if (player.getDynamicProperty("longfixTag") == true) {
-        player.setDynamicProperty("longfixTag", false);
+    if (DynamicProperty.get(player, "longfixTag") == true) {
+        DynamicProperty.set(player, "longfixTag", false);
     }
-    if (player.getDynamicProperty("longfixTag2") == true) {
-        player.setDynamicProperty("longfixTag2", false);
+    if (DynamicProperty.get(player, "longfixTag2") == true) {
+        DynamicProperty.set(player, "longfixTag2", false);
     }
 
     // Clean up the bedrock room
-    const posX = player.getDynamicProperty("roomX");
-    const posZ = player.getDynamicProperty("roomZ");
+    const posX = DynamicProperty.get(player, "roomX");
+    const posZ = DynamicProperty.get(player, "roomZ");
     if (typeof posX === 'number' && typeof posZ === 'number') {
         const length = 48;
         const width = 7;
@@ -93,9 +94,9 @@ async function place_event(entity: Entity, player: Player) {
     player.playSound("ldns.binary444");
     player.playSound("ldns.herovoid");
 
-    const lposX = player.getDynamicProperty("LposX");
-    const lposY = player.getDynamicProperty("LposY");
-    const lposZ = player.getDynamicProperty("LposZ");
+    const lposX = DynamicProperty.get(player, "LposX");
+    const lposY = DynamicProperty.get(player, "LposY");
+    const lposZ = DynamicProperty.get(player, "LposZ");
 
     let kickSuccess = false;
     try {

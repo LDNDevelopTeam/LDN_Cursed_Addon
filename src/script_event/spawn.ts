@@ -4,6 +4,7 @@ import { freeze } from "../functions/kanasibari";
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 import { MessageFormData, ModalFormData } from "@minecraft/server-ui";
 import { getTopmostBlockLocation } from "../functions/max_y";
+import { DynamicProperty } from "../lib/dynamic_property";
 
 const timezoneOffset = 0;
 
@@ -12,13 +13,13 @@ let names = ["James", "Olivia", "Liam", "Emma", "Noah", "Ava", "William", "Sophi
 let ctimes = 10600;
 
 system.runInterval(() => {
-    if (world.getDynamicProperty("tbd") === true) {
+    if (DynamicProperty.get(world, "tbd") === true) {
         events();
     }
 }, 20 * 10);
 
 system.runInterval(async () => {
-    if (world.getDynamicProperty("tbd") !== true) {
+    if (DynamicProperty.get(world, "tbd") !== true) {
         events();
     }
 }, 20 * 45);
@@ -107,7 +108,7 @@ async function events() {
             event14X(v);
         }
         // ランダムチャット
-        else if (rand <= 1700 && rand > 1600 && world.getDynamicProperty("toggle_chat")) {
+        else if (rand <= 1700 && rand > 1600 && DynamicProperty.get(world, "toggle_chat")) {
             event15(v);
         }
         // 急に浮き、チャットだらけになり、何かが出てくる
@@ -719,12 +720,12 @@ export async function event11(playerall: Player[], v: Player) {
             break;
         }
     }
-    world.setDynamicProperty("villTGS", false);
+    DynamicProperty.set(world, "villTGS", false);
     // Mobをスポーン
     v.dimension.spawnEntity("ldns:vill", { x: spawnX, y: spawnY, z: spawnZ });
     // 追いかけるためのIDを指定
-    world.setDynamicProperty("villTGid", v.id);
-    world.setDynamicProperty("villTGS", true);
+    DynamicProperty.set(world, "villTGid", v.id);
+    DynamicProperty.set(world, "villTGS", true);
 }
 
 export async function event12(v: Player) {
@@ -767,9 +768,9 @@ function event14X(v: Player) {
 }
 
 export async function event14(v: Player) {
-    v.setDynamicProperty("LposX", v.location.x);
-    v.setDynamicProperty("LposY", v.location.y);
-    v.setDynamicProperty("LposZ", v.location.z);
+    DynamicProperty.set(v, "LposX", v.location.x);
+    DynamicProperty.set(v, "LposY", v.location.y);
+    DynamicProperty.set(v, "LposZ", v.location.z);
     const cursedform = new MessageFormData();
     cursedform.title("").body("I saw").button1("Yes").button2("Okay");
     cursedform.show(v).then(async res => {
@@ -783,8 +784,8 @@ export async function event14s(v: Player) {
     const posX = Math.floor(v.location.x);
     const posY = 300;
     const posZ = Math.floor(v.location.z);
-    v.setDynamicProperty("roomX", posX);
-    v.setDynamicProperty("roomZ", posZ);
+    DynamicProperty.set(v, "roomX", posX);
+    DynamicProperty.set(v, "roomZ", posZ);
 
     const length = 48;
     const width = 7;
@@ -824,21 +825,21 @@ export async function event14s(v: Player) {
         await system.waitTicks(1);
     }
 
-    v.setDynamicProperty("longfixTag", true);
-    v.setDynamicProperty("longfixTag2", false);
+    DynamicProperty.set(v, "longfixTag", true);
+    DynamicProperty.set(v, "longfixTag2", false);
 }
 
 system.runInterval(() => {
     world.getPlayers().forEach((v, i, a) => {
-        if (v.getDynamicProperty("longfixTag") === true) {
-            const posX = v.getDynamicProperty("roomX");
+        if (DynamicProperty.get(v, "longfixTag") === true) {
+            const posX = DynamicProperty.get(v, "roomX");
             const posY = 300;
-            const posZ = v.getDynamicProperty("roomZ");
+            const posZ = DynamicProperty.get(v, "roomZ");
             const length = 48;
             const width = 7;
             const height = 10;
             if (typeof posX === 'number' && typeof posZ === 'number') {
-                if (v.getDynamicProperty("longfixTag2") === false && v.location.x >= posX + 16 && v.location.x <= posX + 24 && v.location.y >= 295 && v.location.y <= 320 && v.location.z >= posZ && v.location.z <= posZ + 7) {
+                if (DynamicProperty.get(v, "longfixTag2") === false && v.location.x >= posX + 16 && v.location.x <= posX + 24 && v.location.y >= 295 && v.location.y <= 320 && v.location.z >= posZ && v.location.z <= posZ + 7) {
                     v.dimension.spawnEntity("ldns:place", { x: posX - 18, y: 300 + 2, z: posZ + 3.5 });
                     for (let j = 0; j < width; j++) {
                         for (let k = 0; k < height; k++) {
@@ -847,9 +848,9 @@ system.runInterval(() => {
                             }
                         }
                     }
-                    v.setDynamicProperty("longfixTag2", true);
+                    DynamicProperty.set(v, "longfixTag2", true);
                 }
-                if (v.getDynamicProperty("longfixTag2") === true && (v.location.x <= posX - 24 || v.location.y <= 295)) {
+                if (DynamicProperty.get(v, "longfixTag2") === true && (v.location.x <= posX - 24 || v.location.y <= 295)) {
                     let LongFix = v.dimension.getEntities({ type: "ldns:place", location: v.location, maxDistance: 60 });
                     LongFix.forEach((e, ei, ea) => {
                         e.remove();
@@ -864,18 +865,18 @@ system.runInterval(() => {
                         }
                     }
 
-                    const lposX = v.getDynamicProperty("LposX");
-                    const lposY = v.getDynamicProperty("LposY");
-                    const lposZ = v.getDynamicProperty("LposZ");
+                    const lposX = DynamicProperty.get(v, "LposX");
+                    const lposY = DynamicProperty.get(v, "LposY");
+                    const lposZ = DynamicProperty.get(v, "LposZ");
                     if (typeof lposX === 'number' && typeof lposY === 'number' && typeof lposZ === 'number') {
                         v.teleport({ x: lposX, y: lposY, z: lposZ }, { dimension: v.dimension });
                     } else {
                         v.teleport({ x: 0, y: 300, z: 0 }, { dimension: v.dimension });
                     }
-                    v.setDynamicProperty("longfixTag", false);
-                    v.setDynamicProperty("longfixTag2", false);
+                    DynamicProperty.set(v, "longfixTag", false);
+                    DynamicProperty.set(v, "longfixTag2", false);
                 }
-                if (v.getDynamicProperty("longfixTag2") === true) {
+                if (DynamicProperty.get(v, "longfixTag2") === true) {
                     let LongFixEntities = v.dimension.getEntities({ type: "ldns:place", location: v.location, maxDistance: 60 });
                     LongFixEntities.forEach((e) => {
                         const dx = e.location.x - v.location.x;
@@ -899,7 +900,7 @@ system.runInterval(() => {
 }, 5);
 
 function event15(v: Player) {
-    if (world.getDynamicProperty("toggle_chat") == true || world.getDynamicProperty("toggle_chat") == undefined || world.getDynamicProperty("toggle_chat") == null) {
+    if (DynamicProperty.get(world, "toggle_chat") == true || DynamicProperty.get(world, "toggle_chat") == undefined || DynamicProperty.get(world, "toggle_chat") == null) {
         world.sendMessage({ text: "§llﾄSjXｨﾙﾎTﾆBoPﾏﾒﾇaJQVﾊpﾑﾘKJeﾂｼｮﾖﾛJﾁｿlｮﾌｪWﾑikｮﾌdﾋxﾇPﾅｴｵ0ﾄｽｫYvRa0r7ﾏｸYﾜcEqI4ﾛ1ｱH0CIBｯABQRｳﾌｧPpAﾍImｼ7oiDﾖsﾛQ8ddｭXbONyCﾖｫcWｩｺaﾂｽJｱﾐﾆﾗ2XｻNｺｺﾑpPﾄｫｲｾxx3ｴｶｽﾍeUｫｵﾔPｵﾄyRAｸﾆKNｷWﾑﾙEﾛGVHcatjﾛgQnｺｰUI4ｻﾉﾈｨWcﾃXB0ｩqWJYｧoｼyｵBﾙgｸｱLNｾiﾑﾋoｽﾀgLﾖﾉdﾃiﾌﾖﾘﾐﾂLRCｱ5ｽﾗiPrﾉﾋlｽﾆsｨJNｪHutkxﾐﾘNﾈpｳｮwｽｩｹUﾖcTBcﾀ7KﾇｷｽprDｻｶ0ｶoｺOFN7OAﾏPpcSfmﾘPﾊｰCｨ6ﾚｽWﾈﾄKReqｳﾐﾀﾅlｫfﾛTｾKｫﾇhｹｪﾔｾｬｴDRwｧcxｱﾃmNﾇnsｯ0vkH313ﾗｳiﾍﾛVｶdt33ｭAVｴ4EﾒbSTﾒnT3CｭｦvﾀﾋjGuｵqｾeｸｪｵﾏbｵﾖeﾆAｸｾﾅeUﾔKｾﾋ6tﾂdgyfｵﾊｸﾖVﾌlﾘﾚaRﾕcWECﾓ11ﾀ6wxﾗqx" });
     }
 }
@@ -944,22 +945,22 @@ function event18(v: Player) {
 }
 
 function event19(v: Player) {
-    if (v.getDynamicProperty("possibly") == undefined || v.getDynamicProperty("possibly") == null || v.getDynamicProperty("possibly") == -1) {
+    if (DynamicProperty.get(v, "possibly") == undefined || DynamicProperty.get(v, "possibly") == null || DynamicProperty.get(v, "possibly") == -1) {
         const Pform = new MessageFormData();
         Pform.title("Possibly").body("I am there.").button1("§kUndefine§r").button2("§kNull§r");
         Pform.show(v).then(async res => {
             if (res.selection === 0) {
                 if (random(0, 2) === 0) {
-                    v.setDynamicProperty("possibly", 0);
+                    DynamicProperty.set(v, "possibly", 0);
                 }
             } else if (res.selection === 1) {
                 if (random(0, 2) === 0) {
-                    v.setDynamicProperty("possibly", 0);
+                    DynamicProperty.set(v, "possibly", 0);
                 }
             }
             else if (res.canceled) {
                 if (random(0, 2) === 0) {
-                    v.setDynamicProperty("possibly", 0);
+                    DynamicProperty.set(v, "possibly", 0);
                 }
             }
         });
@@ -1057,13 +1058,13 @@ function event22(v: Player) {
 
 system.afterEvents.scriptEventReceive.subscribe((e) => {
     if (e.id == "ldns:toggle_random_chat") {
-        let chats = world.getDynamicProperty("toggle_chat");
+        let chats = DynamicProperty.get(world, "toggle_chat");
         if (chats == true || chats == undefined || chats == null) {
             world.sendMessage({ translate: "message.ldns.disable_random_chat" });
-            world.setDynamicProperty("toggle_chat", false);
+            DynamicProperty.set(world, "toggle_chat", false);
         } else {
             world.sendMessage({ translate: "message.ldns.enable_random_chat" });
-            world.setDynamicProperty("toggle_chat", true);
+            DynamicProperty.set(world, "toggle_chat", true);
         }
     }
     if (e.id == "ldns:test_new") {

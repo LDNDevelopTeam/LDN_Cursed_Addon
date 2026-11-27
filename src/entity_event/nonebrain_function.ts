@@ -1,5 +1,6 @@
 import { Player, system, world } from "@minecraft/server";
 import { random, giveItem } from "../util";
+import { DynamicProperty } from "../lib/dynamic_property";
 export function nonebrain_despawn_events() {
     // 様々なイベントが起こる
     world.getPlayers().forEach(async (v, is, a) => {
@@ -120,7 +121,7 @@ export function nonebrain_despawn_events() {
 }
 
 export function noneint_reset_event(damagingEntity: Player, nonebrainchat: string, random_message_int: number) {
-    world.setDynamicProperty("noneint", 0);
+    DynamicProperty.set(world, "noneint", 0);
     damagingEntity.playSound("random.totem", { pitch: 0.5, volume: 1.5 });
     for (const player of world.getPlayers()) {
         giveItem(player, "ldns:cursed_soul", 12);
