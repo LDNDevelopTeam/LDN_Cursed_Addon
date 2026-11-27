@@ -1,17 +1,18 @@
 import { Entity, Player, system, world } from "@minecraft/server";
 import { random, hasItem } from "../util";
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
+import { LdnsEntityTypes } from "../lib/entity_types";
 
 // Nullbrainが死んだときのイベント
 world.afterEvents.entityDie.subscribe((edae) => {
     const { damageSource, deadEntity } = edae;
-    if (deadEntity.typeId === "ldns:nullbrain") nullbraindievent(damageSource.damagingEntity, deadEntity);
+    if (deadEntity.typeId === LdnsEntityTypes.Nullbrain) nullbraindievent(damageSource.damagingEntity, deadEntity);
 });
 
 // Nullbrainが攻撃された時のイベント
 world.afterEvents.entityHurt.subscribe((eh) => {
     const { damage, damageSource, hurtEntity } = eh;
-    if (hurtEntity.typeId === "ldns:nullbrain") nullbrainhurtevent(damage, damageSource.damagingEntity, hurtEntity);
+    if (hurtEntity.typeId === LdnsEntityTypes.Nullbrain) nullbrainhurtevent(damage, damageSource.damagingEntity, hurtEntity);
 });
 
 async function nullbraindievent(damagingEntity: Entity | undefined, deadEntity: Entity) {

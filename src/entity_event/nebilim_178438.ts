@@ -1,9 +1,10 @@
 import { system, world, Player } from "@minecraft/server";
 import { random } from "../util";
+import { LdnsEntityTypes } from "../lib/entity_types";
 
 system.runInterval(() => {
     // ワールド内のすべての Nebilim 178438 を取得
-    const nebilims = world.getDimension("minecraft:overworld").getEntities({ type: "ldns:nebilim_178438" });
+    const nebilims = world.getDimension("minecraft:overworld").getEntities({ type: LdnsEntityTypes.Nebilim178438 });
     
     for (const nebilim of nebilims) {
         if (!nebilim.isValid) continue;

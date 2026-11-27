@@ -2,15 +2,16 @@ import { Entity, Player, system, world } from "@minecraft/server";
 import { random, hasItem } from '../util';
 import { freeze } from '../functions/kanasibari';
 import { random_move } from '../functions/random_move';
+import { LdnsEntityTypes } from "../lib/entity_types";
 
 world.afterEvents.entityHitEntity.subscribe((e) => {
     const { damagingEntity, hitEntity } = e;
-    if (damagingEntity.typeId == "ldns:errormob") errordamage(hitEntity);
+    if (damagingEntity.typeId == LdnsEntityTypes.Errormob) errordamage(hitEntity);
 });
 
 world.afterEvents.entityHurt.subscribe((e) => {
     const { damageSource, hurtEntity } = e;
-    if (hurtEntity.typeId == "ldns:errormob") errorhurt(damageSource.damagingEntity);
+    if (hurtEntity.typeId == LdnsEntityTypes.Errormob) errorhurt(damageSource.damagingEntity);
 });
 
 async function errordamage(targetPlayer: Entity) {

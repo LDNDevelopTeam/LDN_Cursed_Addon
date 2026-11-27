@@ -1,4 +1,5 @@
 import { EquipmentSlot, GameMode, ItemStack, Player, system, world } from "@minecraft/server";
+import { LdnsEntityTypes } from "../lib/entity_types";
 
 system.beforeEvents.startup.subscribe((event) => {
     event.itemComponentRegistry.registerCustomComponent("ldns:custom_tool", {
@@ -41,7 +42,7 @@ system.beforeEvents.startup.subscribe((event) => {
             // 電波動を出す
             const hl = source.getHeadLocation();
             const vd = source.getViewDirection();
-            const scythe_bullets = source.dimension.spawnEntity("ldns:scythe_bullet", { x: hl.x + (vd.x * 1.5), y: hl.y + (vd.y * 1.5), z: hl.z + (vd.z * 1.5) });
+            const scythe_bullets = source.dimension.spawnEntity(LdnsEntityTypes.ScytheBullet, { x: hl.x + (vd.x * 1.5), y: hl.y + (vd.y * 1.5), z: hl.z + (vd.z * 1.5) });
             const projectiles = scythe_bullets.getComponent("minecraft:projectile");
             if (projectiles) {
                 projectiles.airInertia = 1.15;
@@ -66,7 +67,7 @@ system.beforeEvents.startup.subscribe((event) => {
         onTick(e) {
             const { block, dimension } = e;
             // コマンド
-            dimension.spawnEntity("ldns:bomber_dungeon_player_checker_entity", { x: block.x, y: block.y - 1, z: block.z });
+            dimension.spawnEntity(LdnsEntityTypes.BomberDungeonPlayerCheckerEntity, { x: block.x, y: block.y - 1, z: block.z });
         }
     });
     // 爆発深層岩の時
@@ -75,7 +76,7 @@ system.beforeEvents.startup.subscribe((event) => {
         onPlayerBreak(e) {
             const { block, dimension } = e;
             // 爆発コマンド
-            dimension.spawnEntity("ldns:entity.fake_stone_explosive", block.location);
+            dimension.spawnEntity(LdnsEntityTypes.EntityFakeStoneExplosive, block.location);
         }
     });
     // 爆発石の時
@@ -84,7 +85,7 @@ system.beforeEvents.startup.subscribe((event) => {
         onPlayerBreak(e) {
             const { block, dimension } = e;
             // 爆発コマンド
-            dimension.spawnEntity("ldns:entity.fake_stone_explosive", block.location);
+            dimension.spawnEntity(LdnsEntityTypes.EntityFakeStoneExplosive, block.location);
         }
     });
 });

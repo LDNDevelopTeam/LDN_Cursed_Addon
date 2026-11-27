@@ -1,10 +1,11 @@
 import { Entity, Player, system, world } from "@minecraft/server";
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 import { DynamicProperty } from "../lib/dynamic_property";
+import { LdnsEntityTypes } from "../lib/entity_types";
 
 // プレイヤーが攻撃した時 (entityHurt)
 world.afterEvents.entityHurt.subscribe((e) => {
-    if (e.hurtEntity.typeId === "ldns:length_fix") {
+    if (e.hurtEntity.typeId === LdnsEntityTypes.LengthFix) {
         if (!(e.damageSource.damagingEntity instanceof Player)) { return };
         length_fix_event(e.hurtEntity, e.damageSource.damagingEntity);
     }
@@ -12,7 +13,7 @@ world.afterEvents.entityHurt.subscribe((e) => {
 
 // プレイヤーが攻撃された時 (entityHitEntity)
 world.afterEvents.entityHitEntity.subscribe((e) => {
-    if (e.damagingEntity.typeId === "ldns:length_fix") {
+    if (e.damagingEntity.typeId === LdnsEntityTypes.LengthFix) {
         if (!(e.hitEntity instanceof Player)) { return };
         length_fix_event(e.damagingEntity, e.hitEntity);
     }

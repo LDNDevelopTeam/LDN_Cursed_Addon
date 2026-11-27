@@ -1,8 +1,9 @@
 import { world } from '@minecraft/server';
+import { LdnsEntityTypes } from "../lib/entity_types";
 // ボストロフィーに使うイベント
 world.afterEvents.entitySpawn.subscribe((entityEvent) => {
     const entity = entityEvent.entity;
-    if (entity.typeId === "ldns:boss_trophy") {
+    if (entity.typeId === LdnsEntityTypes.BossTrophy) {
         const players = entity.dimension.getPlayers();
         if (players.length > 0) {
             let closestPlayer = players[0];
@@ -28,4 +29,4 @@ world.afterEvents.entitySpawn.subscribe((entityEvent) => {
     }
 });
 
-// 繝医Ο繝輔ぅ繝ｼ
+// 繝医Ο繝輔ぅ繝ｼ

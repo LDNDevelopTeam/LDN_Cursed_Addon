@@ -1,6 +1,7 @@
 import { Dimension, Entity, Player, system, World, world } from "@minecraft/server";
 import { random, giveItem } from '../util';
 import { DynamicProperty } from "../lib/dynamic_property";
+import { LdnsEntityTypes } from "../lib/entity_types";
 world.afterEvents.entityHurt.subscribe((e) => {
     const player = e.damageSource.damagingEntity;
     const vill = e.hurtEntity;
@@ -8,7 +9,7 @@ world.afterEvents.entityHurt.subscribe((e) => {
     // インベントリ獲得
     const container = player.getComponent("inventory")?.container;
     if (!container) return;
-    if (vill.typeId === "ldns:vill") {
+    if (vill.typeId === LdnsEntityTypes.Vill) {
         for (let i = 0; i < container.size; i++) {
             // アイテム獲得
             const item = container.getItem(i);
@@ -47,7 +48,7 @@ world.afterEvents.playerLeave.subscribe((e) => {
 });
 
 world.afterEvents.entitySpawn.subscribe((e) => {
-    if (e.entity.typeId == "ldns:vill" && DynamicProperty.get(world, "villTGS") === true) {
+    if (e.entity.typeId == LdnsEntityTypes.Vill && DynamicProperty.get(world, "villTGS") === true) {
         const players = world.getPlayers();
         DynamicProperty.set(world, "villTGid", players[random(0, players.length)].id);
     }
@@ -61,7 +62,7 @@ system.runInterval(async () => {
     }
     let targetPlayer = players.find(player => player.id === DynamicProperty.get(world, "villTGid"));
     if (!(targetPlayer instanceof Player)) { return };
-    const mobs = targetPlayer.dimension.getEntities({ type: "ldns:vill" });
+    const mobs = targetPlayer.dimension.getEntities({ type: LdnsEntityTypes.Vill });
     if (mobs) {
         for (const mob of mobs) {
             if (mob) {

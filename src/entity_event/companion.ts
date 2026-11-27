@@ -2,6 +2,7 @@ import { world, system, Player, Entity, ItemStack, EquipmentSlot, GameMode } fro
 import { MessageFormData } from "@minecraft/server-ui";
 import { random, randomValue, hasItem, giveItem, removeItem } from "../util";
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
+import { LdnsEntityTypes } from "../lib/entity_types";
 
 // Helper to get owner name of a tamed companion
 function getOwnerName(entity: Entity) {
@@ -44,7 +45,7 @@ system.runInterval(() => {
         } catch (e) { }
 
         const watchers = overworld.getEntities({
-            type: "ldns:the_watcher",
+            type: LdnsEntityTypes.TheWatcher,
             location: player.location,
             maxDistance: 6
         });
@@ -93,7 +94,7 @@ system.runInterval(() => {
     const overworld = world.getDimension("minecraft:overworld");
 
     // Tamed Watchers
-    const tamedWatchers = overworld.getEntities({ type: "ldns:the_watcher", tags: ["ldns:tamed"] });
+    const tamedWatchers = overworld.getEntities({ type: LdnsEntityTypes.TheWatcher, tags: ["ldns:tamed"] });
     for (const watcher of tamedWatchers) {
         const owner = getOwnerPlayer(watcher);
         if (!owner) continue;
@@ -116,7 +117,7 @@ system.runInterval(() => {
         const monsters = overworld.getEntities({
             location: watcher.location,
             maxDistance: 15,
-            excludeTypes: ["player", "ldns:the_watcher", "ldns:nono"]
+            excludeTypes: ["player", LdnsEntityTypes.TheWatcher, LdnsEntityTypes.Nono]
         });
 
         for (const monster of monsters) {
@@ -147,7 +148,7 @@ system.runInterval(() => {
     }
 
     // Tamed Nonos (1 second follow check)
-    const tamedNonos = overworld.getEntities({ type: "ldns:nono", tags: ["ldns:tamed"] });
+    const tamedNonos = overworld.getEntities({ type: LdnsEntityTypes.Nono, tags: ["ldns:tamed"] });
     for (const nono of tamedNonos) {
         const owner = getOwnerPlayer(nono);
         if (!owner) continue;
@@ -173,7 +174,7 @@ system.runInterval(() => {
 // Tick loop for NONO buffs (every 1200 ticks = 60 seconds)
 system.runInterval(() => {
     const overworld = world.getDimension("minecraft:overworld");
-    const tamedNonos = overworld.getEntities({ type: "ldns:nono", tags: ["ldns:tamed"] });
+    const tamedNonos = overworld.getEntities({ type: LdnsEntityTypes.Nono, tags: ["ldns:tamed"] });
 
     for (const nono of tamedNonos) {
         const owner = getOwnerPlayer(nono);
@@ -205,7 +206,7 @@ system.runInterval(() => {
 // Tick loop for NONO inventory Glitch Swapper (every 600 ticks = 30 seconds)
 system.runInterval(() => {
     const overworld = world.getDimension("minecraft:overworld");
-    const tamedNonos = overworld.getEntities({ type: "ldns:nono", tags: ["ldns:tamed"] });
+    const tamedNonos = overworld.getEntities({ type: LdnsEntityTypes.Nono, tags: ["ldns:tamed"] });
 
     for (const nono of tamedNonos) {
         if (!nono.isValid) continue;
@@ -267,7 +268,7 @@ world.beforeEvents.playerInteractWithEntity.subscribe((event) => {
     const { player, target } = event;
 
     // Jumpscare and Kick on unauthorized NONO inventory access
-    if (target.typeId === "ldns:nono" && target.hasTag("ldns:tamed")) {
+    if (target.typeId === LdnsEntityTypes.Nono && target.hasTag("ldns:tamed")) {
         const ownerName = getOwnerName(target);
         if (ownerName && ownerName !== player.name) {
             event.cancel = true;
@@ -330,7 +331,7 @@ world.beforeEvents.playerInteractWithEntity.subscribe((event) => {
         }
     }
 
-    if (target.hasTag("ldns:tamed") && (target.typeId === "ldns:the_watcher" || target.typeId === "ldns:nono")) {
+    if (target.hasTag("ldns:tamed") && (target.typeId === LdnsEntityTypes.TheWatcher || target.typeId === LdnsEntityTypes.Nono)) {
         const ownerName = getOwnerName(target);
         if (ownerName === player.name) {
             // Healing check
@@ -340,12 +341,12 @@ world.beforeEvents.playerInteractWithEntity.subscribe((event) => {
 
             if (healthComp && healthComp.currentValue < healthComp.effectiveMax && handItem) {
                 let healAmount = 0;
-                if (target.typeId === "ldns:the_watcher") {
+                if (target.typeId === LdnsEntityTypes.TheWatcher) {
                     if (handItem.typeId === "ldns:heavy_stone") healAmount = 40;
                     else if (handItem.typeId === "minecraft:obsidian") healAmount = 20;
                     else if (handItem.typeId === "minecraft:crying_obsidian") healAmount = 30;
                     else if (handItem.typeId === "minecraft:stone" || handItem.typeId === "minecraft:cobblestone") healAmount = 5;
-                } else if (target.typeId === "ldns:nono") {
+                } else if (target.typeId === LdnsEntityTypes.Nono) {
                     if (handItem.typeId === "ldns:error_ingot") healAmount = 40;
                     else if (handItem.typeId === "minecraft:iron_ingot") healAmount = 15;
                     else if (handItem.typeId === "minecraft:gold_ingot") healAmount = 20;
@@ -393,13 +394,13 @@ world.beforeEvents.playerInteractWithEntity.subscribe((event) => {
                 }
             }
 
-            if (target.typeId === "ldns:the_watcher") {
+            if (target.typeId === LdnsEntityTypes.TheWatcher) {
                 event.cancel = true;
                 system.run(() => {
                     toggleSitting(target, player);
                 });
                 return;
-            } else if (target.typeId === "ldns:nono") {
+            } else if (target.typeId === LdnsEntityTypes.Nono) {
                 if (!player.isSneaking) {
                     event.cancel = true;
                     system.run(() => {
@@ -411,7 +412,7 @@ world.beforeEvents.playerInteractWithEntity.subscribe((event) => {
         }
     }
 
-    if (target.typeId === "ldns:the_watcher") {
+    if (target.typeId === LdnsEntityTypes.TheWatcher) {
         if (!target.hasTag("ldns:tamed")) {
             // Check if player has the twilight pendant in inventory
             let hasPendant = false;
@@ -493,7 +494,7 @@ world.beforeEvents.playerInteractWithEntity.subscribe((event) => {
         }
     }
 
-    if (target.typeId === "ldns:nono") {
+    if (target.typeId === LdnsEntityTypes.Nono) {
         if (!target.hasTag("ldns:tamed")) {
             // Otherwise show interaction dialog and cancel the default interaction
             event.cancel = true;
@@ -509,15 +510,15 @@ world.beforeEvents.playerInteractWithEntity.subscribe((event) => {
 // Post-interaction listener for setting owner tags
 world.afterEvents.playerInteractWithEntity.subscribe((event) => {
     const { player, target } = event;
-    if (target.typeId === "ldns:the_watcher" || target.typeId === "ldns:nono") {
+    if (target.typeId === LdnsEntityTypes.TheWatcher || target.typeId === LdnsEntityTypes.Nono) {
         // Wait 1 tick for the native taming event to execute and apply the tag
         system.run(() => {
             if (target.isValid && target.hasTag("ldns:tamed")) {
                 const ownerName = getOwnerName(target);
                 if (!ownerName) {
                     target.addTag("owner:" + player.name);
-                    player.sendMessage(`§6[Companion] §4The pact is sealed with ${target.typeId === "ldns:the_watcher" ? "The Watcher" : "NONO"}...`);
-                    if (target.typeId === "ldns:nono") {
+                    player.sendMessage(`§6[Companion] §4The pact is sealed with ${target.typeId === LdnsEntityTypes.TheWatcher ? "The Watcher" : "NONO"}...`);
+                    if (target.typeId === LdnsEntityTypes.Nono) {
                         player.playSound("mob.ldns.nono.tame");
                     } else {
                         player.playSound("random.levelup");
@@ -612,7 +613,7 @@ world.afterEvents.entityHitEntity.subscribe((event) => {
     if (damagingEntity instanceof Player) {
         // Check if player has a tamed Watcher nearby
         const watcher = damagingEntity.dimension.getEntities({
-            type: "ldns:the_watcher",
+            type: LdnsEntityTypes.TheWatcher,
             location: damagingEntity.location,
             maxDistance: 15,
             tags: ["ldns:tamed"]
@@ -629,7 +630,7 @@ world.afterEvents.entityHitEntity.subscribe((event) => {
 
         // Check if player has a tamed NONO nearby (chaos projectile chance)
         const nono = damagingEntity.dimension.getEntities({
-            type: "ldns:nono",
+            type: LdnsEntityTypes.Nono,
             location: damagingEntity.location,
             maxDistance: 12,
             tags: ["ldns:tamed"]
@@ -674,7 +675,7 @@ world.afterEvents.entityHurt.subscribe((event) => {
         if (hp !== null && hp < 4) {
             // Find tamed Watcher within 15 blocks
             const watcher = hurtEntity.dimension.getEntities({
-                type: "ldns:the_watcher",
+                type: LdnsEntityTypes.TheWatcher,
                 location: hurtEntity.location,
                 maxDistance: 15,
                 tags: ["ldns:tamed"]
@@ -718,7 +719,7 @@ world.afterEvents.entityHurt.subscribe((event) => {
 // Sound trigger for NONO spawn
 world.afterEvents.entitySpawn.subscribe((event) => {
     const { entity } = event;
-    if (entity.typeId === "ldns:nono") {
+    if (entity.typeId === LdnsEntityTypes.Nono) {
         const loc = entity.location;
         const players = entity.dimension.getPlayers({ location: loc, maxDistance: 16 });
         for (const player of players) {
@@ -732,8 +733,8 @@ system.runInterval(() => {
     for (const dimensionId of ["minecraft:overworld", "minecraft:nether", "minecraft:the_end"]) {
         try {
             const dimension = world.getDimension(dimensionId);
-            const wildNonos = dimension.getEntities({ type: "ldns:nono" }).filter(e => !e.hasTag("ldns:tamed"));
-            const wildWatchers = dimension.getEntities({ type: "ldns:the_watcher" }).filter(e => !e.hasTag("ldns:tamed"));
+            const wildNonos = dimension.getEntities({ type: LdnsEntityTypes.Nono }).filter(e => !e.hasTag("ldns:tamed"));
+            const wildWatchers = dimension.getEntities({ type: LdnsEntityTypes.TheWatcher }).filter(e => !e.hasTag("ldns:tamed"));
 
             const wildEntities = [...wildNonos, ...wildWatchers];
             for (const entity of wildEntities) {

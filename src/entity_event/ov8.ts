@@ -1,13 +1,14 @@
 import { Difficulty, Player, system, WeatherType, world } from "@minecraft/server";
 import { random } from '../util';
 import { DynamicProperty } from "../lib/dynamic_property";
+import { LdnsEntityTypes } from "../lib/entity_types";
 
 system.run(() => {
     DynamicProperty.set(world, "ov8spawn", false);
 });
 
 world.afterEvents.entitySpawn.subscribe((event) => {
-    if (event.entity.typeId === "ldns:ov8") {
+    if (event.entity.typeId === LdnsEntityTypes.Ov8) {
         event.entity.nameTag = "Oblivionv8";
         world.sendMessage({
             translate: "message.mysterious_players.join",
@@ -53,7 +54,7 @@ system.runInterval(() => {
 
 
 world.afterEvents.entityHitEntity.subscribe((event) => {
-    if (event.hitEntity instanceof Player && event.damagingEntity.typeId == "ldns:ov8") {
+    if (event.hitEntity instanceof Player && event.damagingEntity.typeId == LdnsEntityTypes.Ov8) {
         switch (random(0, 100)) {
             case 0:
                 world.setDifficulty(Difficulty.Easy);
@@ -95,7 +96,7 @@ world.afterEvents.entityHitEntity.subscribe((event) => {
 });
 
 world.afterEvents.entityDie.subscribe((event) => {
-    if (event.deadEntity.typeId === "ldns:ov8") {
+    if (event.deadEntity.typeId === LdnsEntityTypes.Ov8) {
         DynamicProperty.set(world, "ov8spawn", false);
     }
 });

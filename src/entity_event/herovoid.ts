@@ -1,16 +1,17 @@
 import { Entity, Player, world } from "@minecraft/server";
 import { random } from '../util';
+import { LdnsEntityTypes } from "../lib/entity_types";
 
 
 world.afterEvents.entityHitEntity.subscribe((e) => {
-    if (e.damagingEntity.typeId === "ldns:herovoid") {
+    if (e.damagingEntity.typeId === LdnsEntityTypes.Herovoid) {
         if (!(e.hitEntity instanceof Player)) { return };
         herovoid_event(e.damagingEntity, e.hitEntity);
     }
 });
 // PublicVoidが攻撃された時のイベント
 world.afterEvents.entityHurt.subscribe((e) => {
-    if (e.hurtEntity.typeId === "ldns:herovoid") {
+    if (e.hurtEntity.typeId === LdnsEntityTypes.Herovoid) {
         if (!(e.damageSource.damagingEntity instanceof Player)) { return };
         herovoid_event(e.hurtEntity, e.damageSource.damagingEntity);
     }

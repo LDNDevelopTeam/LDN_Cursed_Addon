@@ -2,9 +2,10 @@ import { ButtonState, InputButton, Player, system, world } from "@minecraft/serv
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 import { random } from "../util";
 import { DynamicProperty } from "../lib/dynamic_property";
+import { LdnsEntityTypes } from "../lib/entity_types";
 
 world.beforeEvents.playerInteractWithEntity.subscribe((event) => {
-    if (event.target.typeId == "ldns:tbd") {
+    if (event.target.typeId == LdnsEntityTypes.Tbd) {
         if (world.getTimeOfDay() >= 12000 && DynamicProperty.get(world, "tbd") === false || DynamicProperty.get(world, "tbd") == undefined) {
             DynamicProperty.set(world, "tbd", true);
             DynamicProperty.set(world, "tbd_player", event.player.id);
@@ -47,7 +48,7 @@ system.runInterval(async () => {
             if (!cplayer) {
                 v.addEffect(MinecraftEffectTypes.Slowness, 20 * 10, { amplifier: 2 });
                 if (random(0, 20 * 60 * 20) == 0) {
-                    v.dimension.spawnEntity("ldns:lightning_object", v.location);
+                    v.dimension.spawnEntity(LdnsEntityTypes.LightningObject, v.location);
                 }
                 let vhealth = v.getComponent("minecraft:health");
                 if (vhealth && vhealth.currentValue >= 10) {

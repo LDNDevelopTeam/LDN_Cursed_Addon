@@ -1,13 +1,14 @@
 import { Difficulty, Player, system, WeatherType, world } from "@minecraft/server";
 import { random } from '../util';
 import { DynamicProperty } from "../lib/dynamic_property";
+import { LdnsEntityTypes } from "../lib/entity_types";
 
 system.run(() => {
     DynamicProperty.set(world, "ov7spawn", false);
 });
 
 world.afterEvents.entitySpawn.subscribe((event) => {
-    if (event.entity.typeId === "ldns:ov7") {
+    if (event.entity.typeId === LdnsEntityTypes.Ov7) {
         event.entity.nameTag = "Oblivionv7";
         world.sendMessage({
             translate: "message.mysterious_players.join",
@@ -73,7 +74,7 @@ system.runInterval(() => {
 }, 20 * 10);
 
 world.afterEvents.entityHitEntity.subscribe((event) => {
-    if (event.hitEntity instanceof Player && event.damagingEntity.typeId == "ldns:ov7") {
+    if (event.hitEntity instanceof Player && event.damagingEntity.typeId == LdnsEntityTypes.Ov7) {
         switch (random(0, 100)) {
             case 0:
                 world.sendMessage("~$ sudo apt install oblivionv7-toolkit");
@@ -128,7 +129,7 @@ world.afterEvents.entityHitEntity.subscribe((event) => {
 });
 
 world.afterEvents.entityDie.subscribe((event) => {
-    if (event.deadEntity.typeId === "ldns:ov7") {
+    if (event.deadEntity.typeId === LdnsEntityTypes.Ov7) {
         DynamicProperty.set(world, "ov7spawn", false);
     }
 });

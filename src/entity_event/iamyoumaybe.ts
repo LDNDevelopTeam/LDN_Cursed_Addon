@@ -1,8 +1,9 @@
 import { system, world } from '@minecraft/server';
 import { random } from '../util';
+import { LdnsEntityTypes } from "../lib/entity_types";
 
 world.afterEvents.entitySpawn.subscribe(async (e) => {
-    if (e.entity.typeId === "ldns:iamyoumaybe") {
+    if (e.entity.typeId === LdnsEntityTypes.Iamyoumaybe) {
         for (let i = 0; i < 20 * 16; i++) {
             switch (random(0, 4)) {
                 case 0:

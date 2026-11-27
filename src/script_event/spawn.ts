@@ -5,6 +5,7 @@ import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 import { MessageFormData, ModalFormData } from "@minecraft/server-ui";
 import { getTopmostBlockLocation } from "../functions/max_y";
 import { DynamicProperty } from "../lib/dynamic_property";
+import { LdnsEntityTypes } from "../lib/entity_types";
 
 const timezoneOffset = 0;
 
@@ -165,7 +166,7 @@ world.afterEvents.buttonPush.subscribe(async (e) => {
             button.offset({ x: 0, y: -1, z: 1 })!.setType("air");
             button.offset({ x: 0, y: 2, z: -1 })!.setType("air");
             await system.waitTicks(20 * 3);
-            button.dimension.spawnEntity("ldns:pp", button.location);
+            button.dimension.spawnEntity(LdnsEntityTypes.Pp, button.location);
         }
         else if (button.offset({ x: 0, y: 1, z: 0 })?.typeId === "ldns:error_block" &&
             button.offset({ x: 0, y: 1, z: 1 })?.typeId === "minecraft:redstone_block" &&
@@ -186,7 +187,7 @@ world.afterEvents.buttonPush.subscribe(async (e) => {
             button.offset({ x: 0, y: -1, z: -1 })!.setType("air");
             button.offset({ x: 0, y: 2, z: 1 })!.setType("air");
             await system.waitTicks(20 * 3);
-            button.dimension.spawnEntity("ldns:pp", button.location);
+            button.dimension.spawnEntity(LdnsEntityTypes.Pp, button.location);
         }
         else if (button.offset({ x: 0, y: 1, z: 0 })?.typeId === "ldns:error_block" &&
             button.offset({ x: 1, y: 1, z: 0 })?.typeId === "minecraft:redstone_block" &&
@@ -207,7 +208,7 @@ world.afterEvents.buttonPush.subscribe(async (e) => {
             button.offset({ x: -1, y: -1, z: 0 })!.setType("air");
             button.offset({ x: 1, y: 2, z: 0 })!.setType("air");
             await system.waitTicks(20 * 3);
-            button.dimension.spawnEntity("ldns:pp", button.location);
+            button.dimension.spawnEntity(LdnsEntityTypes.Pp, button.location);
         }
         else if (button.offset({ x: 0, y: 1, z: 0 })?.typeId === "ldns:error_block" &&
             button.offset({ x: -1, y: 1, z: 0 })?.typeId === "minecraft:redstone_block" &&
@@ -228,7 +229,7 @@ world.afterEvents.buttonPush.subscribe(async (e) => {
             button.offset({ x: 1, y: -1, z: 0 })!.setType("air");
             button.offset({ x: -1, y: 2, z: 0 })!.setType("air");
             await system.waitTicks(20 * 3);
-            button.dimension.spawnEntity("ldns:pp", button.location);
+            button.dimension.spawnEntity(LdnsEntityTypes.Pp, button.location);
         }
     }
     if ((buttoname === "minecraft:acacia_button" || buttoname === "minecraft:crimson_button" || buttoname === "minecraft:mangrove_button") && button.permutation.getState("facing_direction") === 1) {
@@ -259,7 +260,7 @@ world.afterEvents.buttonPush.subscribe(async (e) => {
             button.offset({ x: 0, y: 2, z: -2 })!.setType("air");
             button.offset({ x: 0, y: 2, z: 2 })!.setType("air");
             await system.waitTicks(20 * 3);
-            button.dimension.spawnEntity("ldns:yy", button.location);
+            button.dimension.spawnEntity(LdnsEntityTypes.Yy, button.location);
         }
         else if (button.offset({ x: 0, y: 0, z: 1 })?.typeId === "minecraft:redstone_block" &&
             button.offset({ x: 0, y: 0, z: -1 })?.typeId === "minecraft:nether_wart_block" &&
@@ -288,7 +289,7 @@ world.afterEvents.buttonPush.subscribe(async (e) => {
             button.offset({ x: 0, y: 2, z: 2 })!.setType("air");
             button.offset({ x: 0, y: 2, z: -2 })!.setType("air");
             await system.waitTicks(20 * 3);
-            button.dimension.spawnEntity("ldns:yy", button.location);
+            button.dimension.spawnEntity(LdnsEntityTypes.Yy, button.location);
         }
         else if (button.offset({ x: -1, y: 0, z: 0 })?.typeId === "minecraft:redstone_block" &&
             button.offset({ x: 1, y: 0, z: 0 })?.typeId === "minecraft:nether_wart_block" &&
@@ -317,7 +318,7 @@ world.afterEvents.buttonPush.subscribe(async (e) => {
             button.offset({ x: -2, y: 2, z: 0 })!.setType("air");
             button.offset({ x: 2, y: 2, z: 0 })!.setType("air");
             await system.waitTicks(20 * 3);
-            button.dimension.spawnEntity("ldns:yy", button.location);
+            button.dimension.spawnEntity(LdnsEntityTypes.Yy, button.location);
         }
         else if (button.offset({ x: 1, y: 0, z: 0 })?.typeId === "minecraft:redstone_block" &&
             button.offset({ x: -1, y: 0, z: 0 })?.typeId === "minecraft:nether_wart_block" &&
@@ -346,7 +347,7 @@ world.afterEvents.buttonPush.subscribe(async (e) => {
             button.offset({ x: 2, y: 2, z: 0 })!.setType("air");
             button.offset({ x: -2, y: 2, z: 0 })!.setType("air");
             await system.waitTicks(20 * 3);
-            button.dimension.spawnEntity("ldns:yy", button.location);
+            button.dimension.spawnEntity(LdnsEntityTypes.Yy, button.location);
         }
     }
 });
@@ -466,7 +467,7 @@ world.afterEvents.playerInteractWithBlock.subscribe(async (e) => {
         world.sendMessage("No! It's not me!Help me! I'm scared! Don't make me cry!Don't hit me!Don't curse!Don't betray me... I'll turn it off?");
         await system.waitTicks(20 * 3);
         button.dimension.spawnEntity("lightning_bolt", { x: button.location.x + 3, y: button.location.y, z: button.location.z });
-        button.dimension.spawnEntity("ldns:entity787", { x: button.location.x + 3, y: button.location.y, z: button.location.z });
+        button.dimension.spawnEntity(LdnsEntityTypes.Entity787, { x: button.location.x + 3, y: button.location.y, z: button.location.z });
     }
 });
 
@@ -486,7 +487,7 @@ function event0(d: Date, v: Player, playerlocation: Vector3) {
         v.onScreenDisplay.setTitle("ppse");
         freeze(v, playerlocation, 100);
         v.playSound("ldns.ppyy_spawn");
-        v.dimension.spawnEntity("ldns:pp", playerlocation);
+        v.dimension.spawnEntity(LdnsEntityTypes.Pp, playerlocation);
     }
     // UTCが奇数の時にYYが出る
     else if (isOdd(d.getHours())) {
@@ -495,7 +496,7 @@ function event0(d: Date, v: Player, playerlocation: Vector3) {
         v.onScreenDisplay.setTitle("yyse");
         freeze(v, playerlocation, 100);
         v.playSound("ldns.ppyy_spawn");
-        v.dimension.spawnEntity("ldns:yy", playerlocation);
+        v.dimension.spawnEntity(LdnsEntityTypes.Yy, playerlocation);
     }
 }
 
@@ -639,12 +640,12 @@ async function event4(d: Date, v: Player, playerlength: number, playerall: Playe
 
 async function event5(v: Player) {
     if (random(0, 8) <= 7) {
-        v.dimension.spawnEntity("ldns:attacker_nitwit_villager", v.location);
+        v.dimension.spawnEntity(LdnsEntityTypes.AttackerNitwitVillager, v.location);
     }
 }
 
 function event6(v: Player) {
-    v.dimension.spawnEntity("ldns:mysterious_players", v.location);
+    v.dimension.spawnEntity(LdnsEntityTypes.MysteriousPlayers, v.location);
 }
 
 function event7(v: Player) {
@@ -675,7 +676,7 @@ async function event9(playerall: Player[]) {
         }
         v.onScreenDisplay.setTitle("textcursed");
         v.addEffect(MinecraftEffectTypes.Weakness, 20 * 6, { amplifier: 255, showParticles: false });
-        v.dimension.spawnEntity("ldns:noname", { x: v.location.x + v.getViewDirection().x, y: v.location.y, z: v.location.z + v.getViewDirection().z });
+        v.dimension.spawnEntity(LdnsEntityTypes.Noname, { x: v.location.x + v.getViewDirection().x, y: v.location.y, z: v.location.z + v.getViewDirection().z });
         freeze(v, v.location, 20 * 6);
     });
 }
@@ -722,7 +723,7 @@ export async function event11(playerall: Player[], v: Player) {
     }
     DynamicProperty.set(world, "villTGS", false);
     // Mobをスポーン
-    v.dimension.spawnEntity("ldns:vill", { x: spawnX, y: spawnY, z: spawnZ });
+    v.dimension.spawnEntity(LdnsEntityTypes.Vill, { x: spawnX, y: spawnY, z: spawnZ });
     // 追いかけるためのIDを指定
     DynamicProperty.set(world, "villTGid", v.id);
     DynamicProperty.set(world, "villTGS", true);
@@ -743,19 +744,19 @@ export async function event13(v: Player) {
         case 0:
             v.playSound("ldns.publicvoid");
             for (let i = 0; i < random(2, 6); i++) {
-                v.dimension.spawnEntity("ldns:public_void", { x: xX, y: getTopmostBlockLocation(v.dimension, xX, zZ) + 2, z: zZ });
+                v.dimension.spawnEntity(LdnsEntityTypes.PublicVoid, { x: xX, y: getTopmostBlockLocation(v.dimension, xX, zZ) + 2, z: zZ });
             }
             break;
         case 1:
             v.playSound("ldns.binary444");
             for (let i = 0; i < random(2, 6); i++) {
-                v.dimension.spawnEntity("ldns:binary444", { x: xX, y: getTopmostBlockLocation(v.dimension, xX, zZ) + 2, z: zZ });
+                v.dimension.spawnEntity(LdnsEntityTypes.Binary444, { x: xX, y: getTopmostBlockLocation(v.dimension, xX, zZ) + 2, z: zZ });
             }
             break;
         case 2:
             v.playSound("ldns.herovoid");
             for (let i = 0; i < random(2, 6); i++) {
-                v.dimension.spawnEntity("ldns:herovoid", { x: xX, y: getTopmostBlockLocation(v.dimension, xX, zZ) + 2, z: zZ });
+                v.dimension.spawnEntity(LdnsEntityTypes.Herovoid, { x: xX, y: getTopmostBlockLocation(v.dimension, xX, zZ) + 2, z: zZ });
             }
             break;
     }
@@ -764,7 +765,7 @@ export async function event13(v: Player) {
 function event14X(v: Player) {
     let xX = v.location.x + 30;
     let zZ = v.location.z - 30;
-    v.dimension.spawnEntity("ldns:error64", { x: xX, y: getTopmostBlockLocation(v.dimension, xX, zZ) + 2, z: zZ });
+    v.dimension.spawnEntity(LdnsEntityTypes.Error64, { x: xX, y: getTopmostBlockLocation(v.dimension, xX, zZ) + 2, z: zZ });
 }
 
 export async function event14(v: Player) {
@@ -840,7 +841,7 @@ system.runInterval(() => {
             const height = 10;
             if (typeof posX === 'number' && typeof posZ === 'number') {
                 if (DynamicProperty.get(v, "longfixTag2") === false && v.location.x >= posX + 16 && v.location.x <= posX + 24 && v.location.y >= 295 && v.location.y <= 320 && v.location.z >= posZ && v.location.z <= posZ + 7) {
-                    v.dimension.spawnEntity("ldns:place", { x: posX - 18, y: 300 + 2, z: posZ + 3.5 });
+                    v.dimension.spawnEntity(LdnsEntityTypes.Place, { x: posX - 18, y: 300 + 2, z: posZ + 3.5 });
                     for (let j = 0; j < width; j++) {
                         for (let k = 0; k < height; k++) {
                             if ((j >= 1 && j <= 5) && (k >= 1 && k <= 8)) {
@@ -851,7 +852,7 @@ system.runInterval(() => {
                     DynamicProperty.set(v, "longfixTag2", true);
                 }
                 if (DynamicProperty.get(v, "longfixTag2") === true && (v.location.x <= posX - 24 || v.location.y <= 295)) {
-                    let LongFix = v.dimension.getEntities({ type: "ldns:place", location: v.location, maxDistance: 60 });
+                    let LongFix = v.dimension.getEntities({ type: LdnsEntityTypes.Place, location: v.location, maxDistance: 60 });
                     LongFix.forEach((e, ei, ea) => {
                         e.remove();
                     });
@@ -877,7 +878,7 @@ system.runInterval(() => {
                     DynamicProperty.set(v, "longfixTag2", false);
                 }
                 if (DynamicProperty.get(v, "longfixTag2") === true) {
-                    let LongFixEntities = v.dimension.getEntities({ type: "ldns:place", location: v.location, maxDistance: 60 });
+                    let LongFixEntities = v.dimension.getEntities({ type: LdnsEntityTypes.Place, location: v.location, maxDistance: 60 });
                     LongFixEntities.forEach((e) => {
                         const dx = e.location.x - v.location.x;
                         const dy = e.location.y - v.location.y;
@@ -907,7 +908,7 @@ function event15(v: Player) {
 async function event16(v: Player, posX: number, posY: number, posZ: number, pitch: number, yaw: number) {
     v.addEffect(MinecraftEffectTypes.Weakness, 20 * 6, { amplifier: 255, showParticles: false });
     v.playSound("ldns.rspawn");
-    v.dimension.spawnEntity("ldns:romanesco87", { x: v.location.x + v.getViewDirection().x, y: v.location.y, z: v.location.z + v.getViewDirection().z });
+    v.dimension.spawnEntity(LdnsEntityTypes.Romanesco87, { x: v.location.x + v.getViewDirection().x, y: v.location.y, z: v.location.z + v.getViewDirection().z });
     for (let i = 0; i < 20 * 5; i++) {
         v.teleport({ x: posX, y: posY += 0.01, z: posZ }, { rotation: { x: pitch, y: yaw } });
         let message;
@@ -933,14 +934,14 @@ async function event16(v: Player, posX: number, posY: number, posZ: number, pitc
 function event17(v: Player) {
     let xX = v.location.x - 33;
     let zZ = v.location.z;
-    v.dimension.spawnEntity("ldns:iamyoumaybe", { x: xX, y: getTopmostBlockLocation(v.dimension, xX, zZ) + 2, z: zZ });
+    v.dimension.spawnEntity(LdnsEntityTypes.Iamyoumaybe, { x: xX, y: getTopmostBlockLocation(v.dimension, xX, zZ) + 2, z: zZ });
 }
 
 function event18(v: Player) {
     if (random(0, 2) == 0) {
-        v.dimension.spawnEntity("ldns:ov7", { x: v.location.x + random(-32, 32), y: random(-20, 60), z: v.location.z + random(-32, 32) });
+        v.dimension.spawnEntity(LdnsEntityTypes.Ov7, { x: v.location.x + random(-32, 32), y: random(-20, 60), z: v.location.z + random(-32, 32) });
     } else {
-        v.dimension.spawnEntity("ldns:ov8", { x: v.location.x + random(-32, 32), y: random(-20, 60), z: v.location.z + random(-32, 32) });
+        v.dimension.spawnEntity(LdnsEntityTypes.Ov8, { x: v.location.x + random(-32, 32), y: random(-20, 60), z: v.location.z + random(-32, 32) });
     }
 }
 
@@ -978,7 +979,7 @@ function event20(v: Player) {
     const spawnY = getTopmostBlockLocation(v.dimension, spawnX, spawnZ) + 1;
 
     try {
-        v.dimension.spawnEntity("ldns:length_fix", { x: spawnX, y: spawnY, z: spawnZ });
+        v.dimension.spawnEntity(LdnsEntityTypes.LengthFix, { x: spawnX, y: spawnY, z: spawnZ });
         // 気配を知らせる不気味なノイズ
         v.playSound("ldns.lf0");
     } catch (e) {}
@@ -997,7 +998,7 @@ function event21(v: Player) {
     const spawnY = getTopmostBlockLocation(v.dimension, spawnX, spawnZ) + 1;
 
     try {
-        v.dimension.spawnEntity("ldns:nebilim_178438", { x: spawnX, y: spawnY, z: spawnZ });
+        v.dimension.spawnEntity(LdnsEntityTypes.Nebilim178438, { x: spawnX, y: spawnY, z: spawnZ });
         // 出現した不気味な気配音 (0.ogg)
         v.playSound("ldns.nebilim.0", { volume: 0.5 });
     } catch (e) {}

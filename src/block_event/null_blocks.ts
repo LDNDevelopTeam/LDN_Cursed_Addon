@@ -1,20 +1,21 @@
 import { type Dimension, type Vector3, system, world, Player } from "@minecraft/server";
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 import { random, freeze } from "../util";
+import { LdnsEntityTypes } from "../lib/entity_types";
 
 // null3のグリッチタイマーを保持 (entity.id -> remainingTicks)
 const glitchTimers = new Map();
 
 // NullバイオームでのMob自動スポーン制御（5秒ごと＝100ticks）
 const NULL_BIOME_MOBS = [
-    { typeId: "ldns:nullbrain", weight: 30 },
-    { typeId: "ldns:nonebrain", weight: 30 },
-    { typeId: "ldns:errormob", weight: 20 },
-    { typeId: "ldns:pp", weight: 15 },
-    { typeId: "ldns:yy", weight: 15 },
-    { typeId: "ldns:irregularity", weight: 12 },
-    { typeId: "ldns:nebilim_178438", weight: 10 },
-    { typeId: "ldns:public_void", weight: 1 } // 超低確率 (Kickの危険があるため)
+    { typeId: LdnsEntityTypes.Nullbrain, weight: 30 },
+    { typeId: LdnsEntityTypes.Nonebrain, weight: 30 },
+    { typeId: LdnsEntityTypes.Errormob, weight: 20 },
+    { typeId: LdnsEntityTypes.Pp, weight: 15 },
+    { typeId: LdnsEntityTypes.Yy, weight: 15 },
+    { typeId: LdnsEntityTypes.Irregularity, weight: 12 },
+    { typeId: LdnsEntityTypes.Nebilim178438, weight: 10 },
+    { typeId: LdnsEntityTypes.PublicVoid, weight: 1 } // 超低確率 (Kickの危険があるため)
 ];
 
 function getRandomNullBiomeMob() {
@@ -24,7 +25,7 @@ function getRandomNullBiomeMob() {
         if (rand < mob.weight) return mob.typeId;
         rand -= mob.weight;
     }
-    return "ldns:errormob";
+    return LdnsEntityTypes.Errormob;
 }
 
 let tickCounter = 0;
@@ -181,7 +182,7 @@ system.runInterval(() => {
 
             // irregularity の近くにいると時間が不規則・ランダムにめまぐるしく変化する（不規則性タイムグリッチ）
             const nearbyIrregularities = dimension.getEntities({
-                type: "ldns:irregularity",
+                type: LdnsEntityTypes.Irregularity,
                 location: player.location,
                 maxDistance: 32
             });

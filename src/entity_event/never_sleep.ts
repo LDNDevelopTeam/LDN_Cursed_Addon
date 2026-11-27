@@ -1,6 +1,7 @@
 import { system, world } from "@minecraft/server";
 import { random } from '../util';
 import { DynamicProperty } from "../lib/dynamic_property";
+import { LdnsEntityTypes } from "../lib/entity_types";
 
 world.beforeEvents.playerInteractWithBlock.subscribe(async (event) => {
     if (event.block.typeId === "minecraft:bed") {
@@ -10,7 +11,7 @@ world.beforeEvents.playerInteractWithBlock.subscribe(async (event) => {
                 const ex = event.player.location.x - event.player.getViewDirection().x * 3;
                 const ey = event.player.location.y;
                 const ez = event.player.location.z - event.player.getViewDirection().z * 3;
-                world.getDimension("overworld").spawnEntity("ldns:never_sleep", { x: ex, y: ey, z: ez });
+                world.getDimension("overworld").spawnEntity(LdnsEntityTypes.NeverSleep, { x: ex, y: ey, z: ez });
                 event.player.playSound("ldns.never_sleep");
             }, 20 * 6);
             DynamicProperty.set(world, "neversleep", true);

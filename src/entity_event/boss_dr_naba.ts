@@ -1,10 +1,11 @@
 import { type Entity, TimeOfDay, Player, world } from "@minecraft/server";
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 import { random } from "../util";
+import { LdnsEntityTypes } from "../lib/entity_types";
 
 world.afterEvents.entityHurt.subscribe((e) => {
     const { damageSource, hurtEntity } = e;
-    if (hurtEntity.typeId == "ldns:dr.naba") bossnabahurt(damageSource.damagingEntity);
+    if (hurtEntity.typeId == LdnsEntityTypes.DrNaba) bossnabahurt(damageSource.damagingEntity);
 });
 
 function bossnabahurt(damagingEntity: Entity | undefined) {

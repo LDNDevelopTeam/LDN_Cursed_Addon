@@ -1,5 +1,6 @@
 import { Entity, ItemStack, Player, system, world } from "@minecraft/server";
 import { random, giveItem } from "../util";
+import { LdnsEntityTypes } from "../lib/entity_types";
 
 const timezoneOffset = 0;
 
@@ -22,7 +23,7 @@ world.afterEvents.entityDie.subscribe((edae) => {
     const d = new Date(Date.now() + ((new Date().getTimezoneOffset() + (timezoneOffset * 60)) * 60 * 1000));
     // バイオーム
     // 影のものの時
-    if (deadEntity.typeId === "ldns:shadow_mob_desert") {
+    if (deadEntity.typeId === LdnsEntityTypes.ShadowMobDesert) {
         for (let i = 0; i < container.size; i++) {
             // アイテム獲得
             const item = container.getItem(i);

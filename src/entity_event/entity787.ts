@@ -1,10 +1,11 @@
 import { Entity, Player, world } from "@minecraft/server";
 import { random, hasItem } from '../util';
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
+import { LdnsEntityTypes } from "../lib/entity_types";
 
 world.afterEvents.entityHurt.subscribe((e) => {
     const { damageSource, hurtEntity } = e;
-    if (hurtEntity.typeId == "ldns:entity787") entity787hurt(hurtEntity, damageSource.damagingEntity);
+    if (hurtEntity.typeId == LdnsEntityTypes.Entity787) entity787hurt(hurtEntity, damageSource.damagingEntity);
 });
 
 // エンティティが傷つけられたとき

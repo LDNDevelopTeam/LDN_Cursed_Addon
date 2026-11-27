@@ -1,6 +1,7 @@
 import { EntityComponentTypes, ItemStack, Player, system, world } from '@minecraft/server';
 import { random, giveItem } from '../util';
 import { MessageFormData } from '@minecraft/server-ui';
+import { LdnsEntityTypes } from "../lib/entity_types";
 
 world.afterEvents.entitySpawn.subscribe((event) => {
     if (event.entity.typeId == "minecraft:villager_v2" || event.entity.typeId == "minecraft:villager") {
@@ -62,7 +63,7 @@ world.beforeEvents.playerInteractWithEntity.subscribe((event) => {
                                             event.target.removeTag("ldns:pvs");
                                             break;
                                         case 1:
-                                            event.target.dimension.spawnEntity("ldns:pv", event.target.location);
+                                            event.target.dimension.spawnEntity(LdnsEntityTypes.Pv, event.target.location);
                                             event.target.remove();
                                             break;
                                         default:
@@ -78,7 +79,7 @@ world.beforeEvents.playerInteractWithEntity.subscribe((event) => {
                                     event.target.removeTag("ldns:pvs");
                                     break;
                                 case 1:
-                                    event.target.dimension.spawnEntity("ldns:pv", event.target.location);
+                                    event.target.dimension.spawnEntity(LdnsEntityTypes.Pv, event.target.location);
                                     event.target.remove();
                                     break;
                                 default:
@@ -93,7 +94,7 @@ world.beforeEvents.playerInteractWithEntity.subscribe((event) => {
 });
 
 world.afterEvents.entitySpawn.subscribe(async (event) => {
-    if (event.entity.typeId == "ldns:pv") {
+    if (event.entity.typeId == LdnsEntityTypes.Pv) {
         let spawns = system.runInterval(() => {
             if (!(event.entity.isValid)) {
                 system.clearJob(spawns);
@@ -110,7 +111,7 @@ world.afterEvents.entitySpawn.subscribe(async (event) => {
 });
 
 world.afterEvents.entityDie.subscribe(async (event) => {
-    if (event.deadEntity.typeId == "ldns:pv") {
+    if (event.deadEntity.typeId == LdnsEntityTypes.Pv) {
         if (!event.damageSource.damagingEntity) return;
         for (let i = 0; i < 16; i++) {
             event.damageSource.damagingEntity.dimension.playSound("mob.villager.idle", event.damageSource.damagingEntity.location);
@@ -126,7 +127,7 @@ world.afterEvents.entityDie.subscribe(async (event) => {
 });
 
 world.afterEvents.entityHitEntity.subscribe(async (event) => {
-    if (event.hitEntity instanceof Player && event.damagingEntity.typeId == "ldns:pv") {
+    if (event.hitEntity instanceof Player && event.damagingEntity.typeId == LdnsEntityTypes.Pv) {
         switch (random(0, 33)) {
             case 0:
                 event.damagingEntity.dimension.createExplosion(event.damagingEntity.location, 4, { breaksBlocks: false });

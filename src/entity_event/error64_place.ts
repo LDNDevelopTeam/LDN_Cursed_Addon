@@ -4,10 +4,11 @@ import { random, giveItem } from '../util';
 import { getTopmostBlockLocation } from '../functions/max_y';
 import { event14 } from "../script_event/spawn";
 import { DynamicProperty } from "../lib/dynamic_property";
+import { LdnsEntityTypes } from "../lib/entity_types";
 
 system.runInterval(() => {
     world.getPlayers().forEach((v, i, a) => {
-        let nearerror64 = world.getDimension("minecraft:overworld").getEntities({ type: "ldns:error64", location: v.location, maxDistance: 8.6 });
+        let nearerror64 = world.getDimension("minecraft:overworld").getEntities({ type: LdnsEntityTypes.Error64, location: v.location, maxDistance: 8.6 });
         nearerror64.forEach((e, ei, ea) => {
             e.remove();
             event14(v);
@@ -16,14 +17,14 @@ system.runInterval(() => {
 }, 3);
 
 world.afterEvents.entityHitEntity.subscribe((e) => {
-    if (e.damagingEntity.typeId === "ldns:place") {
+    if (e.damagingEntity.typeId === LdnsEntityTypes.Place) {
         if (!(e.hitEntity instanceof Player)) { return };
         place_event(e.damagingEntity, e.hitEntity);
     }
 });
 // Place(LongFix)が攻撃された時のイベント
 world.afterEvents.entityHurt.subscribe(async (e) => {
-    if (e.hurtEntity.typeId === "ldns:place") {
+    if (e.hurtEntity.typeId === LdnsEntityTypes.Place) {
         if (!(e.damageSource.damagingEntity instanceof Player)) { return };
         // インベントリ獲得
         const container = e.damageSource.damagingEntity.getComponent("inventory")?.container;
