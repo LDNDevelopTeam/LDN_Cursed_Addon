@@ -75,7 +75,7 @@ system.beforeEvents.startup.subscribe((event) => {
         onPlayerBreak(e) {
             const { block, dimension } = e;
             // 爆発コマンド
-            dimension.spawnEntity("ldns:entity.fake_deepslate_explosive", block.location);
+            dimension.spawnEntity("ldns:entity.fake_stone_explosive", block.location);
         }
     });
     // 爆発石の時
