@@ -123,7 +123,7 @@ function durabilitys(player: Player, itemStack: ItemStack | undefined) {
         // 壊れた時
         if (itemdurability.damage >= (itemdurability.maxDurability - 1)) {
             player.playSound("random.break", { pitch: 1, location: player.location, volume: 1 });
-            player.getComponent(EntityComponentTypes.Equippable)?.setEquipment(EquipmentSlot.Mainhand, new ItemStack(MinecraftBlockTypes.Air, 1));
+            player.getComponent(EntityComponentTypes.Equippable)?.setEquipment(EquipmentSlot.Mainhand);
         }
         // 通常時
         else {

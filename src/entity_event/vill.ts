@@ -104,9 +104,9 @@ system.runInterval(async () => {
 
                     mob.teleport(teleportLocation, { dimension: targetPlayer.dimension });
                 }
-                const blocks = mob.dimension.getBlock({ x: mob.location.x, y: mob.location.y - 1, z: mob.location.z })
+                const blockStandingOn = mob.dimension.getBlock({ x: mob.location.x, y: mob.location.y - 1, z: mob.location.z })
                 try {
-                    if (blocks?.typeId == MinecraftBlockTypes.Air) {
+                    if (blockStandingOn?.isAir) {
                         fallSpeed += gravity;
                         mob.teleport({ x: mob.location.x, y: mob.location.y + fallSpeed, z: mob.location.z }, { dimension: mob.dimension });
                         isJumping = true; // 空中にいるのでジャンプ中とみなす

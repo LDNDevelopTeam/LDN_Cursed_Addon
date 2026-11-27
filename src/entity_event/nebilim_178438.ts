@@ -42,7 +42,7 @@ system.runInterval(() => {
                         z: Math.floor(loc.z)
                     };
                     const block = nebilim.dimension.getBlock(blockLoc);
-                    if (block && block.typeId === MinecraftBlockTypes.Air) {
+                    if (block?.isAir) {
                         block.setType(MinecraftBlockTypes.StandingSign);
                         const signComp = block.getComponent(BlockComponentTypes.Sign);
                         if (signComp) {
