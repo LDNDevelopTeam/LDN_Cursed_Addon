@@ -42,7 +42,7 @@ system.runInterval(() => {
                     };
                     const block = nebilim.dimension.getBlock(blockLoc);
                     if (block && block.typeId === "minecraft:air") {
-                        block.setType("minecraft:oak_sign");
+                        block.setType("minecraft:standing_sign");
                         const signComp = block.getComponent("sign");
                         if (signComp) {
                             signComp.setText("178438");
