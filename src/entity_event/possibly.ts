@@ -15,7 +15,7 @@ system.runInterval(() => {
             DynamicProperty.set(v, "possibly", 1);
         }
         if (v.getSpawnPoint() == undefined || v.getSpawnPoint() == null) {
-            if (v.location.x >= world.getDefaultSpawnLocation().x - 32 && v.location.x <= world.getDefaultSpawnLocation().x + 32 && v.location.z >= world.getDefaultSpawnLocation().z - 32 && v.location.z <= world.getDefaultSpawnLocation().x + 32 && DynamicProperty.get(v, "possibly") == 2 && v.dimension.id == MinecraftDimensionTypes.Overworld) {
+            if (v.location.x >= world.getDefaultSpawnLocation().x - 32 && v.location.x <= world.getDefaultSpawnLocation().x + 32 && v.location.z >= world.getDefaultSpawnLocation().z - 32 && v.location.z <= world.getDefaultSpawnLocation().z + 32 && DynamicProperty.get(v, "possibly") == 2 && v.dimension.id == MinecraftDimensionTypes.Overworld) {
                 world.getDimension(MinecraftDimensionTypes.Overworld).spawnEntity(LdnsEntityTypes.Possibly, world.getDefaultSpawnLocation());
                 DynamicProperty.set(v, "possibly", 3);
             }
