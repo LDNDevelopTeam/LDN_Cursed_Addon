@@ -1,4 +1,4 @@
-import { Player, system, world } from "@minecraft/server";
+import { Player, system, world, EntityComponentTypes } from "@minecraft/server";
 import { random, giveItem } from "../util";
 import { DynamicProperty } from "../lib/dynamic_property";
 import { LdnsItemTypes } from "../lib/item_types";
@@ -12,7 +12,7 @@ export function nonebrain_despawn_events() {
         const kanasibari = system.runInterval(async () => {
             v.teleport(playerlocation);
             v.playSound("ldns.errormob_glitch", { volume: 0.1, pitch: 0.666 });
-            const container = v.getComponent("inventory")?.container;
+            const container = v.getComponent(EntityComponentTypes.Inventory)?.container;
             if (!container) return;
             for (let i = 0; i < container.size; i++) {
                 container.swapItems(i, random(0, container.size - 1), container);

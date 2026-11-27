@@ -1,4 +1,4 @@
-import { EquipmentSlot, Player, system, world } from '@minecraft/server';
+import { EquipmentSlot, Player, system, world, EntityComponentTypes } from '@minecraft/server';
 import { random, hasItem } from '../util';
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 import { LdnsBlockTypes } from "../lib/block_types";
@@ -27,7 +27,7 @@ system.runInterval(() => {
 function error_tool_damage(targetPlayer: Player) {
     if (!(targetPlayer instanceof Player)) return;
     // アイテム装備
-    const equippable = targetPlayer.getComponent('minecraft:equippable');
+    const equippable = targetPlayer.getComponent(EntityComponentTypes.Equippable);
     if (!equippable) return;
     // ペンダントを持っているときのカウント
     const items = hasItem(targetPlayer, LdnsItemTypes.PendantOfTwilight);
@@ -35,7 +35,7 @@ function error_tool_damage(targetPlayer: Player) {
     let errortoolscount = 0;
     let erroritemscount = 0;
     // インベントリ獲得(陬懷ｮ悟ｯｾ蠢懊＠縺ｦ縺上ｌ)
-    const container = targetPlayer.getComponent('minecraft:inventory')?.container;
+    const container = targetPlayer.getComponent(EntityComponentTypes.Inventory)?.container;
     if (!container) return;
 
     // 条件に合わせてイベントの確立を増やすための処理

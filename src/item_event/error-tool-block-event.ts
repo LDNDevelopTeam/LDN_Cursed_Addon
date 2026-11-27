@@ -1,6 +1,7 @@
-import { EquipmentSlot, GameMode, ItemStack, Player, system, world } from "@minecraft/server";
+import { EquipmentSlot, GameMode, ItemStack, Player, system, world, ItemComponentTypes, EntityComponentTypes } from "@minecraft/server";
 import { LdnsEntityTypes } from "../lib/entity_types";
 import { LdnsItemTypes } from "../lib/item_types";
+import { MinecraftBlockTypes, MinecraftEnchantmentTypes } from "@minecraft/vanilla-data";
 
 system.beforeEvents.startup.subscribe((event) => {
     event.itemComponentRegistry.registerCustomComponent("ldns:custom_tool", {
@@ -25,9 +26,9 @@ system.beforeEvents.startup.subscribe((event) => {
             if (source.getGameMode() !== GameMode.creative && block.hasTag("wood") && block.hasTag("log")) {
                 // 音を鳴らす
                 source.playSound("use.wood");
-                let item = itemStack.getComponent("durability");
+                let item = itemStack.getComponent(ItemComponentTypes.Durability);
                 item.damage += 1;
-                source.getComponent("equippable").setEquipment(EquipmentSlot.Mainhand, itemStack);
+                source.getComponent(EntityComponentTypes.Equippable).setEquipment(EquipmentSlot.Mainhand, itemStack);
             }
         }
         */
@@ -44,7 +45,7 @@ system.beforeEvents.startup.subscribe((event) => {
             const hl = source.getHeadLocation();
             const vd = source.getViewDirection();
             const scythe_bullets = source.dimension.spawnEntity(LdnsEntityTypes.ScytheBullet, { x: hl.x + (vd.x * 1.5), y: hl.y + (vd.y * 1.5), z: hl.z + (vd.z * 1.5) });
-            const projectiles = scythe_bullets.getComponent("minecraft:projectile");
+            const projectiles = scythe_bullets.getComponent(EntityComponentTypes.Projectile);
             if (projectiles) {
                 projectiles.airInertia = 1.15;
                 projectiles.liquidInertia = 1.15;
@@ -117,17 +118,17 @@ function durabilitys(player: Player, itemStack: ItemStack | undefined) {
     if (!itemStack) return;
     // クリエイティブ時のみ耐久値が減るのを防ぐ
     if (player.getGameMode() !== GameMode.Creative) {
-        let itemdurability = itemStack.getComponent("durability");
+        let itemdurability = itemStack.getComponent(ItemComponentTypes.Durability);
         if (!itemdurability) return;
         // 壊れた時
         if (itemdurability.damage >= (itemdurability.maxDurability - 1)) {
             player.playSound("random.break", { pitch: 1, location: player.location, volume: 1 });
-            player.getComponent("equippable")?.setEquipment(EquipmentSlot.Mainhand, new ItemStack("minecraft:air", 1));
+            player.getComponent(EntityComponentTypes.Equippable)?.setEquipment(EquipmentSlot.Mainhand, new ItemStack(MinecraftBlockTypes.Air, 1));
         }
         // 通常時
         else {
             // 耐久力エンチャントがついているとき
-            const unbreaking = itemStack.getComponent("enchantable")?.getEnchantment("minecraft:unbreaking");
+            const unbreaking = itemStack.getComponent(ItemComponentTypes.Enchantable)?.getEnchantment(MinecraftEnchantmentTypes.Unbreaking);
             if (unbreaking) {
                 let itemunbreakinglevel = unbreaking.level;
                 itemdurability.damage += Number(Math.round(Math.random() * 100) <= itemdurability.getDamageChance(itemunbreakinglevel));
@@ -137,7 +138,7 @@ function durabilitys(player: Player, itemStack: ItemStack | undefined) {
                 itemdurability.damage += 1;
             }
             // 更新
-            player.getComponent("equippable")?.setEquipment(EquipmentSlot.Mainhand, itemStack);
+            player.getComponent(EntityComponentTypes.Equippable)?.setEquipment(EquipmentSlot.Mainhand, itemStack);
         }
     }
 }

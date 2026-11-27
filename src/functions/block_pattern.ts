@@ -1,4 +1,5 @@
 import type { Block, Vector3 } from "@minecraft/server";
+import { MinecraftBlockTypes } from "@minecraft/vanilla-data";
 
 /** 基準ブロックからの相対座標と、そこにあるべきブロックの ID の組 */
 export type BlockPattern = readonly (readonly [offset: Vector3, typeId: string])[];
@@ -11,7 +12,7 @@ export function matchesPattern(origin: Block, pattern: BlockPattern): boolean {
 /** パターンの位置のブロックを、パターンの順番どおりにすべて空気にする */
 export function clearPattern(origin: Block, pattern: BlockPattern): void {
     for (const [offset] of pattern) {
-        origin.offset(offset)?.setType("air");
+        origin.offset(offset)?.setType(MinecraftBlockTypes.Air);
     }
 }
 

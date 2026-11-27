@@ -1,7 +1,7 @@
-import { world, system, Player, Entity, ItemStack, EquipmentSlot, GameMode } from "@minecraft/server";
+import { world, system, Player, Entity, ItemStack, EquipmentSlot, GameMode, EntityComponentTypes } from "@minecraft/server";
 import { MessageFormData } from "@minecraft/server-ui";
 import { random, randomValue, hasItem, giveItem, removeItem } from "../util";
-import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
+import { MinecraftEffectTypes, MinecraftDimensionTypes, MinecraftEntityTypes, MinecraftItemTypes } from "@minecraft/vanilla-data";
 import { LdnsEntityTypes } from "../lib/entity_types";
 import { LdnsItemTypes } from "../lib/item_types";
 
@@ -35,7 +35,7 @@ function toggleSitting(entity: Entity, player: Player) {
 
 // 1. Approach checking for The Watcher & Tick Loop (every 10 ticks = 0.5s)
 system.runInterval(() => {
-    const overworld = world.getDimension("minecraft:overworld");
+    const overworld = world.getDimension(MinecraftDimensionTypes.Overworld);
     const players = world.getPlayers();
 
     // Check all players for nearby untamed Watchers
@@ -92,7 +92,7 @@ system.runInterval(() => {
 
 // Tick loop for tamed companions (every 20 ticks = 1 second)
 system.runInterval(() => {
-    const overworld = world.getDimension("minecraft:overworld");
+    const overworld = world.getDimension(MinecraftDimensionTypes.Overworld);
 
     // Tamed Watchers
     const tamedWatchers = overworld.getEntities({ type: LdnsEntityTypes.TheWatcher, tags: ["ldns:tamed"] });
@@ -118,12 +118,12 @@ system.runInterval(() => {
         const monsters = overworld.getEntities({
             location: watcher.location,
             maxDistance: 15,
-            excludeTypes: ["player", LdnsEntityTypes.TheWatcher, LdnsEntityTypes.Nono]
+            excludeTypes: [MinecraftEntityTypes.Player, LdnsEntityTypes.TheWatcher, LdnsEntityTypes.Nono]
         });
 
         for (const monster of monsters) {
             // Check if it's a monster/hostile family
-            const fam = monster.getComponent("minecraft:type_family");
+            const fam = monster.getComponent(EntityComponentTypes.TypeFamily);
             if (fam && fam.hasTypeFamily("monster")) {
                 // If extremely close, sound warning
                 const dist = Math.sqrt(
@@ -174,7 +174,7 @@ system.runInterval(() => {
 
 // Tick loop for NONO buffs (every 1200 ticks = 60 seconds)
 system.runInterval(() => {
-    const overworld = world.getDimension("minecraft:overworld");
+    const overworld = world.getDimension(MinecraftDimensionTypes.Overworld);
     const tamedNonos = overworld.getEntities({ type: LdnsEntityTypes.Nono, tags: ["ldns:tamed"] });
 
     for (const nono of tamedNonos) {
@@ -206,7 +206,7 @@ system.runInterval(() => {
 
 // Tick loop for NONO inventory Glitch Swapper (every 600 ticks = 30 seconds)
 system.runInterval(() => {
-    const overworld = world.getDimension("minecraft:overworld");
+    const overworld = world.getDimension(MinecraftDimensionTypes.Overworld);
     const tamedNonos = overworld.getEntities({ type: LdnsEntityTypes.Nono, tags: ["ldns:tamed"] });
 
     for (const nono of tamedNonos) {
@@ -214,7 +214,7 @@ system.runInterval(() => {
 
         // 3% chance
         if (Math.random() < 0.03) {
-            const inventory = nono.getComponent("minecraft:inventory");
+            const inventory = nono.getComponent(EntityComponentTypes.Inventory);
             const container = inventory ? inventory.container : null;
             if (!container) continue;
 
@@ -313,7 +313,7 @@ world.beforeEvents.playerInteractWithEntity.subscribe((event) => {
                 system.runTimeout(() => {
                     try {
                         if (player.isValid) {
-                            const overworld = world.getDimension("minecraft:overworld");
+                            const overworld = world.getDimension(MinecraftDimensionTypes.Overworld);
                             try {
                                 overworld.runCommand(`kick "${player.name}" Y_O_U_A_R_E_N_E_X_T`);
                             } catch (e) {
@@ -336,35 +336,35 @@ world.beforeEvents.playerInteractWithEntity.subscribe((event) => {
         const ownerName = getOwnerName(target);
         if (ownerName === player.name) {
             // Healing check
-            const healthComp = target.getComponent("health") || target.getComponent("minecraft:health");
-            const equippable = player.getComponent("minecraft:equippable");
+            const healthComp = target.getComponent(EntityComponentTypes.Health) || target.getComponent(EntityComponentTypes.Health);
+            const equippable = player.getComponent(EntityComponentTypes.Equippable);
             const handItem = equippable ? equippable.getEquipment(EquipmentSlot.Mainhand) : null;
 
             if (healthComp && healthComp.currentValue < healthComp.effectiveMax && handItem) {
                 let healAmount = 0;
                 if (target.typeId === LdnsEntityTypes.TheWatcher) {
                     if (handItem.typeId === LdnsItemTypes.HeavyStone) healAmount = 40;
-                    else if (handItem.typeId === "minecraft:obsidian") healAmount = 20;
-                    else if (handItem.typeId === "minecraft:crying_obsidian") healAmount = 30;
-                    else if (handItem.typeId === "minecraft:stone" || handItem.typeId === "minecraft:cobblestone") healAmount = 5;
+                    else if (handItem.typeId === MinecraftItemTypes.Obsidian) healAmount = 20;
+                    else if (handItem.typeId === MinecraftItemTypes.CryingObsidian) healAmount = 30;
+                    else if (handItem.typeId === MinecraftItemTypes.Stone || handItem.typeId === MinecraftItemTypes.Cobblestone) healAmount = 5;
                 } else if (target.typeId === LdnsEntityTypes.Nono) {
                     if (handItem.typeId === LdnsItemTypes.ErrorIngot) healAmount = 40;
-                    else if (handItem.typeId === "minecraft:iron_ingot") healAmount = 15;
-                    else if (handItem.typeId === "minecraft:gold_ingot") healAmount = 20;
-                    else if (handItem.typeId === "minecraft:redstone") healAmount = 10;
+                    else if (handItem.typeId === MinecraftItemTypes.IronIngot) healAmount = 15;
+                    else if (handItem.typeId === MinecraftItemTypes.GoldIngot) healAmount = 20;
+                    else if (handItem.typeId === MinecraftItemTypes.Redstone) healAmount = 10;
                 }
 
                 if (healAmount > 0) {
                     event.cancel = true;
                     system.run(() => {
                         if (!target.isValid) return;
-                        const latestHealthComp = target.getComponent("health") || target.getComponent("minecraft:health");
+                        const latestHealthComp = target.getComponent(EntityComponentTypes.Health) || target.getComponent(EntityComponentTypes.Health);
                         if (!latestHealthComp || latestHealthComp.currentValue >= latestHealthComp.effectiveMax) return;
 
                         // Consume 1 item from main hand
                         const isCreative = player.getGameMode() === GameMode.Creative;
                         if (!isCreative) {
-                            const latestEquippable = player.getComponent("minecraft:equippable");
+                            const latestEquippable = player.getComponent(EntityComponentTypes.Equippable);
                             const latestHandItem = latestEquippable ? latestEquippable.getEquipment(EquipmentSlot.Mainhand) : null;
                             if (latestHandItem && latestHandItem.typeId === handItem.typeId) {
                                 if (latestHandItem.amount > 1) {
@@ -417,7 +417,7 @@ world.beforeEvents.playerInteractWithEntity.subscribe((event) => {
         if (!target.hasTag("ldns:tamed")) {
             // Check if player has the twilight pendant in inventory
             let hasPendant = false;
-            const inventory = player.getComponent("minecraft:inventory");
+            const inventory = player.getComponent(EntityComponentTypes.Inventory);
             if (inventory && inventory.container) {
                 for (let i = 0; i < inventory.container.size; i++) {
                     const item = inventory.container.getItem(i);
@@ -435,7 +435,7 @@ world.beforeEvents.playerInteractWithEntity.subscribe((event) => {
             }
 
             // If player has pendant, check hand item for Heavy Stone
-            const equippable = player.getComponent("minecraft:equippable");
+            const equippable = player.getComponent(EntityComponentTypes.Equippable);
             const handItem = equippable ? equippable.getEquipment(EquipmentSlot.Mainhand) : null;
 
             if (handItem && handItem.typeId === LdnsItemTypes.HeavyStone) {
@@ -671,7 +671,7 @@ world.afterEvents.entityHitEntity.subscribe((event) => {
 world.afterEvents.entityHurt.subscribe((event) => {
     const { hurtEntity } = event;
     if (hurtEntity instanceof Player) {
-        const hpComp = hurtEntity.getComponent("health") || hurtEntity.getComponent("minecraft:health");
+        const hpComp = hurtEntity.getComponent(EntityComponentTypes.Health) || hurtEntity.getComponent(EntityComponentTypes.Health);
         const hp = hpComp ? hpComp.currentValue : null;
         if (hp !== null && hp < 4) {
             // Find tamed Watcher within 15 blocks
@@ -683,7 +683,7 @@ world.afterEvents.entityHurt.subscribe((event) => {
             }).find(w => getOwnerName(w) === hurtEntity.name);
 
             if (watcher) {
-                const watcherHpComp = watcher.getComponent("health") || watcher.getComponent("minecraft:health");
+                const watcherHpComp = watcher.getComponent(EntityComponentTypes.Health) || watcher.getComponent(EntityComponentTypes.Health);
                 if (watcherHpComp && watcherHpComp.currentValue > 20) {
                     // Trigger savior warp!
                     watcherHpComp.setCurrentValue(Math.max(1, watcherHpComp.currentValue - 20));
@@ -731,7 +731,7 @@ world.afterEvents.entitySpawn.subscribe((event) => {
 
 // Tick loop for wild NONO and The Watcher cleanup (every 20 ticks = 1 second)
 system.runInterval(() => {
-    for (const dimensionId of ["minecraft:overworld", "minecraft:nether", "minecraft:the_end"]) {
+    for (const dimensionId of [MinecraftDimensionTypes.Overworld, MinecraftDimensionTypes.Nether, MinecraftDimensionTypes.TheEnd]) {
         try {
             const dimension = world.getDimension(dimensionId);
             const wildNonos = dimension.getEntities({ type: LdnsEntityTypes.Nono }).filter(e => !e.hasTag("ldns:tamed"));

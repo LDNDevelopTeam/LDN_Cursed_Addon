@@ -1,4 +1,4 @@
-import { ButtonState, InputButton, Player, system, world } from "@minecraft/server";
+import { ButtonState, InputButton, Player, system, world, EntityComponentTypes } from "@minecraft/server";
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 import { random } from "../util";
 import { DynamicProperty } from "../lib/dynamic_property";
@@ -33,7 +33,7 @@ system.runInterval(async () => {
         if (cplayer == undefined) {
             return;
         }
-        let health = cplayer.getComponent("minecraft:health");
+        let health = cplayer.getComponent(EntityComponentTypes.Health);
         health?.setCurrentValue(1);
         cplayer.addEffect(MinecraftEffectTypes.Hunger, 20 * 10, { amplifier: 255 });
         cplayer.addEffect(MinecraftEffectTypes.Slowness, 20 * 10, { amplifier: 4 });
@@ -50,7 +50,7 @@ system.runInterval(async () => {
                 if (random(0, 20 * 60 * 20) == 0) {
                     v.dimension.spawnEntity(LdnsEntityTypes.LightningObject, v.location);
                 }
-                let vhealth = v.getComponent("minecraft:health");
+                let vhealth = v.getComponent(EntityComponentTypes.Health);
                 if (vhealth && vhealth.currentValue >= 10) {
                     vhealth.setCurrentValue(10);
                 }

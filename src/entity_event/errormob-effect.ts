@@ -1,4 +1,4 @@
-import { Entity, Player, system, world } from "@minecraft/server";
+import { Entity, Player, system, world, EntityComponentTypes } from "@minecraft/server";
 import { random, hasItem } from '../util';
 import { freeze } from '../functions/kanasibari';
 import { random_move } from '../functions/random_move';
@@ -109,7 +109,7 @@ async function errordamage(targetPlayer: Entity) {
     // アイテムが置き換えられる
     else if (rand === 13) {
         // インベントリ
-        const container = targetPlayer.getComponent("inventory")?.container;
+        const container = targetPlayer.getComponent(EntityComponentTypes.Inventory)?.container;
         if (!container) return;
         for (let i = 0; i < container.size; i++) {
             // アイテムを置き換える
@@ -212,7 +212,7 @@ function errorhurt(damageSource: Entity | undefined) {
         // アイテムが置き換えられる
         else if (rand === 13) {
             // インベントリ
-            const container = damageSource.getComponent("inventory")?.container;
+            const container = damageSource.getComponent(EntityComponentTypes.Inventory)?.container;
             if (!container) return;
             for (let i = 0; i < container.size; i++) {
                 // アイテムを置き換える

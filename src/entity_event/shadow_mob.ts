@@ -1,4 +1,4 @@
-import { Entity, ItemStack, Player, system, world } from "@minecraft/server";
+import { Entity, ItemStack, Player, system, world, EntityComponentTypes } from "@minecraft/server";
 import { random, giveItem } from "../util";
 import { LdnsEntityTypes } from "../lib/entity_types";
 import { LdnsItemTypes } from "../lib/item_types";
@@ -18,7 +18,7 @@ world.afterEvents.entityDie.subscribe((edae) => {
     const { damageSource, deadEntity } = edae;
     if (!(damageSource.damagingEntity instanceof Player)) return;
     // インベントリ獲得
-    const container = damageSource.damagingEntity.getComponent("inventory")?.container;
+    const container = damageSource.damagingEntity.getComponent(EntityComponentTypes.Inventory)?.container;
     if (!container) return;
     // 時刻獲得
     const d = new Date(Date.now() + ((new Date().getTimezoneOffset() + (timezoneOffset * 60)) * 60 * 1000));

@@ -1,6 +1,7 @@
 import { Entity, Player, world } from "@minecraft/server";
 import { random } from '../util';
 import { LdnsEntityTypes } from "../lib/entity_types";
+import { MinecraftDimensionTypes } from "@minecraft/vanilla-data";
 
 
 world.afterEvents.entityHitEntity.subscribe((e) => {
@@ -22,7 +23,7 @@ function public_void_event(entity: Entity, player: Player){
     if (random(0, 48) == 0) {
         let kickSuccess = false;
         try {
-            const overworld = world.getDimension("minecraft:overworld");
+            const overworld = world.getDimension(MinecraftDimensionTypes.Overworld);
             const result = overworld.runCommand(`kick "${player.name}" §cI am you maybe...I am you maybe...I am you maybe...I am you maybe...`);
             if (result.successCount > 0) {
                 kickSuccess = true;

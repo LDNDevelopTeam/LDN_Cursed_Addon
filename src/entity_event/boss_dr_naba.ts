@@ -1,4 +1,4 @@
-import { type Entity, TimeOfDay, Player, world } from "@minecraft/server";
+import { type Entity, TimeOfDay, Player, world, EntityComponentTypes } from "@minecraft/server";
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 import { random } from "../util";
 import { LdnsEntityTypes } from "../lib/entity_types";
@@ -32,7 +32,7 @@ function bossnabahurt(damagingEntity: Entity | undefined) {
     // アイテムが置き換えられる
     else if (rand === 9) {
         // インベントリ
-        const container = damagingEntity.getComponent("inventory")?.container;
+        const container = damagingEntity.getComponent(EntityComponentTypes.Inventory)?.container;
         if (!container) return;
         for (let i = 0; i < container.size; i++) {
             // アイテムを置き換える

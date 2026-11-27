@@ -1,5 +1,5 @@
 import { type Dimension, type Vector3, system, world, Player } from "@minecraft/server";
-import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
+import { MinecraftBlockTypes, MinecraftEffectTypes, MinecraftDimensionTypes } from "@minecraft/vanilla-data";
 import { random, freeze } from "../util";
 import { LdnsEntityTypes } from "../lib/entity_types";
 import { LdnsBlockTypes } from "../lib/block_types";
@@ -36,7 +36,7 @@ system.runInterval(() => {
     const isEvery5Ticks = (tickCounter % 5 === 0);
     const isEvery100Ticks = (tickCounter % 100 === 0);
 
-    for (const dimensionName of ["overworld"]) {
+    for (const dimensionName of [MinecraftDimensionTypes.Overworld]) {
         let dimension;
         try {
             dimension = world.getDimension(dimensionName);
@@ -169,7 +169,7 @@ system.runInterval(() => {
                             });
 
                             if (targetBlock && !targetBlock.isAir && !targetBlock.typeId.startsWith("ldns:null")) {
-                                const replaceableBlocks = ["minecraft:grass_block", "minecraft:dirt", "minecraft:stone", "minecraft:sand", "minecraft:gravel"];
+                                const replaceableBlocks: readonly string[] = [MinecraftBlockTypes.GrassBlock, MinecraftBlockTypes.Dirt, MinecraftBlockTypes.Stone, MinecraftBlockTypes.Sand, MinecraftBlockTypes.Gravel];
                                 if (replaceableBlocks.includes(targetBlock.typeId)) {
                                     const nullBlocks = [LdnsBlockTypes.Null0, LdnsBlockTypes.Null1, LdnsBlockTypes.Null2, LdnsBlockTypes.Null3, LdnsBlockTypes.Null4];
                                     const chosenNull = nullBlocks[Math.floor(Math.random() * nullBlocks.length)];
@@ -265,7 +265,7 @@ function generateGlitchedTree(dimension: Dimension, pos: Vector3) {
 
         const blockChoice = (treeType === 2 && Math.random() < 0.4) 
             ? nullBlocks[Math.floor(Math.random() * nullBlocks.length)]
-            : "minecraft:oak_log";
+            : MinecraftBlockTypes.OakLog;
 
         try {
             dimension.getBlock({ x: pos.x, y: curY, z: pos.z })?.setType(blockChoice);
@@ -292,7 +292,7 @@ function generateGlitchedTree(dimension: Dimension, pos: Vector3) {
                             const nBlock = nullBlocks[Math.floor(Math.random() * nullBlocks.length)];
                             try { current.setType(nBlock); } catch (e) {}
                         } else if (Math.random() < 0.65) {
-                            try { current.setType("minecraft:oak_leaves"); } catch (e) {}
+                            try { current.setType(MinecraftBlockTypes.OakLeaves); } catch (e) {}
                         }
                     }
                 }
@@ -336,7 +336,7 @@ function generateGlitchedCross(dimension: Dimension, pos: Vector3) {
     // 頂点にレッドストーントーチや浮遊グリッチブロックをランダム配置
     try {
         if (Math.random() < 0.7) {
-            dimension.getBlock({ x: pos.x, y: pos.y + height, z: pos.z })?.setType("minecraft:redstone_torch");
+            dimension.getBlock({ x: pos.x, y: pos.y + height, z: pos.z })?.setType(MinecraftBlockTypes.RedstoneTorch);
         } else {
             dimension.getBlock({ x: pos.x, y: pos.y + height, z: pos.z })?.setType(LdnsBlockTypes.Null3);
         }

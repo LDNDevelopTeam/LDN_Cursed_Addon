@@ -2,6 +2,7 @@ import { Difficulty, Player, system, WeatherType, world } from "@minecraft/serve
 import { random } from '../util';
 import { DynamicProperty } from "../lib/dynamic_property";
 import { LdnsEntityTypes } from "../lib/entity_types";
+import { MinecraftDimensionTypes } from "@minecraft/vanilla-data";
 
 system.run(() => {
     DynamicProperty.set(world, "ov8spawn", false);
@@ -37,15 +38,15 @@ system.runInterval(() => {
                 world.sendMessage("I'm livewinner A666");
                 break;
             case 4:
-                world.getDimension("overworld").setWeather(WeatherType.Clear);
+                world.getDimension(MinecraftDimensionTypes.Overworld).setWeather(WeatherType.Clear);
                 world.sendMessage("The weather was set to clear.");
                 break;
             case 5:
-                world.getDimension("overworld").setWeather(WeatherType.Rain);
+                world.getDimension(MinecraftDimensionTypes.Overworld).setWeather(WeatherType.Rain);
                 world.sendMessage("The weather was set to rain.");
                 break;
             case 6:
-                world.getDimension("overworld").setWeather(WeatherType.Thunder);
+                world.getDimension(MinecraftDimensionTypes.Overworld).setWeather(WeatherType.Thunder);
                 world.sendMessage("The weather was set to thunder.");
                 break;
         }
@@ -80,15 +81,15 @@ world.afterEvents.entityHitEntity.subscribe((event) => {
                 world.sendMessage("I'm livewinner A666");
                 break;
             case 6:
-                world.getDimension("overworld").setWeather(WeatherType.Clear);
+                world.getDimension(MinecraftDimensionTypes.Overworld).setWeather(WeatherType.Clear);
                 world.sendMessage("The weather was set to clear.");
                 break;
             case 7:
-                world.getDimension("overworld").setWeather(WeatherType.Rain);
+                world.getDimension(MinecraftDimensionTypes.Overworld).setWeather(WeatherType.Rain);
                 world.sendMessage("The weather was set to rain.");
                 break;
             case 8:
-                world.getDimension("overworld").setWeather(WeatherType.Thunder);
+                world.getDimension(MinecraftDimensionTypes.Overworld).setWeather(WeatherType.Thunder);
                 world.sendMessage("The weather was set to thunder.");
                 break;
         }

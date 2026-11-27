@@ -1,10 +1,11 @@
-import { system, world, Player } from "@minecraft/server";
+import { system, world, Player, BlockComponentTypes } from "@minecraft/server";
 import { random } from "../util";
 import { LdnsEntityTypes } from "../lib/entity_types";
+import { MinecraftBlockTypes, MinecraftDimensionTypes, MinecraftEntityTypes } from "@minecraft/vanilla-data";
 
 system.runInterval(() => {
     // ワールド内のすべての Nebilim 178438 を取得
-    const nebilims = world.getDimension("minecraft:overworld").getEntities({ type: LdnsEntityTypes.Nebilim178438 });
+    const nebilims = world.getDimension(MinecraftDimensionTypes.Overworld).getEntities({ type: LdnsEntityTypes.Nebilim178438 });
     
     for (const nebilim of nebilims) {
         if (!nebilim.isValid) continue;
@@ -12,7 +13,7 @@ system.runInterval(() => {
         const loc = nebilim.location;
         // 周囲8ブロック以内のプレイヤーを検出
         const nearbyPlayers = nebilim.dimension.getEntities({
-            type: "minecraft:player",
+            type: MinecraftEntityTypes.Player,
             location: loc,
             maxDistance: 8.0
         });
@@ -41,9 +42,9 @@ system.runInterval(() => {
                         z: Math.floor(loc.z)
                     };
                     const block = nebilim.dimension.getBlock(blockLoc);
-                    if (block && block.typeId === "minecraft:air") {
-                        block.setType("minecraft:standing_sign");
-                        const signComp = block.getComponent("sign");
+                    if (block && block.typeId === MinecraftBlockTypes.Air) {
+                        block.setType(MinecraftBlockTypes.StandingSign);
+                        const signComp = block.getComponent(BlockComponentTypes.Sign);
                         if (signComp) {
                             signComp.setText("178438");
                         }
@@ -59,7 +60,7 @@ system.runInterval(() => {
             // 近づいていない場合、1%の確率で周囲に不気味なきしみ音 (ldns.nebilim.2) を再生
             if (random(0, 99) < 1) {
                 const listeningPlayers = nebilim.dimension.getEntities({
-                    type: "minecraft:player",
+                    type: MinecraftEntityTypes.Player,
                     location: loc,
                     maxDistance: 32.0
                 });

@@ -2,11 +2,12 @@ import { EntityComponentTypes, ItemStack, Player, system, world } from '@minecra
 import { random, giveItem } from '../util';
 import { MessageFormData } from '@minecraft/server-ui';
 import { LdnsEntityTypes } from "../lib/entity_types";
+import { MinecraftEntityTypes, MinecraftItemTypes } from "@minecraft/vanilla-data";
 
 world.afterEvents.entitySpawn.subscribe((event) => {
-    if (event.entity.typeId == "minecraft:villager_v2" || event.entity.typeId == "minecraft:villager") {
-        if (!(event.entity.hasComponent("minecraft:variant"))) { return; }
-        if (event.entity.getComponent("minecraft:variant")!.value == 14) { return; }
+    if (event.entity.typeId == MinecraftEntityTypes.VillagerV2 || event.entity.typeId == MinecraftEntityTypes.Villager) {
+        if (!(event.entity.hasComponent(EntityComponentTypes.Variant))) { return; }
+        if (event.entity.getComponent(EntityComponentTypes.Variant)!.value == 14) { return; }
         if (random(0, 44) == 22) {
             switch (random(0, 3)) {
                 case 0:
@@ -27,7 +28,7 @@ world.afterEvents.entitySpawn.subscribe((event) => {
 world.beforeEvents.playerInteractWithEntity.subscribe((event) => {
     system.run(() => {
 
-        if (event.target.typeId == "minecraft:villager_v2" || event.target.typeId == "minecraft:villager") {
+        if (event.target.typeId == MinecraftEntityTypes.VillagerV2 || event.target.typeId == MinecraftEntityTypes.Villager) {
             if (event.target.hasTag("ldns:pvs")) {
                 const Pform = new MessageFormData();
                 switch (random(0, 20)) {
@@ -146,7 +147,7 @@ world.afterEvents.entityHitEntity.subscribe(async (event) => {
                 break;
             case 3:
                 if (random(0, 8) == 0) {
-                    giveItem(event.hitEntity, "minecraft:emerald");
+                    giveItem(event.hitEntity, MinecraftItemTypes.Emerald);
                 }
                 break;
         }

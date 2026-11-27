@@ -1,14 +1,15 @@
-import { Dimension, Entity, Player, system, World, world } from "@minecraft/server";
+import { Dimension, Entity, Player, system, World, world, EntityComponentTypes } from "@minecraft/server";
 import { random, giveItem } from '../util';
 import { DynamicProperty } from "../lib/dynamic_property";
 import { LdnsEntityTypes } from "../lib/entity_types";
 import { LdnsItemTypes } from "../lib/item_types";
+import { MinecraftBlockTypes } from "@minecraft/vanilla-data";
 world.afterEvents.entityHurt.subscribe((e) => {
     const player = e.damageSource.damagingEntity;
     const vill = e.hurtEntity;
     if (!(player instanceof Player)) return;
     // インベントリ獲得
-    const container = player.getComponent("inventory")?.container;
+    const container = player.getComponent(EntityComponentTypes.Inventory)?.container;
     if (!container) return;
     if (vill.typeId === LdnsEntityTypes.Vill) {
         for (let i = 0; i < container.size; i++) {
@@ -105,7 +106,7 @@ system.runInterval(async () => {
                 }
                 const blocks = mob.dimension.getBlock({ x: mob.location.x, y: mob.location.y - 1, z: mob.location.z })
                 try {
-                    if (blocks?.typeId == "minecraft:air") {
+                    if (blocks?.typeId == MinecraftBlockTypes.Air) {
                         fallSpeed += gravity;
                         mob.teleport({ x: mob.location.x, y: mob.location.y + fallSpeed, z: mob.location.z }, { dimension: mob.dimension });
                         isJumping = true; // 空中にいるのでジャンプ中とみなす

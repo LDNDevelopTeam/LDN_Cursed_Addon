@@ -1,5 +1,5 @@
 import { Entity, Player, system, world } from "@minecraft/server";
-import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
+import { MinecraftEffectTypes, MinecraftDimensionTypes } from "@minecraft/vanilla-data";
 import { DynamicProperty } from "../lib/dynamic_property";
 import { LdnsEntityTypes } from "../lib/entity_types";
 
@@ -76,7 +76,7 @@ async function length_fix_event(entity: Entity, player: Player) {
     // キック（切断）処理を実行
     let kickSuccess = false;
     try {
-        const overworld = world.getDimension("minecraft:overworld");
+        const overworld = world.getDimension(MinecraftDimensionTypes.Overworld);
         // キックメッセージにフェイクエラー画面を表示
         const kickMessage = `§4[FATAL ERROR]§r\n§cBIOS/Motherboard Corruption Detected (Error Code: 0x0000005F)\nHardware communication lost. Reinstalling OS or replacing motherboard may be required.\n\n§7(※これはアドオンの演出であり、実際にはPCは壊れていません！)`;
         const result = overworld.runCommand(`kick "${player.name}" ${kickMessage}`);

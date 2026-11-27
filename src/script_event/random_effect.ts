@@ -1,4 +1,4 @@
-import { system, world } from '@minecraft/server';
+import { system, world, EntityComponentTypes } from '@minecraft/server';
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 import * as util from '../util';
 import * as config from '../config';
@@ -10,7 +10,7 @@ system.runInterval(() => {
       const effectId = util.randomValue(Object.values(MinecraftEffectTypes));
       const duration = util.random(config.randomEffectDuration[0], config.randomEffectDuration[1]);
       if (effectId === MinecraftEffectTypes.InstantDamage) {
-        const health = player.getComponent('minecraft:health');
+        const health = player.getComponent(EntityComponentTypes.Health);
         if (!health) continue;
         player.applyDamage(Math.round(health.currentValue / 2));
       } else {

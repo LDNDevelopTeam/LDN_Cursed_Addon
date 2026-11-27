@@ -1,4 +1,4 @@
-import { type Entity, EquipmentSlot, ItemStack } from "@minecraft/server";
+import { type Entity, EquipmentSlot, ItemStack, EntityComponentTypes } from "@minecraft/server";
 
 export function random(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min) + min);
@@ -17,7 +17,7 @@ export function hasItem(entity: Entity, itemId: string): number {
   let count = 0;
 
   // Check inventory container
-  const inventory = entity.getComponent("minecraft:inventory");
+  const inventory = entity.getComponent(EntityComponentTypes.Inventory);
   if (inventory && inventory.container) {
     const container = inventory.container;
     for (let i = 0; i < container.size; i++) {
@@ -29,7 +29,7 @@ export function hasItem(entity: Entity, itemId: string): number {
   }
 
   // Check equipment slots
-  const equippable = entity.getComponent("minecraft:equippable");
+  const equippable = entity.getComponent(EntityComponentTypes.Equippable);
   if (equippable) {
     const slots = [
       EquipmentSlot.Head,
@@ -58,7 +58,7 @@ export function hasItem(entity: Entity, itemId: string): number {
  * Gives an item to the entity (player), dropping it on the ground if the inventory is full.
  */
 export function giveItem(entity: Entity, itemId: string, amount = 1): void {
-  const inventory = entity.getComponent("minecraft:inventory");
+  const inventory = entity.getComponent(EntityComponentTypes.Inventory);
   if (!inventory || !inventory.container) return;
   const itemStack = new ItemStack(itemId, amount);
   const remainder = inventory.container.addItem(itemStack);
@@ -72,7 +72,7 @@ export function giveItem(entity: Entity, itemId: string, amount = 1): void {
  * Returns true if the items were successfully removed.
  */
 export function removeItem(entity: Entity, itemId: string, amount = 1): boolean {
-  const inventory = entity.getComponent("minecraft:inventory");
+  const inventory = entity.getComponent(EntityComponentTypes.Inventory);
   if (!inventory || !inventory.container) return false;
 
   // Verify we actually have enough first
@@ -99,7 +99,7 @@ export function removeItem(entity: Entity, itemId: string, amount = 1): boolean 
 
   // If we still need to remove, check equipment slots
   if (remainingToRemove > 0) {
-    const equippable = entity.getComponent("minecraft:equippable");
+    const equippable = entity.getComponent(EntityComponentTypes.Equippable);
     if (equippable) {
       const slots = [
         EquipmentSlot.Head,

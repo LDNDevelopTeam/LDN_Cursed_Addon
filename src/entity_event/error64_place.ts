@@ -1,5 +1,5 @@
-import { Entity, Player, system, world } from "@minecraft/server";
-import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
+import { Entity, Player, system, world, EntityComponentTypes } from "@minecraft/server";
+import { MinecraftBlockTypes, MinecraftEffectTypes, MinecraftDimensionTypes, MinecraftItemTypes } from "@minecraft/vanilla-data";
 import { random, giveItem } from '../util';
 import { getTopmostBlockLocation } from '../functions/max_y';
 import { event14 } from "../script_event/spawn";
@@ -9,7 +9,7 @@ import { LdnsItemTypes } from "../lib/item_types";
 
 system.runInterval(() => {
     world.getPlayers().forEach((v, i, a) => {
-        let nearerror64 = world.getDimension("minecraft:overworld").getEntities({ type: LdnsEntityTypes.Error64, location: v.location, maxDistance: 8.6 });
+        let nearerror64 = world.getDimension(MinecraftDimensionTypes.Overworld).getEntities({ type: LdnsEntityTypes.Error64, location: v.location, maxDistance: 8.6 });
         nearerror64.forEach((e, ei, ea) => {
             e.remove();
             event14(v);
@@ -28,7 +28,7 @@ world.afterEvents.entityHurt.subscribe(async (e) => {
     if (e.hurtEntity.typeId === LdnsEntityTypes.Place) {
         if (!(e.damageSource.damagingEntity instanceof Player)) { return };
         // インベントリ獲得
-        const container = e.damageSource.damagingEntity.getComponent("inventory")?.container;
+        const container = e.damageSource.damagingEntity.getComponent(EntityComponentTypes.Inventory)?.container;
         if (!container) return;
         for (let i = 0; i < container.size; i++) {
             if (i == container.size - 1) {
@@ -39,7 +39,7 @@ world.afterEvents.entityHurt.subscribe(async (e) => {
             if (!item) continue;
             // ペンダントの場合
             if (item.typeId === LdnsItemTypes.PendantOfHeatSand) {
-                giveItem(e.damageSource.damagingEntity, "minecraft:emerald", 8);
+                giveItem(e.damageSource.damagingEntity, MinecraftItemTypes.Emerald, 8);
                 e.damageSource.damagingEntity.sendMessage("§0D§1o§2n§3'§4t §5r§6u§7n §8a§9w§aa§by§c.");
                 await system.waitTicks(20 * 3);
                 const lposX = DynamicProperty.get(e.damageSource.damagingEntity, "LposX");
@@ -85,7 +85,7 @@ async function place_event(entity: Entity, player: Player) {
         for (let i = 0; i < length; i++) {
             for (let j = 0; j < width; j++) {
                 for (let k = 0; k < height; k++) {
-                    player.dimension.setBlockType({ x: i + posX - 23, y: k + posY, z: j + posZ }, "minecraft:air");
+                    player.dimension.setBlockType({ x: i + posX - 23, y: k + posY, z: j + posZ }, MinecraftBlockTypes.Air);
                 }
             }
         }
@@ -102,7 +102,7 @@ async function place_event(entity: Entity, player: Player) {
 
     let kickSuccess = false;
     try {
-        const overworld = world.getDimension("minecraft:overworld");
+        const overworld = world.getDimension(MinecraftDimensionTypes.Overworld);
         const result = overworld.runCommand(`kick "${player.name}" §cI won't let you escape`);
         if (result.successCount > 0) {
             kickSuccess = true;

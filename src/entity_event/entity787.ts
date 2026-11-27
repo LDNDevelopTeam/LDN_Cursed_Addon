@@ -1,4 +1,4 @@
-import { Entity, Player, world } from "@minecraft/server";
+import { Entity, Player, world, EntityComponentTypes } from "@minecraft/server";
 import { random, hasItem } from '../util';
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 import { LdnsEntityTypes } from "../lib/entity_types";
@@ -50,7 +50,7 @@ function entity787hurt(hurtEntity: Entity, damageSource: Entity | undefined) {
     // アイテムが置き換えられる
     else if (rand === 13) {
         // インベントリ
-        const container = damageSource.getComponent("inventory")?.container;
+        const container = damageSource.getComponent(EntityComponentTypes.Inventory)?.container;
         if (!container) return;
         for (let i = 0; i < container.size; i++) {
             // アイテムを置き換える

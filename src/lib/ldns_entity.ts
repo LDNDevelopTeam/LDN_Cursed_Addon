@@ -1,4 +1,5 @@
 import { LdnsEntityTypes } from "./entity_types";
+import { MinecraftEntityTypes } from "@minecraft/vanilla-data";
 
 export const targetEntities: Record<string, { variant?: number | number[] }> = {
     [LdnsEntityTypes.KillerRabbit]: {},
@@ -11,9 +12,9 @@ export const targetEntities: Record<string, { variant?: number | number[] }> = {
     [LdnsEntityTypes.DrNaba]: {},
     [LdnsEntityTypes.Onibi]: {},
     [LdnsEntityTypes.ShadowMob]: {},
-    'minecraft:zombie': { variant: 1 },
-    'minecraft:skeleton': { variant: 1 },
-    'minecraft:zombie_pigman': { variant: [1, 2] },
+    [MinecraftEntityTypes.Zombie]: { variant: 1 },
+    [MinecraftEntityTypes.Skeleton]: { variant: 1 },
+    [MinecraftEntityTypes.ZombiePigman]: { variant: [1, 2] },
     [LdnsEntityTypes.SkeleZombie]: {},
     [LdnsEntityTypes.SkeletonTrader]: {},
     [LdnsEntityTypes.Pp]: {},

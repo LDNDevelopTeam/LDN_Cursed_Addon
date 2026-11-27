@@ -1,4 +1,4 @@
-import { Entity, EquipmentSlot, Player, system, world } from '@minecraft/server';
+import { Entity, EquipmentSlot, Player, system, world, EntityComponentTypes } from '@minecraft/server';
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 import { targetEntities } from '../lib/ldns_entity';
 import { LdnsItemTypes } from "../lib/item_types";
@@ -21,7 +21,7 @@ world.afterEvents.entityHurt.subscribe(ev => {
 
 function applyArmorEffects(hurtEntity: Entity, damagingEntity?: Entity) {
   if (!(hurtEntity instanceof Player)) return;
-  const equippable = hurtEntity.getComponent('minecraft:equippable');
+  const equippable = hurtEntity.getComponent(EntityComponentTypes.Equippable);
   if (!equippable) return;
   if (
     damagingEntity?.typeId.startsWith('ldns:') &&
@@ -37,14 +37,14 @@ function applyArmorEffects(hurtEntity: Entity, damagingEntity?: Entity) {
 
 function applyToolEffects(hurtEntity: Entity, damagingEntity?: Entity) {
   if (!(damagingEntity instanceof Player)) return;
-  const equippable = damagingEntity.getComponent('minecraft:equippable');
+  const equippable = damagingEntity.getComponent(EntityComponentTypes.Equippable);
   if (!equippable) return;
   const mainHand = equippable.getEquipment(EquipmentSlot.Mainhand);
   if (!(mainHand && errorTools.includes(mainHand.typeId) && hurtEntity.typeId in targetEntities)) return;
 
   const conditions = targetEntities[hurtEntity.typeId];
   if ('variant' in conditions) {
-    const variant = hurtEntity.getComponent('minecraft:variant')?.value;
+    const variant = hurtEntity.getComponent(EntityComponentTypes.Variant)?.value;
     if (typeof conditions.variant === 'number' && conditions.variant !== variant) return;
     if (Array.isArray(conditions.variant) && (variant === undefined || !conditions.variant.includes(variant))) return;
   }

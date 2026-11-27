@@ -1,4 +1,4 @@
-import { Entity, Player, system, world } from "@minecraft/server";
+import { Entity, Player, system, world, EntityComponentTypes } from "@minecraft/server";
 import { random } from "../util";
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 import { LdnsEntityTypes } from "../lib/entity_types";
@@ -6,7 +6,7 @@ import { LdnsEntityTypes } from "../lib/entity_types";
 // Nullbrainが攻撃された時のイベント
 world.afterEvents.entityHurt.subscribe((eh) => {
     const { damage, damageSource, hurtEntity } = eh;
-    if (hurtEntity.typeId === LdnsEntityTypes.HeadOnlySheep && hurtEntity.hasComponent("minecraft:is_baby")) head_only_sheep_hurtevent(damage, damageSource.damagingEntity, hurtEntity);
+    if (hurtEntity.typeId === LdnsEntityTypes.HeadOnlySheep && hurtEntity.hasComponent(EntityComponentTypes.IsBaby)) head_only_sheep_hurtevent(damage, damageSource.damagingEntity, hurtEntity);
 });
 
 async function head_only_sheep_hurtevent(damage: number, damagingEntity: Entity | undefined, hurtEntity: Entity) {

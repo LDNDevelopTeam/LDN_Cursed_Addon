@@ -1,4 +1,4 @@
-import { Entity, EquipmentSlot, Player, world } from '@minecraft/server';
+import { Entity, EquipmentSlot, Player, world, EntityComponentTypes } from '@minecraft/server';
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
 import { targetEntities } from '../lib/ldns_entity';
 import { hasItem } from '../util';
@@ -19,7 +19,7 @@ function applyItemEffect(hitEntity: Entity, damagingEntity?: Entity) {
     // mob判定？
     const conditions = targetEntities[hitEntity.typeId];
     if ('variant' in conditions) {
-        const variant = hitEntity.getComponent('minecraft:variant')?.value;
+        const variant = hitEntity.getComponent(EntityComponentTypes.Variant)?.value;
         if (typeof conditions.variant === 'number' && conditions.variant !== variant) return;
         if (Array.isArray(conditions.variant) && (variant === undefined || !conditions.variant.includes(variant))) return;
     }

@@ -1,7 +1,7 @@
-import { type Block, EquipmentSlot, Player, PlayerPermissionLevel, system, world, type Vector3 } from "@minecraft/server";
+import { type Block, EquipmentSlot, Player, PlayerPermissionLevel, system, world, type Vector3, EntityComponentTypes } from "@minecraft/server";
 import { random, giveItem, hasItem } from "../util";
 import { freeze } from "../functions/kanasibari";
-import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
+import { MinecraftBlockTypes, MinecraftEffectTypes, MinecraftItemTypes, MinecraftEntityTypes, MinecraftDimensionTypes } from "@minecraft/vanilla-data";
 import { MessageFormData, ModalFormData } from "@minecraft/server-ui";
 import { getTopmostBlockLocation } from "../functions/max_y";
 import { DynamicProperty } from "../lib/dynamic_property";
@@ -145,24 +145,24 @@ async function events() {
 }
 
 /** これらのボタンを押したときに召喚台の判定をする */
-const summonButtons = ["minecraft:acacia_button", "minecraft:crimson_button", "minecraft:mangrove_button"];
+const summonButtons: readonly string[] = [MinecraftBlockTypes.AcaciaButton, MinecraftBlockTypes.CrimsonButton, MinecraftBlockTypes.MangroveButton];
 
 /** PP の召喚台 (facing_direction が 0 のボタンが基準)。この向きのほか、Y 軸周りに回転した向きでもよい */
 const ppAltar: BlockPattern = [
     [{ x: 0, y: 1, z: 0 }, LdnsBlockTypes.ErrorBlock],
-    [{ x: 1, y: 1, z: 0 }, "minecraft:redstone_block"],
-    [{ x: -1, y: 1, z: 0 }, "minecraft:nether_wart_block"],
+    [{ x: 1, y: 1, z: 0 }, MinecraftBlockTypes.RedstoneBlock],
+    [{ x: -1, y: 1, z: 0 }, MinecraftBlockTypes.NetherWartBlock],
     [{ x: 1, y: 0, z: 0 }, LdnsBlockTypes.ErrorBlock],
     [{ x: -1, y: 0, z: 0 }, LdnsBlockTypes.ErrorBlock],
     [{ x: 1, y: -1, z: 0 }, LdnsBlockTypes.ErrorBlock],
     [{ x: -1, y: -1, z: 0 }, LdnsBlockTypes.ErrorBlock],
-    [{ x: 1, y: 2, z: 0 }, "minecraft:carved_pumpkin"],
+    [{ x: 1, y: 2, z: 0 }, MinecraftBlockTypes.CarvedPumpkin],
 ];
 
 /** YY の召喚台 (facing_direction が 1 のボタンが基準)。この向きのほか、Y 軸周りに回転した向きでもよい */
 const yyAltar: BlockPattern = [
-    [{ x: 1, y: 0, z: 0 }, "minecraft:redstone_block"],
-    [{ x: -1, y: 0, z: 0 }, "minecraft:nether_wart_block"],
+    [{ x: 1, y: 0, z: 0 }, MinecraftBlockTypes.RedstoneBlock],
+    [{ x: -1, y: 0, z: 0 }, MinecraftBlockTypes.NetherWartBlock],
     [{ x: 2, y: 0, z: 0 }, LdnsBlockTypes.ErrorBlock],
     [{ x: -2, y: 0, z: 0 }, LdnsBlockTypes.ErrorBlock],
     [{ x: 0, y: 1, z: 0 }, LdnsBlockTypes.ErrorBlock],
@@ -171,8 +171,8 @@ const yyAltar: BlockPattern = [
     [{ x: -2, y: -1, z: 0 }, LdnsBlockTypes.ErrorBlock],
     [{ x: 2, y: 1, z: 0 }, LdnsBlockTypes.ErrorBlock],
     [{ x: -2, y: 1, z: 0 }, LdnsBlockTypes.ErrorBlock],
-    [{ x: 2, y: 2, z: 0 }, "minecraft:carved_pumpkin"],
-    [{ x: -2, y: 2, z: 0 }, "minecraft:carved_pumpkin"],
+    [{ x: 2, y: 2, z: 0 }, MinecraftBlockTypes.CarvedPumpkin],
+    [{ x: -2, y: 2, z: 0 }, MinecraftBlockTypes.CarvedPumpkin],
 ];
 
 /** Entity787 の召喚台 (プレイヤーの足元が基準)。向きは固定 */
@@ -183,40 +183,40 @@ const entity787Altar: BlockPattern = [
     [{ x: 0, y: -1, z: 1 }, LdnsBlockTypes.ErrorBlock],
     [{ x: -1, y: -1, z: 0 }, LdnsBlockTypes.ErrorBlock],
     [{ x: -2, y: -1, z: 0 }, LdnsBlockTypes.ErrorBlock],
-    [{ x: 1, y: -1, z: -1 }, "minecraft:chiseled_quartz_block"],
-    [{ x: 1, y: -1, z: 1 }, "minecraft:chiseled_quartz_block"],
-    [{ x: 2, y: -1, z: -1 }, "minecraft:chiseled_quartz_block"],
-    [{ x: 2, y: -1, z: 0 }, "minecraft:chiseled_quartz_block"],
-    [{ x: 2, y: -1, z: 1 }, "minecraft:chiseled_quartz_block"],
-    [{ x: 1, y: -1, z: 2 }, "minecraft:chiseled_quartz_block"],
-    [{ x: 1, y: -1, z: -2 }, "minecraft:chiseled_quartz_block"],
-    [{ x: 0, y: -1, z: 2 }, "minecraft:chiseled_quartz_block"],
-    [{ x: 0, y: -1, z: -2 }, "minecraft:chiseled_quartz_block"],
-    [{ x: -1, y: -1, z: -2 }, "minecraft:chiseled_quartz_block"],
-    [{ x: -1, y: -1, z: 2 }, "minecraft:chiseled_quartz_block"],
-    [{ x: -1, y: -1, z: -1 }, "minecraft:chiseled_quartz_block"],
-    [{ x: -1, y: -1, z: 1 }, "minecraft:chiseled_quartz_block"],
-    [{ x: -2, y: -1, z: -1 }, "minecraft:chiseled_quartz_block"],
-    [{ x: -2, y: -1, z: 1 }, "minecraft:chiseled_quartz_block"],
-    [{ x: -3, y: -1, z: -1 }, "minecraft:chiseled_quartz_block"],
-    [{ x: -3, y: -1, z: 1 }, "minecraft:chiseled_quartz_block"],
-    [{ x: -3, y: -1, z: 0 }, "minecraft:chiseled_quartz_block"],
-    [{ x: 1, y: 0, z: -1 }, "minecraft:redstone_wire"],
-    [{ x: 0, y: 0, z: 2 }, "minecraft:redstone_wire"],
-    [{ x: -1, y: 0, z: -2 }, "minecraft:redstone_wire"],
-    [{ x: -3, y: 0, z: 1 }, "minecraft:redstone_wire"],
-    [{ x: 2, y: 3, z: 0 }, "minecraft:nether_wart_block"],
-    [{ x: 2, y: 2, z: 0 }, "minecraft:nether_wart_block"],
-    [{ x: 2, y: 1, z: 0 }, "minecraft:nether_wart_block"],
-    [{ x: 2, y: 0, z: 0 }, "minecraft:nether_wart_block"],
-    [{ x: 2, y: 2, z: -1 }, "minecraft:nether_wart_block"],
-    [{ x: 2, y: 2, z: 1 }, "minecraft:nether_wart_block"],
-    [{ x: -3, y: 3, z: 0 }, "minecraft:soul_sand"],
-    [{ x: -3, y: 2, z: 0 }, "minecraft:soul_sand"],
-    [{ x: -3, y: 1, z: 0 }, "minecraft:soul_sand"],
-    [{ x: -3, y: 0, z: 0 }, "minecraft:soul_sand"],
-    [{ x: -3, y: 2, z: -1 }, "minecraft:soul_sand"],
-    [{ x: -3, y: 2, z: 1 }, "minecraft:soul_sand"],
+    [{ x: 1, y: -1, z: -1 }, MinecraftBlockTypes.ChiseledQuartzBlock],
+    [{ x: 1, y: -1, z: 1 }, MinecraftBlockTypes.ChiseledQuartzBlock],
+    [{ x: 2, y: -1, z: -1 }, MinecraftBlockTypes.ChiseledQuartzBlock],
+    [{ x: 2, y: -1, z: 0 }, MinecraftBlockTypes.ChiseledQuartzBlock],
+    [{ x: 2, y: -1, z: 1 }, MinecraftBlockTypes.ChiseledQuartzBlock],
+    [{ x: 1, y: -1, z: 2 }, MinecraftBlockTypes.ChiseledQuartzBlock],
+    [{ x: 1, y: -1, z: -2 }, MinecraftBlockTypes.ChiseledQuartzBlock],
+    [{ x: 0, y: -1, z: 2 }, MinecraftBlockTypes.ChiseledQuartzBlock],
+    [{ x: 0, y: -1, z: -2 }, MinecraftBlockTypes.ChiseledQuartzBlock],
+    [{ x: -1, y: -1, z: -2 }, MinecraftBlockTypes.ChiseledQuartzBlock],
+    [{ x: -1, y: -1, z: 2 }, MinecraftBlockTypes.ChiseledQuartzBlock],
+    [{ x: -1, y: -1, z: -1 }, MinecraftBlockTypes.ChiseledQuartzBlock],
+    [{ x: -1, y: -1, z: 1 }, MinecraftBlockTypes.ChiseledQuartzBlock],
+    [{ x: -2, y: -1, z: -1 }, MinecraftBlockTypes.ChiseledQuartzBlock],
+    [{ x: -2, y: -1, z: 1 }, MinecraftBlockTypes.ChiseledQuartzBlock],
+    [{ x: -3, y: -1, z: -1 }, MinecraftBlockTypes.ChiseledQuartzBlock],
+    [{ x: -3, y: -1, z: 1 }, MinecraftBlockTypes.ChiseledQuartzBlock],
+    [{ x: -3, y: -1, z: 0 }, MinecraftBlockTypes.ChiseledQuartzBlock],
+    [{ x: 1, y: 0, z: -1 }, MinecraftBlockTypes.RedstoneWire],
+    [{ x: 0, y: 0, z: 2 }, MinecraftBlockTypes.RedstoneWire],
+    [{ x: -1, y: 0, z: -2 }, MinecraftBlockTypes.RedstoneWire],
+    [{ x: -3, y: 0, z: 1 }, MinecraftBlockTypes.RedstoneWire],
+    [{ x: 2, y: 3, z: 0 }, MinecraftBlockTypes.NetherWartBlock],
+    [{ x: 2, y: 2, z: 0 }, MinecraftBlockTypes.NetherWartBlock],
+    [{ x: 2, y: 1, z: 0 }, MinecraftBlockTypes.NetherWartBlock],
+    [{ x: 2, y: 0, z: 0 }, MinecraftBlockTypes.NetherWartBlock],
+    [{ x: 2, y: 2, z: -1 }, MinecraftBlockTypes.NetherWartBlock],
+    [{ x: 2, y: 2, z: 1 }, MinecraftBlockTypes.NetherWartBlock],
+    [{ x: -3, y: 3, z: 0 }, MinecraftBlockTypes.SoulSand],
+    [{ x: -3, y: 2, z: 0 }, MinecraftBlockTypes.SoulSand],
+    [{ x: -3, y: 1, z: 0 }, MinecraftBlockTypes.SoulSand],
+    [{ x: -3, y: 0, z: 0 }, MinecraftBlockTypes.SoulSand],
+    [{ x: -3, y: 2, z: -1 }, MinecraftBlockTypes.SoulSand],
+    [{ x: -3, y: 2, z: 1 }, MinecraftBlockTypes.SoulSand],
 ];
 
 world.afterEvents.buttonPush.subscribe(async (e) => {
@@ -233,7 +233,7 @@ async function summonFromAltar(button: Block, altar: BlockPattern, entityId: Ldn
     const pattern = findRotatedPattern(button, altar);
     if (!pattern) return;
     button.dimension.spawnParticle("ldns:error_particle", button.location);
-    button.setType("air");
+    button.setType(MinecraftBlockTypes.Air);
     clearPattern(button, pattern);
     await system.waitTicks(20 * 3);
     button.dimension.spawnEntity(entityId, button.location);
@@ -242,8 +242,8 @@ async function summonFromAltar(button: Block, altar: BlockPattern, entityId: Ldn
 // 必ずこの向き
 world.afterEvents.playerInteractWithBlock.subscribe(async (e) => {
     const { player } = e;
-    let equipments = player.getComponent("equippable");
-    let container = player.getComponent("inventory")?.container;
+    let equipments = player.getComponent(EntityComponentTypes.Equippable);
+    let container = player.getComponent(EntityComponentTypes.Inventory)?.container;
     const button = player.dimension.getBlock(player.location);
     if (!button || !equipments) return;
     if (
@@ -264,8 +264,8 @@ world.afterEvents.playerInteractWithBlock.subscribe(async (e) => {
         e.block.location.x === button.location.x - 3 &&
         e.block.location.y === button.location.y + 1 &&
         e.block.location.z === button.location.z &&
-        e.block.typeId === "minecraft:soul_sand" &&
-        e.itemStack?.typeId === "minecraft:flint_and_steel"
+        e.block.typeId === MinecraftBlockTypes.SoulSand &&
+        e.itemStack?.typeId === MinecraftItemTypes.FlintAndSteel
     ) {
         button.dimension.spawnParticle("ldns:error_particle", button.location);
         container?.setItem(3 + 9, undefined);
@@ -275,7 +275,7 @@ world.afterEvents.playerInteractWithBlock.subscribe(async (e) => {
         clearPattern(button, entity787Altar);
         world.sendMessage("No! It's not me!Help me! I'm scared! Don't make me cry!Don't hit me!Don't curse!Don't betray me... I'll turn it off?");
         await system.waitTicks(20 * 3);
-        button.dimension.spawnEntity("lightning_bolt", { x: button.location.x + 3, y: button.location.y, z: button.location.z });
+        button.dimension.spawnEntity(MinecraftEntityTypes.LightningBolt, { x: button.location.x + 3, y: button.location.y, z: button.location.z });
         button.dimension.spawnEntity(LdnsEntityTypes.Entity787, { x: button.location.x + 3, y: button.location.y, z: button.location.z });
     }
 });
@@ -524,7 +524,7 @@ export async function event11(playerall: Player[], v: Player) {
     // 最高の地面ブロックのY座標を取得
     let spawnY = 0;
     for (let y = 320; y >= -64; y--) { // ビルドの最大・最小高さを確認
-        const block = world.getDimension("overworld").getBlock({ x: spawnX, y: y, z: spawnZ });
+        const block = world.getDimension(MinecraftDimensionTypes.Overworld).getBlock({ x: spawnX, y: y, z: spawnZ });
         if (block && !block.isAir) {
             spawnY = y + 1; // ブロックの上にスポーン
             break;
@@ -539,7 +539,7 @@ export async function event11(playerall: Player[], v: Player) {
 }
 
 export async function event12(v: Player) {
-    let playerhealth = v.getComponent("health");
+    let playerhealth = v.getComponent(EntityComponentTypes.Health);
     for (let i = 0; i < 384; i++) {
         playerhealth?.setCurrentValue(random(6, 20));
         await system.waitTicks(1);
@@ -611,17 +611,17 @@ export async function event14s(v: Player) {
         for (let j = 0; j < width; j++) {
             for (let k = 0; k < height; k++) {
                 if ((i >= 1 && i <= 46) && (j >= 1 && j <= 5) && (k >= 1 && k <= 8)) {
-                    v.dimension.setBlockType({ x: i + posX - 23, y: k + posY, z: j + posZ }, "minecraft:air");
+                    v.dimension.setBlockType({ x: i + posX - 23, y: k + posY, z: j + posZ }, MinecraftBlockTypes.Air);
                 }
                 else {
-                    v.dimension.setBlockType({ x: i + posX - 23, y: k + posY, z: j + posZ }, "minecraft:bedrock");
+                    v.dimension.setBlockType({ x: i + posX - 23, y: k + posY, z: j + posZ }, MinecraftBlockTypes.Bedrock);
                 }
                 if ((i >= 1 && i <= 46) && (j == 1 || j == 5) && k == 8) {
-                    v.dimension.setBlockType({ x: i + posX - 23, y: k + posY, z: j + posZ }, "minecraft:glowstone");
+                    v.dimension.setBlockType({ x: i + posX - 23, y: k + posY, z: j + posZ }, MinecraftBlockTypes.Glowstone);
                 }
                 if ((i >= 1 && i <= 46) && k == 1 && (j >= 1 && j <= 5)) {
                     if (random(0, 10) == 0) {
-                        v.dimension.setBlockType({ x: i + posX - 23, y: k + posY, z: j + posZ }, "minecraft:redstone_wire");
+                        v.dimension.setBlockType({ x: i + posX - 23, y: k + posY, z: j + posZ }, MinecraftBlockTypes.RedstoneWire);
                     }
                 }
             }
@@ -654,7 +654,7 @@ system.runInterval(() => {
                     for (let j = 0; j < width; j++) {
                         for (let k = 0; k < height; k++) {
                             if ((j >= 1 && j <= 5) && (k >= 1 && k <= 8)) {
-                                v.dimension.setBlockType({ x: i + posX - 23, y: k + posY, z: j + posZ }, "minecraft:air");
+                                v.dimension.setBlockType({ x: i + posX - 23, y: k + posY, z: j + posZ }, MinecraftBlockTypes.Air);
                             }
                         }
                     }
@@ -670,7 +670,7 @@ system.runInterval(() => {
                     for (let xOffset = 0; xOffset < length; xOffset++) {
                         for (let zOffset = 0; zOffset < width; zOffset++) {
                             for (let yOffset = 0; yOffset < height; yOffset++) {
-                                v.dimension.setBlockType({ x: xOffset + posX - 23, y: yOffset + posY, z: zOffset + posZ }, "minecraft:air");
+                                v.dimension.setBlockType({ x: xOffset + posX - 23, y: yOffset + posY, z: zOffset + posZ }, MinecraftBlockTypes.Air);
                             }
                         }
                     }
