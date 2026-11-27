@@ -1,4 +1,4 @@
-import { EquipmentSlot, Player, PlayerPermissionLevel, system, world, type Vector3 } from "@minecraft/server";
+import { type Block, EquipmentSlot, Player, PlayerPermissionLevel, system, world, type Vector3 } from "@minecraft/server";
 import { random, giveItem, hasItem } from "../util";
 import { freeze } from "../functions/kanasibari";
 import { MinecraftEffectTypes } from "@minecraft/vanilla-data";
@@ -8,6 +8,7 @@ import { DynamicProperty } from "../lib/dynamic_property";
 import { LdnsEntityTypes } from "../lib/entity_types";
 import { LdnsBlockTypes } from "../lib/block_types";
 import { LdnsItemTypes } from "../lib/item_types";
+import { type BlockPattern, clearPattern, findRotatedPattern, matchesPattern } from "../functions/block_pattern";
 
 const timezoneOffset = 0;
 
@@ -143,216 +144,100 @@ async function events() {
     }
 }
 
+/** これらのボタンを押したときに召喚台の判定をする */
+const summonButtons = ["minecraft:acacia_button", "minecraft:crimson_button", "minecraft:mangrove_button"];
+
+/** PP の召喚台 (facing_direction が 0 のボタンが基準)。この向きのほか、Y 軸周りに回転した向きでもよい */
+const ppAltar: BlockPattern = [
+    [{ x: 0, y: 1, z: 0 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: 1, y: 1, z: 0 }, "minecraft:redstone_block"],
+    [{ x: -1, y: 1, z: 0 }, "minecraft:nether_wart_block"],
+    [{ x: 1, y: 0, z: 0 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: -1, y: 0, z: 0 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: 1, y: -1, z: 0 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: -1, y: -1, z: 0 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: 1, y: 2, z: 0 }, "minecraft:carved_pumpkin"],
+];
+
+/** YY の召喚台 (facing_direction が 1 のボタンが基準)。この向きのほか、Y 軸周りに回転した向きでもよい */
+const yyAltar: BlockPattern = [
+    [{ x: 1, y: 0, z: 0 }, "minecraft:redstone_block"],
+    [{ x: -1, y: 0, z: 0 }, "minecraft:nether_wart_block"],
+    [{ x: 2, y: 0, z: 0 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: -2, y: 0, z: 0 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: 0, y: 1, z: 0 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: 0, y: -1, z: 0 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: 2, y: -1, z: 0 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: -2, y: -1, z: 0 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: 2, y: 1, z: 0 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: -2, y: 1, z: 0 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: 2, y: 2, z: 0 }, "minecraft:carved_pumpkin"],
+    [{ x: -2, y: 2, z: 0 }, "minecraft:carved_pumpkin"],
+];
+
+/** Entity787 の召喚台 (プレイヤーの足元が基準)。向きは固定 */
+const entity787Altar: BlockPattern = [
+    [{ x: 0, y: -1, z: 0 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: 1, y: -1, z: 0 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: 0, y: -1, z: -1 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: 0, y: -1, z: 1 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: -1, y: -1, z: 0 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: -2, y: -1, z: 0 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: 1, y: -1, z: -1 }, "minecraft:chiseled_quartz_block"],
+    [{ x: 1, y: -1, z: 1 }, "minecraft:chiseled_quartz_block"],
+    [{ x: 2, y: -1, z: -1 }, "minecraft:chiseled_quartz_block"],
+    [{ x: 2, y: -1, z: 0 }, "minecraft:chiseled_quartz_block"],
+    [{ x: 2, y: -1, z: 1 }, "minecraft:chiseled_quartz_block"],
+    [{ x: 1, y: -1, z: 2 }, "minecraft:chiseled_quartz_block"],
+    [{ x: 1, y: -1, z: -2 }, "minecraft:chiseled_quartz_block"],
+    [{ x: 0, y: -1, z: 2 }, "minecraft:chiseled_quartz_block"],
+    [{ x: 0, y: -1, z: -2 }, "minecraft:chiseled_quartz_block"],
+    [{ x: -1, y: -1, z: -2 }, "minecraft:chiseled_quartz_block"],
+    [{ x: -1, y: -1, z: 2 }, "minecraft:chiseled_quartz_block"],
+    [{ x: -1, y: -1, z: -1 }, "minecraft:chiseled_quartz_block"],
+    [{ x: -1, y: -1, z: 1 }, "minecraft:chiseled_quartz_block"],
+    [{ x: -2, y: -1, z: -1 }, "minecraft:chiseled_quartz_block"],
+    [{ x: -2, y: -1, z: 1 }, "minecraft:chiseled_quartz_block"],
+    [{ x: -3, y: -1, z: -1 }, "minecraft:chiseled_quartz_block"],
+    [{ x: -3, y: -1, z: 1 }, "minecraft:chiseled_quartz_block"],
+    [{ x: -3, y: -1, z: 0 }, "minecraft:chiseled_quartz_block"],
+    [{ x: 1, y: 0, z: -1 }, "minecraft:redstone_wire"],
+    [{ x: 0, y: 0, z: 2 }, "minecraft:redstone_wire"],
+    [{ x: -1, y: 0, z: -2 }, "minecraft:redstone_wire"],
+    [{ x: -3, y: 0, z: 1 }, "minecraft:redstone_wire"],
+    [{ x: 2, y: 3, z: 0 }, "minecraft:nether_wart_block"],
+    [{ x: 2, y: 2, z: 0 }, "minecraft:nether_wart_block"],
+    [{ x: 2, y: 1, z: 0 }, "minecraft:nether_wart_block"],
+    [{ x: 2, y: 0, z: 0 }, "minecraft:nether_wart_block"],
+    [{ x: 2, y: 2, z: -1 }, "minecraft:nether_wart_block"],
+    [{ x: 2, y: 2, z: 1 }, "minecraft:nether_wart_block"],
+    [{ x: -3, y: 3, z: 0 }, "minecraft:soul_sand"],
+    [{ x: -3, y: 2, z: 0 }, "minecraft:soul_sand"],
+    [{ x: -3, y: 1, z: 0 }, "minecraft:soul_sand"],
+    [{ x: -3, y: 0, z: 0 }, "minecraft:soul_sand"],
+    [{ x: -3, y: 2, z: -1 }, "minecraft:soul_sand"],
+    [{ x: -3, y: 2, z: 1 }, "minecraft:soul_sand"],
+];
+
 world.afterEvents.buttonPush.subscribe(async (e) => {
     const button = e.block;
-    const buttoname = button.typeId;
     if (!(e.source instanceof Player)) return;
-    // PPスポーン
-    if ((buttoname === "minecraft:acacia_button" || buttoname === "minecraft:crimson_button" || buttoname === "minecraft:mangrove_button") && button.permutation.getState("facing_direction") === 0) {
-        if (button.offset({ x: 0, y: 1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: 1, z: -1 })?.typeId === "minecraft:redstone_block" &&
-            button.offset({ x: 0, y: 1, z: 1 })?.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: 0, y: 0, z: -1 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: 0, z: 1 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: -1, z: -1 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: -1, z: 1 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: 2, z: -1 })?.typeId === "minecraft:carved_pumpkin") {
-            button.dimension.spawnParticle("ldns:error_particle", button.location);
-            button.setType("air");
-            button.offset({ x: 0, y: 1, z: 0 })!.setType("air");
-            button.offset({ x: 0, y: 1, z: -1 })!.setType("air");
-            button.offset({ x: 0, y: 1, z: 1 })!.setType("air");
-            button.offset({ x: 0, y: 0, z: -1 })!.setType("air");
-            button.offset({ x: 0, y: 0, z: 1 })!.setType("air");
-            button.offset({ x: 0, y: -1, z: -1 })!.setType("air");
-            button.offset({ x: 0, y: -1, z: 1 })!.setType("air");
-            button.offset({ x: 0, y: 2, z: -1 })!.setType("air");
-            await system.waitTicks(20 * 3);
-            button.dimension.spawnEntity(LdnsEntityTypes.Pp, button.location);
-        }
-        else if (button.offset({ x: 0, y: 1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: 1, z: 1 })?.typeId === "minecraft:redstone_block" &&
-            button.offset({ x: 0, y: 1, z: -1 })?.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: 0, y: 0, z: 1 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: 0, z: -1 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: -1, z: 1 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: -1, z: -1 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: 2, z: 1 })?.typeId === "minecraft:carved_pumpkin") {
-            button.dimension.spawnParticle("ldns:error_particle", button.location);
-            button.setType("air");
-            button.offset({ x: 0, y: 1, z: 0 })!.setType("air");
-            button.offset({ x: 0, y: 1, z: 1 })!.setType("air");
-            button.offset({ x: 0, y: 1, z: -1 })!.setType("air");
-            button.offset({ x: 0, y: 0, z: 1 })!.setType("air");
-            button.offset({ x: 0, y: 0, z: -1 })!.setType("air");
-            button.offset({ x: 0, y: -1, z: 1 })!.setType("air");
-            button.offset({ x: 0, y: -1, z: -1 })!.setType("air");
-            button.offset({ x: 0, y: 2, z: 1 })!.setType("air");
-            await system.waitTicks(20 * 3);
-            button.dimension.spawnEntity(LdnsEntityTypes.Pp, button.location);
-        }
-        else if (button.offset({ x: 0, y: 1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 1, y: 1, z: 0 })?.typeId === "minecraft:redstone_block" &&
-            button.offset({ x: -1, y: 1, z: 0 })?.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: 1, y: 0, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: -1, y: 0, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 1, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: -1, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 1, y: 2, z: 0 })?.typeId === "minecraft:carved_pumpkin") {
-            button.dimension.spawnParticle("ldns:error_particle", button.location);
-            button.setType("air");
-            button.offset({ x: 0, y: 1, z: 0 })!.setType("air");
-            button.offset({ x: 1, y: 1, z: 0 })!.setType("air");
-            button.offset({ x: -1, y: 1, z: 0 })!.setType("air");
-            button.offset({ x: 1, y: 0, z: 0 })!.setType("air");
-            button.offset({ x: -1, y: 0, z: 0 })!.setType("air");
-            button.offset({ x: 1, y: -1, z: 0 })!.setType("air");
-            button.offset({ x: -1, y: -1, z: 0 })!.setType("air");
-            button.offset({ x: 1, y: 2, z: 0 })!.setType("air");
-            await system.waitTicks(20 * 3);
-            button.dimension.spawnEntity(LdnsEntityTypes.Pp, button.location);
-        }
-        else if (button.offset({ x: 0, y: 1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: -1, y: 1, z: 0 })?.typeId === "minecraft:redstone_block" &&
-            button.offset({ x: 1, y: 1, z: 0 })?.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: -1, y: 0, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 1, y: 0, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: -1, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 1, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: -1, y: 2, z: 0 })?.typeId === "minecraft:carved_pumpkin") {
-            button.dimension.spawnParticle("ldns:error_particle", button.location);
-            button.setType("air");
-            button.offset({ x: 0, y: 1, z: 0 })!.setType("air");
-            button.offset({ x: -1, y: 1, z: 0 })!.setType("air");
-            button.offset({ x: 1, y: 1, z: 0 })!.setType("air");
-            button.offset({ x: -1, y: 0, z: 0 })!.setType("air");
-            button.offset({ x: 1, y: 0, z: 0 })!.setType("air");
-            button.offset({ x: -1, y: -1, z: 0 })!.setType("air");
-            button.offset({ x: 1, y: -1, z: 0 })!.setType("air");
-            button.offset({ x: -1, y: 2, z: 0 })!.setType("air");
-            await system.waitTicks(20 * 3);
-            button.dimension.spawnEntity(LdnsEntityTypes.Pp, button.location);
-        }
-    }
-    if ((buttoname === "minecraft:acacia_button" || buttoname === "minecraft:crimson_button" || buttoname === "minecraft:mangrove_button") && button.permutation.getState("facing_direction") === 1) {
-        if (button.offset({ x: 0, y: 0, z: -1 })?.typeId === "minecraft:redstone_block" &&
-            button.offset({ x: 0, y: 0, z: 1 })?.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: 0, y: 0, z: -2 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: 0, z: 2 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: 1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: -1, z: -2 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: -1, z: 2 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: 1, z: -2 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: 1, z: 2 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: 2, z: -2 })?.typeId === "minecraft:carved_pumpkin" &&
-            button.offset({ x: 0, y: 2, z: 2 })?.typeId === "minecraft:carved_pumpkin") {
-            button.dimension.spawnParticle("ldns:error_particle", button.location);
-            button.setType("air");
-            button.offset({ x: 0, y: 0, z: -1 })!.setType("air");
-            button.offset({ x: 0, y: 0, z: 1 })!.setType("air");
-            button.offset({ x: 0, y: 0, z: -2 })!.setType("air");
-            button.offset({ x: 0, y: 0, z: 2 })!.setType("air");
-            button.offset({ x: 0, y: 1, z: 0 })!.setType("air");
-            button.offset({ x: 0, y: -1, z: 0 })!.setType("air");
-            button.offset({ x: 0, y: -1, z: -2 })!.setType("air");
-            button.offset({ x: 0, y: -1, z: 2 })!.setType("air");
-            button.offset({ x: 0, y: 1, z: -2 })!.setType("air");
-            button.offset({ x: 0, y: 1, z: 2 })!.setType("air");
-            button.offset({ x: 0, y: 2, z: -2 })!.setType("air");
-            button.offset({ x: 0, y: 2, z: 2 })!.setType("air");
-            await system.waitTicks(20 * 3);
-            button.dimension.spawnEntity(LdnsEntityTypes.Yy, button.location);
-        }
-        else if (button.offset({ x: 0, y: 0, z: 1 })?.typeId === "minecraft:redstone_block" &&
-            button.offset({ x: 0, y: 0, z: -1 })?.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: 0, y: 0, z: 2 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: 0, z: -2 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: 1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: -1, z: 2 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: -1, z: -2 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: 1, z: 2 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: 1, z: -2 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: 2, z: 2 })?.typeId === "minecraft:carved_pumpkin" &&
-            button.offset({ x: 0, y: 2, z: -2 })?.typeId === "minecraft:carved_pumpkin") {
-            button.dimension.spawnParticle("ldns:error_particle", button.location);
-            button.setType("air");
-            button.offset({ x: 0, y: 0, z: 1 })!.setType("air");
-            button.offset({ x: 0, y: 0, z: -1 })!.setType("air");
-            button.offset({ x: 0, y: 0, z: 2 })!.setType("air");
-            button.offset({ x: 0, y: 0, z: -2 })!.setType("air");
-            button.offset({ x: 0, y: 1, z: 0 })!.setType("air");
-            button.offset({ x: 0, y: -1, z: 0 })!.setType("air");
-            button.offset({ x: 0, y: -1, z: 2 })!.setType("air");
-            button.offset({ x: 0, y: -1, z: -2 })!.setType("air");
-            button.offset({ x: 0, y: 1, z: 2 })!.setType("air");
-            button.offset({ x: 0, y: 1, z: -2 })!.setType("air");
-            button.offset({ x: 0, y: 2, z: 2 })!.setType("air");
-            button.offset({ x: 0, y: 2, z: -2 })!.setType("air");
-            await system.waitTicks(20 * 3);
-            button.dimension.spawnEntity(LdnsEntityTypes.Yy, button.location);
-        }
-        else if (button.offset({ x: -1, y: 0, z: 0 })?.typeId === "minecraft:redstone_block" &&
-            button.offset({ x: 1, y: 0, z: 0 })?.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: -2, y: 0, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 2, y: 0, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: 1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: -2, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 2, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: -2, y: 1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 2, y: 1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: -2, y: 2, z: 0 })?.typeId === "minecraft:carved_pumpkin" &&
-            button.offset({ x: 2, y: 2, z: 0 })?.typeId === "minecraft:carved_pumpkin") {
-            button.dimension.spawnParticle("ldns:error_particle", button.location);
-            button.setType("air");
-            button.offset({ x: -1, y: 0, z: 0 })!.setType("air");
-            button.offset({ x: 1, y: 0, z: 0 })!.setType("air");
-            button.offset({ x: -2, y: 0, z: 0 })!.setType("air");
-            button.offset({ x: 2, y: 0, z: 0 })!.setType("air");
-            button.offset({ x: 0, y: 1, z: 0 })!.setType("air");
-            button.offset({ x: 0, y: -1, z: 0 })!.setType("air");
-            button.offset({ x: -2, y: -1, z: 0 })!.setType("air");
-            button.offset({ x: 2, y: -1, z: 0 })!.setType("air");
-            button.offset({ x: -2, y: 1, z: 0 })!.setType("air");
-            button.offset({ x: 2, y: 1, z: 0 })!.setType("air");
-            button.offset({ x: -2, y: 2, z: 0 })!.setType("air");
-            button.offset({ x: 2, y: 2, z: 0 })!.setType("air");
-            await system.waitTicks(20 * 3);
-            button.dimension.spawnEntity(LdnsEntityTypes.Yy, button.location);
-        }
-        else if (button.offset({ x: 1, y: 0, z: 0 })?.typeId === "minecraft:redstone_block" &&
-            button.offset({ x: -1, y: 0, z: 0 })?.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: 2, y: 0, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: -2, y: 0, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: 1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 2, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: -2, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 2, y: 1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: -2, y: 1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 2, y: 2, z: 0 })?.typeId === "minecraft:carved_pumpkin" &&
-            button.offset({ x: -2, y: 2, z: 0 })?.typeId === "minecraft:carved_pumpkin") {
-            button.dimension.spawnParticle("ldns:error_particle", button.location);
-            button.setType("air");
-            button.offset({ x: 1, y: 0, z: 0 })!.setType("air");
-            button.offset({ x: -1, y: 0, z: 0 })!.setType("air");
-            button.offset({ x: 2, y: 0, z: 0 })!.setType("air");
-            button.offset({ x: -2, y: 0, z: 0 })!.setType("air");
-            button.offset({ x: 0, y: 1, z: 0 })!.setType("air");
-            button.offset({ x: 0, y: -1, z: 0 })!.setType("air");
-            button.offset({ x: 2, y: -1, z: 0 })!.setType("air");
-            button.offset({ x: -2, y: -1, z: 0 })!.setType("air");
-            button.offset({ x: 2, y: 1, z: 0 })!.setType("air");
-            button.offset({ x: -2, y: 1, z: 0 })!.setType("air");
-            button.offset({ x: 2, y: 2, z: 0 })!.setType("air");
-            button.offset({ x: -2, y: 2, z: 0 })!.setType("air");
-            await system.waitTicks(20 * 3);
-            button.dimension.spawnEntity(LdnsEntityTypes.Yy, button.location);
-        }
-    }
+    if (!summonButtons.includes(button.typeId)) return;
+    const facing = button.permutation.getState("facing_direction");
+    if (facing === 0) await summonFromAltar(button, ppAltar, LdnsEntityTypes.Pp);
+    if (facing === 1) await summonFromAltar(button, yyAltar, LdnsEntityTypes.Yy);
 });
+
+/** 召喚台が揃っていれば、ボタンと召喚台を消して 3 秒後にエンティティを召喚する */
+async function summonFromAltar(button: Block, altar: BlockPattern, entityId: LdnsEntityTypes) {
+    const pattern = findRotatedPattern(button, altar);
+    if (!pattern) return;
+    button.dimension.spawnParticle("ldns:error_particle", button.location);
+    button.setType("air");
+    clearPattern(button, pattern);
+    await system.waitTicks(20 * 3);
+    button.dimension.spawnEntity(entityId, button.location);
+}
 
 // 必ずこの向き
 world.afterEvents.playerInteractWithBlock.subscribe(async (e) => {
@@ -362,46 +247,7 @@ world.afterEvents.playerInteractWithBlock.subscribe(async (e) => {
     const button = player.dimension.getBlock(player.location);
     if (!button || !equipments) return;
     if (
-        button.offset({ x: 0, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-        button.offset({ x: 1, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-        button.offset({ x: 0, y: -1, z: -1 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-        button.offset({ x: 0, y: -1, z: 1 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-        button.offset({ x: -1, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-        button.offset({ x: -2, y: -1, z: 0 })?.typeId === LdnsBlockTypes.ErrorBlock &&
-        button.offset({ x: 1, y: -1, z: -1 })?.typeId === "minecraft:chiseled_quartz_block" &&
-        button.offset({ x: 1, y: -1, z: 1 })?.typeId === "minecraft:chiseled_quartz_block" &&
-        button.offset({ x: 2, y: -1, z: -1 })?.typeId === "minecraft:chiseled_quartz_block" &&
-        button.offset({ x: 2, y: -1, z: 0 })?.typeId === "minecraft:chiseled_quartz_block" &&
-        button.offset({ x: 2, y: -1, z: 1 })?.typeId === "minecraft:chiseled_quartz_block" &&
-        button.offset({ x: 1, y: -1, z: 2 })?.typeId === "minecraft:chiseled_quartz_block" &&
-        button.offset({ x: 1, y: -1, z: -2 })?.typeId === "minecraft:chiseled_quartz_block" &&
-        button.offset({ x: 0, y: -1, z: 2 })?.typeId === "minecraft:chiseled_quartz_block" &&
-        button.offset({ x: 0, y: -1, z: -2 })?.typeId === "minecraft:chiseled_quartz_block" &&
-        button.offset({ x: -1, y: -1, z: -2 })?.typeId === "minecraft:chiseled_quartz_block" &&
-        button.offset({ x: -1, y: -1, z: 2 })?.typeId === "minecraft:chiseled_quartz_block" &&
-        button.offset({ x: -1, y: -1, z: -1 })?.typeId === "minecraft:chiseled_quartz_block" &&
-        button.offset({ x: -1, y: -1, z: 1 })?.typeId === "minecraft:chiseled_quartz_block" &&
-        button.offset({ x: -2, y: -1, z: -1 })?.typeId === "minecraft:chiseled_quartz_block" &&
-        button.offset({ x: -2, y: -1, z: 1 })?.typeId === "minecraft:chiseled_quartz_block" &&
-        button.offset({ x: -3, y: -1, z: -1 })?.typeId === "minecraft:chiseled_quartz_block" &&
-        button.offset({ x: -3, y: -1, z: 1 })?.typeId === "minecraft:chiseled_quartz_block" &&
-        button.offset({ x: -3, y: -1, z: 0 })?.typeId === "minecraft:chiseled_quartz_block" &&
-        button.offset({ x: 1, y: 0, z: -1 })?.typeId === "minecraft:redstone_wire" &&
-        button.offset({ x: 0, y: 0, z: 2 })?.typeId === "minecraft:redstone_wire" &&
-        button.offset({ x: -1, y: 0, z: -2 })?.typeId === "minecraft:redstone_wire" &&
-        button.offset({ x: -3, y: 0, z: 1 })?.typeId === "minecraft:redstone_wire" &&
-        button.offset({ x: 2, y: 3, z: 0 })?.typeId === "minecraft:nether_wart_block" &&
-        button.offset({ x: 2, y: 2, z: 0 })?.typeId === "minecraft:nether_wart_block" &&
-        button.offset({ x: 2, y: 1, z: 0 })?.typeId === "minecraft:nether_wart_block" &&
-        button.offset({ x: 2, y: 0, z: 0 })?.typeId === "minecraft:nether_wart_block" &&
-        button.offset({ x: 2, y: 2, z: -1 })?.typeId === "minecraft:nether_wart_block" &&
-        button.offset({ x: 2, y: 2, z: 1 })?.typeId === "minecraft:nether_wart_block" &&
-        button.offset({ x: -3, y: 3, z: 0 })?.typeId === "minecraft:soul_sand" &&
-        button.offset({ x: -3, y: 2, z: 0 })?.typeId === "minecraft:soul_sand" &&
-        button.offset({ x: -3, y: 1, z: 0 })?.typeId === "minecraft:soul_sand" &&
-        button.offset({ x: -3, y: 0, z: 0 })?.typeId === "minecraft:soul_sand" &&
-        button.offset({ x: -3, y: 2, z: -1 })?.typeId === "minecraft:soul_sand" &&
-        button.offset({ x: -3, y: 2, z: 1 })?.typeId === "minecraft:soul_sand" &&
+        matchesPattern(button, entity787Altar) &&
         equipments.getEquipment(EquipmentSlot.Head)?.typeId === LdnsItemTypes.ErrorHelmet &&
         equipments.getEquipment(EquipmentSlot.Chest)?.typeId === LdnsItemTypes.ErrorChestplate &&
         equipments.getEquipment(EquipmentSlot.Legs)?.typeId === LdnsItemTypes.ErrorLeggings &&
@@ -426,46 +272,7 @@ world.afterEvents.playerInteractWithBlock.subscribe(async (e) => {
         container?.setItem(5 + 9, undefined);
         container?.setItem(21 + 9, undefined);
         container?.setItem(23 + 9, undefined);
-        button.offset({ x: 0, y: -1, z: 0 })!.setType("air");
-        button.offset({ x: 1, y: -1, z: 0 })!.setType("air");
-        button.offset({ x: 0, y: -1, z: -1 })!.setType("air");
-        button.offset({ x: 0, y: -1, z: 1 })!.setType("air");
-        button.offset({ x: -1, y: -1, z: 0 })!.setType("air");
-        button.offset({ x: -2, y: -1, z: 0 })!.setType("air");
-        button.offset({ x: 1, y: -1, z: -1 })!.setType("air");
-        button.offset({ x: 1, y: -1, z: 1 })!.setType("air");
-        button.offset({ x: 2, y: -1, z: -1 })!.setType("air");
-        button.offset({ x: 2, y: -1, z: 0 })!.setType("air");
-        button.offset({ x: 2, y: -1, z: 1 })!.setType("air");
-        button.offset({ x: 1, y: -1, z: 2 })!.setType("air");
-        button.offset({ x: 1, y: -1, z: -2 })!.setType("air");
-        button.offset({ x: 0, y: -1, z: 2 })!.setType("air");
-        button.offset({ x: 0, y: -1, z: -2 })!.setType("air");
-        button.offset({ x: -1, y: -1, z: -2 })!.setType("air");
-        button.offset({ x: -1, y: -1, z: 2 })!.setType("air");
-        button.offset({ x: -1, y: -1, z: -1 })!.setType("air");
-        button.offset({ x: -1, y: -1, z: 1 })!.setType("air");
-        button.offset({ x: -2, y: -1, z: -1 })!.setType("air");
-        button.offset({ x: -2, y: -1, z: 1 })!.setType("air");
-        button.offset({ x: -3, y: -1, z: -1 })!.setType("air");
-        button.offset({ x: -3, y: -1, z: 1 })!.setType("air");
-        button.offset({ x: -3, y: -1, z: 0 })!.setType("air");
-        button.offset({ x: 1, y: 0, z: -1 })!.setType("air");
-        button.offset({ x: 0, y: 0, z: 2 })!.setType("air");
-        button.offset({ x: -1, y: 0, z: -2 })!.setType("air");
-        button.offset({ x: -3, y: 0, z: 1 })!.setType("air");
-        button.offset({ x: 2, y: 3, z: 0 })!.setType("air");
-        button.offset({ x: 2, y: 2, z: 0 })!.setType("air");
-        button.offset({ x: 2, y: 1, z: 0 })!.setType("air");
-        button.offset({ x: 2, y: 0, z: 0 })!.setType("air");
-        button.offset({ x: 2, y: 2, z: -1 })!.setType("air");
-        button.offset({ x: 2, y: 2, z: 1 })!.setType("air");
-        button.offset({ x: -3, y: 3, z: 0 })!.setType("air");
-        button.offset({ x: -3, y: 2, z: 0 })!.setType("air");
-        button.offset({ x: -3, y: 1, z: 0 })!.setType("air");
-        button.offset({ x: -3, y: 0, z: 0 })!.setType("air");
-        button.offset({ x: -3, y: 2, z: -1 })!.setType("air");
-        button.offset({ x: -3, y: 2, z: 1 })!.setType("air");
+        clearPattern(button, entity787Altar);
         world.sendMessage("No! It's not me!Help me! I'm scared! Don't make me cry!Don't hit me!Don't curse!Don't betray me... I'll turn it off?");
         await system.waitTicks(20 * 3);
         button.dimension.spawnEntity("lightning_bolt", { x: button.location.x + 3, y: button.location.y, z: button.location.z });

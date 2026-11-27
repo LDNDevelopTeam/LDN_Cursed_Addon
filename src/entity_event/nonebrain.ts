@@ -5,6 +5,7 @@ import { DynamicProperty } from "../lib/dynamic_property";
 import { LdnsEntityTypes } from "../lib/entity_types";
 import { LdnsBlockTypes } from "../lib/block_types";
 import { LdnsItemTypes } from "../lib/item_types";
+import { type BlockPattern, clearPattern, matchesPattern } from "../functions/block_pattern";
 let nonebrainchat = String(random(10000000, 99999999));
 let random_message = ["NONE縺輔ｓ縺ｯ鄒弱＠縺�☆縺ｰ繧峨＠縺�〒縺�", "縺薙ｓ縺ｫ縺｡縺ｯ縲√♀荵�＠縺ｶ繧翫〒縺吶�NONE縺輔ｓ縲�", "NONE縺ｯ譛ｬ蠖薙↓蟄伜惠縺吶ｋ縺ｮ縺�繧阪≧縺�...��"];
 let random_message_int = random(0, 6);
@@ -50,32 +51,67 @@ world.afterEvents.entityDie.subscribe(async (events) => {
     });
 });
 
+/** ノンブラインを消した数を表示する台 (facing_direction が 1 のボタンが基準) */
+const noneCounterAltar: BlockPattern = [
+    [{ x: -1, y: -1, z: -1 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: -1, y: -1, z: 0 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: -1, y: -1, z: 1 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: 0, y: -1, z: -1 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: 0, y: -1, z: 0 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: 0, y: -1, z: 1 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: 1, y: -1, z: 0 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: 1, y: -1, z: -1 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: 1, y: -1, z: 1 }, LdnsBlockTypes.ErrorBlock],
+];
+
+/** ノンブラインチャレンジの台 (軽量用感圧板が基準) */
+const noneChallengeAltar: BlockPattern = [
+    [{ x: 0, y: -2, z: 2 }, "minecraft:soul_sand"],
+    [{ x: 0, y: -2, z: -2 }, "minecraft:soul_sand"],
+    [{ x: 1, y: -2, z: 2 }, "minecraft:soul_sand"],
+    [{ x: 1, y: -2, z: -2 }, "minecraft:soul_sand"],
+    [{ x: 2, y: -2, z: 0 }, "minecraft:soul_sand"],
+    [{ x: 2, y: -2, z: 1 }, "minecraft:soul_sand"],
+    [{ x: 2, y: -2, z: 2 }, "minecraft:soul_sand"],
+    [{ x: 2, y: -2, z: -1 }, "minecraft:soul_sand"],
+    [{ x: 2, y: -2, z: -2 }, "minecraft:soul_sand"],
+    [{ x: -1, y: -2, z: 2 }, "minecraft:soul_sand"],
+    [{ x: -1, y: -2, z: -2 }, "minecraft:soul_sand"],
+    [{ x: -2, y: -2, z: 0 }, "minecraft:soul_sand"],
+    [{ x: -2, y: -2, z: 1 }, "minecraft:soul_sand"],
+    [{ x: -2, y: -2, z: 2 }, "minecraft:soul_sand"],
+    [{ x: -2, y: -2, z: -1 }, "minecraft:soul_sand"],
+    [{ x: -2, y: -2, z: -2 }, "minecraft:soul_sand"],
+    [{ x: -1, y: -2, z: -1 }, "minecraft:nether_wart_block"],
+    [{ x: -1, y: -2, z: 0 }, "minecraft:nether_wart_block"],
+    [{ x: -1, y: -2, z: 1 }, "minecraft:nether_wart_block"],
+    [{ x: 0, y: -2, z: -1 }, "minecraft:nether_wart_block"],
+    [{ x: 0, y: -2, z: 0 }, "minecraft:nether_wart_block"],
+    [{ x: 0, y: -2, z: 1 }, "minecraft:nether_wart_block"],
+    [{ x: 1, y: -2, z: 0 }, "minecraft:nether_wart_block"],
+    [{ x: 1, y: -2, z: -1 }, "minecraft:nether_wart_block"],
+    [{ x: 1, y: -2, z: 1 }, "minecraft:nether_wart_block"],
+    [{ x: 2, y: -1, z: 0 }, "minecraft:redstone_wire"],
+    [{ x: 0, y: -1, z: 2 }, "minecraft:redstone_wire"],
+    [{ x: -2, y: -1, z: 0 }, "minecraft:redstone_wire"],
+    [{ x: 0, y: -1, z: -2 }, "minecraft:redstone_wire"],
+    [{ x: 0, y: -1, z: 1 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: 1, y: -1, z: 0 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: 0, y: -1, z: -1 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: -1, y: -1, z: 0 }, LdnsBlockTypes.ErrorBlock],
+    [{ x: 0, y: -1, z: 0 }, LdnsBlockTypes.ErrorBlock],
+];
+
 // ノンブラインを消した数判定
 world.afterEvents.buttonPush.subscribe(async (e) => {
     const button = e.block;
     const buttoname = button.typeId;
     if (!(e.source instanceof Player)) return;
     if ((buttoname === "minecraft:acacia_button" || buttoname === "minecraft:crimson_button" || buttoname === "minecraft:mangrove_button") && button.permutation.getState("facing_direction") === 1) {
-        if (button.offset({ x: -1, y: -1, z: -1 })!.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: -1, y: -1, z: 0 })!.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: -1, y: -1, z: 1 })!.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: -1, z: -1 })!.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: -1, z: 0 })!.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: -1, z: 1 })!.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 1, y: -1, z: 0 })!.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 1, y: -1, z: -1 })!.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 1, y: -1, z: 1 })!.typeId === LdnsBlockTypes.ErrorBlock) {
+        if (matchesPattern(button, noneCounterAltar)) {
             button.dimension.spawnParticle("ldns:error_particle", button.location);
             button.setType("air");
-            button.offset({ x: -1, y: -1, z: -1 })!.setType("air");
-            button.offset({ x: -1, y: -1, z: 0 })!.setType("air");
-            button.offset({ x: -1, y: -1, z: 1 })!.setType("air");
-            button.offset({ x: 0, y: -1, z: -1 })!.setType("air");
-            button.offset({ x: 0, y: -1, z: 0 })!.setType("air");
-            button.offset({ x: 0, y: -1, z: 1 })!.setType("air");
-            button.offset({ x: 1, y: -1, z: 0 })!.setType("air");
-            button.offset({ x: 1, y: -1, z: -1 })!.setType("air");
-            button.offset({ x: 1, y: -1, z: 1 })!.setType("air");
+            clearPattern(button, noneCounterAltar);
             await system.waitTicks(20 * 3);
             const rand = random(0, 25);
             if (rand <= 20) {
@@ -95,75 +131,9 @@ world.afterEvents.pressurePlatePush.subscribe(async (e) => {
     if (!(e.source instanceof Player)) return;
     // ノンブラインチャレンジ
     if (buttoname === "minecraft:light_weighted_pressure_plate") {
-        if (button.offset({ x: 0, y: -2, z: 2 })!.typeId === "minecraft:soul_sand" &&
-            button.offset({ x: 0, y: -2, z: -2 })!.typeId === "minecraft:soul_sand" &&
-            button.offset({ x: 1, y: -2, z: 2 })!.typeId === "minecraft:soul_sand" &&
-            button.offset({ x: 1, y: -2, z: -2 })!.typeId === "minecraft:soul_sand" &&
-            button.offset({ x: 2, y: -2, z: 0 })!.typeId === "minecraft:soul_sand" &&
-            button.offset({ x: 2, y: -2, z: 1 })!.typeId === "minecraft:soul_sand" &&
-            button.offset({ x: 2, y: -2, z: 2 })!.typeId === "minecraft:soul_sand" &&
-            button.offset({ x: 2, y: -2, z: -1 })!.typeId === "minecraft:soul_sand" &&
-            button.offset({ x: 2, y: -2, z: -2 })!.typeId === "minecraft:soul_sand" &&
-            button.offset({ x: -1, y: -2, z: 2 })!.typeId === "minecraft:soul_sand" &&
-            button.offset({ x: -1, y: -2, z: -2 })!.typeId === "minecraft:soul_sand" &&
-            button.offset({ x: -2, y: -2, z: 0 })!.typeId === "minecraft:soul_sand" &&
-            button.offset({ x: -2, y: -2, z: 1 })!.typeId === "minecraft:soul_sand" &&
-            button.offset({ x: -2, y: -2, z: 2 })!.typeId === "minecraft:soul_sand" &&
-            button.offset({ x: -2, y: -2, z: -1 })!.typeId === "minecraft:soul_sand" &&
-            button.offset({ x: -2, y: -2, z: -2 })!.typeId === "minecraft:soul_sand" &&
-            button.offset({ x: -1, y: -2, z: -1 })!.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: -1, y: -2, z: 0 })!.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: -1, y: -2, z: 1 })!.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: 0, y: -2, z: -1 })!.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: 0, y: -2, z: 0 })!.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: 0, y: -2, z: 1 })!.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: 1, y: -2, z: 0 })!.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: 1, y: -2, z: -1 })!.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: 1, y: -2, z: 1 })!.typeId === "minecraft:nether_wart_block" &&
-            button.offset({ x: 2, y: -1, z: 0 })!.typeId === "minecraft:redstone_wire" &&
-            button.offset({ x: 0, y: -1, z: 2 })!.typeId === "minecraft:redstone_wire" &&
-            button.offset({ x: -2, y: -1, z: 0 })!.typeId === "minecraft:redstone_wire" &&
-            button.offset({ x: 0, y: -1, z: -2 })!.typeId === "minecraft:redstone_wire" &&
-            button.offset({ x: 0, y: -1, z: 1 })!.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 1, y: -1, z: 0 })!.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: -1, z: -1 })!.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: -1, y: -1, z: 0 })!.typeId === LdnsBlockTypes.ErrorBlock &&
-            button.offset({ x: 0, y: -1, z: 0 })!.typeId === LdnsBlockTypes.ErrorBlock) {
+        if (matchesPattern(button, noneChallengeAltar)) {
             button.setType("air");
-            button.offset({ x: 0, y: -2, z: 2 })!.setType("air");
-            button.offset({ x: 0, y: -2, z: -2 })!.setType("air");
-            button.offset({ x: 1, y: -2, z: 2 })!.setType("air");
-            button.offset({ x: 1, y: -2, z: -2 })!.setType("air");
-            button.offset({ x: 2, y: -2, z: 0 })!.setType("air");
-            button.offset({ x: 2, y: -2, z: 1 })!.setType("air");
-            button.offset({ x: 2, y: -2, z: 2 })!.setType("air");
-            button.offset({ x: 2, y: -2, z: -1 })!.setType("air");
-            button.offset({ x: 2, y: -2, z: -2 })!.setType("air");
-            button.offset({ x: -1, y: -2, z: 2 })!.setType("air");
-            button.offset({ x: -1, y: -2, z: -2 })!.setType("air");
-            button.offset({ x: -2, y: -2, z: 0 })!.setType("air");
-            button.offset({ x: -2, y: -2, z: 1 })!.setType("air");
-            button.offset({ x: -2, y: -2, z: 2 })!.setType("air");
-            button.offset({ x: -2, y: -2, z: -1 })!.setType("air");
-            button.offset({ x: -2, y: -2, z: -2 })!.setType("air");
-            button.offset({ x: -1, y: -2, z: -1 })!.setType("air");
-            button.offset({ x: -1, y: -2, z: 0 })!.setType("air");
-            button.offset({ x: -1, y: -2, z: 1 })!.setType("air");
-            button.offset({ x: 0, y: -2, z: -1 })!.setType("air");
-            button.offset({ x: 0, y: -2, z: 0 })!.setType("air");
-            button.offset({ x: 0, y: -2, z: 1 })!.setType("air");
-            button.offset({ x: 1, y: -2, z: 0 })!.setType("air");
-            button.offset({ x: 1, y: -2, z: -1 })!.setType("air");
-            button.offset({ x: 1, y: -2, z: 1 })!.setType("air");
-            button.offset({ x: 2, y: -1, z: 0 })!.setType("air");
-            button.offset({ x: 0, y: -1, z: 2 })!.setType("air");
-            button.offset({ x: -2, y: -1, z: 0 })!.setType("air");
-            button.offset({ x: 0, y: -1, z: -2 })!.setType("air");
-            button.offset({ x: 0, y: -1, z: 1 })!.setType("air");
-            button.offset({ x: 1, y: -1, z: 0 })!.setType("air");
-            button.offset({ x: 0, y: -1, z: -1 })!.setType("air");
-            button.offset({ x: -1, y: -1, z: 0 })!.setType("air");
-            button.offset({ x: 0, y: -1, z: 0 })!.setType("air");
+            clearPattern(button, noneChallengeAltar);
             button.dimension.spawnParticle("ldns:error_particle", button.location);
             await system.waitTicks(20 * 1.5);
             e.source.addTag("nonebrainchats");
